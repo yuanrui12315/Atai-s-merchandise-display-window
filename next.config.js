@@ -16,18 +16,18 @@ const locales = (function () {
   // 根据BLOG_NOTION_PAGE_ID 检查支持多少种语言数据.
   // 支持如下格式配置多个语言的页面id xxx,zh:xxx,en:xxx
   const langs = [BLOG.LANG]
-  if (BLOG.NOTION_PAGE_ID.indexOf(',') > 0) {
-    const siteIds = BLOG.NOTION_PAGE_ID.split(',')
-    for (let index = 0; index < siteIds.length; index++) {
-      const siteId = siteIds[index]
-      const prefix = extractLangPrefix(siteId)
+ // if (BLOG.NOTION_PAGE_ID.indexOf(',') > 0) {
+   // const siteIds = BLOG.NOTION_PAGE_ID.split(',')
+    //for (let index = 0; index < siteIds.length; index++) {
+      //const siteId = siteIds[index]
+      //const prefix = extractLangPrefix(siteId)
       // 如果包含前缀 例如 zh , en 等
-      if (prefix) {
-        if (!langs.includes(prefix)) {
-          langs.push(prefix)
-        }
-      }
-    }
+      //if (prefix) {
+        //if (!langs.includes(prefix)) {
+          //langs.push(prefix)
+       // }
+     // }
+   // }
   }
   return langs
 })()
