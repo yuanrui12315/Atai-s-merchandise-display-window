@@ -135,41 +135,7 @@ const nextConfig = {
         ]
       },
   // 重写url
-  rewrites: process.env.EXPORT
-    ? undefined
-    : () => {
-        // 处理多语言重定向
-        const langsRewrites = []
-        if (BLOG.NOTION_PAGE_ID.indexOf(',') > 0) {
-          const siteIds = BLOG.NOTION_PAGE_ID.split(',')
-          const langs = []
-          for (let index = 0; index < siteIds.length; index++) {
-            const siteId = siteIds[index]
-            const prefix = extractLangPrefix(siteId)
-            // 如果包含前缀 例如 zh , en 等
-            if (prefix) {
-              langs.push(prefix)
-            }
-            console.log('[Locales]', siteId)
-          }
-
-          // 映射多语言
-          // 示例： source: '/:locale(zh|en)/:path*' ; :locale() 会将语言放入重写后的 `?locale=` 中。
-          langsRewrites.push(
-            {
-              source: `/:locale(${langs.join('|')})/:path*`,
-              destination: '/:path*'
-            },
-            // 匹配没有路径的情况，例如 [domain]/zh 或 [domain]/en
-            {
-              source: `/:locale(${langs.join('|')})`,
-              destination: '/'
-            },
-            // 匹配没有路径的情况，例如 [domain]/zh/ 或 [domain]/en/
-            {
-              source: `/:locale(${langs.join('|')})/`,
-              destination: '/'
-            }
+  rewrites: async () => [],
           )
         }
 
