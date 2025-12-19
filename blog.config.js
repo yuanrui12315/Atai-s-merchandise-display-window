@@ -8,7 +8,7 @@ const BLOG = {
   NOTION_PAGE_ID: '2bc9b11274688061873fe4804d9aa93e',
   NOTION_TOKEN: 'ntn_41625482344bc9p6cEHGha5GxV6b2YTmTJpYnE1itG38E',
 
-  THEME: 'commerce', // 当前主题，在themes文件夹下可找到所有支持的主题；主题名称就是文件夹名，例如 example,fukasawa,gitbook,heo,hexo,landing,matery,medium,next,nobelium,plog,simple
+  THEME: 'fukasawa', // 当前主题，在themes文件夹下可找到所有支持的主题；主题名称就是文件夹名，例如 example,fukasawa,gitbook,heo,hexo,landing,matery,medium,next,nobelium,plog,simple
   
   SEARCH: true,  // 开启搜索框
   
