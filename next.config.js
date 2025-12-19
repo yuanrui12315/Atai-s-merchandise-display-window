@@ -135,20 +135,9 @@ const nextConfig = {
         ]
       },
   // 重写url
-  rewrites: async () => [],
-          )
-        }
-
-        return [
-          ...langsRewrites,
-          // 伪静态重写
-          {
-            source: '/:path*.html',
-            destination: '/:path*'
-          }
-        ]
-      },
-  headers: process.env.EXPORT
+   rewrites: async () => [],
+ 
+ headers: process.env.EXPORT
     ? undefined
     : () => {
         return [
