@@ -10,6 +10,8 @@ const BLOG = {
 
   THEME: 'starter', // 当前主题，在themes文件夹下可找到所有支持的主题；主题名称就是文件夹名，例如 example,fukasawa,gitbook,heo,hexo,landing,matery,medium,next,nobelium,plog,simple
 
+  HOME_BANNER: false,  // 关闭首页大banner，直接显示商品列表
+  
   SEARCH: true,  // 开启搜索框
   
   LANG: process.env.NEXT_PUBLIC_LANG || 'zh-CN', // e.g 'zh-CN','en-US' see /lib/lang.js for more.
