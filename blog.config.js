@@ -9,7 +9,8 @@ const BLOG = {
   NOTION_TOKEN: 'ntn_41625482344bc9p6cEHGha5GxV6b2YTmTJpYnE1itG38E',
 
   THEME: 'starter', // 当前主题，在themes文件夹下可找到所有支持的主题；主题名称就是文件夹名，例如 example,fukasawa,gitbook,heo,hexo,landing,matery,medium,next,nobelium,plog,simple
-
+LANDING_HEADER_TYPE: 'none',  // 关闭头部大图介绍
+LANDING_HERO_TYPE: 'none',    // 关闭英雄区（中间介绍卡片）
   LANDING_HEADER_TYPE: 'none',  // 关闭 starter 主题的落地页大banner
   
   HOME_BANNER: false,  // 关闭首页大banner，直接显示商品列表
