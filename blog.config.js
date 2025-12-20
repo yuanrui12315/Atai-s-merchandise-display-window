@@ -13,7 +13,7 @@ const BLOG = {
   SEARCH: true,  // 开启搜索框
   
   MENU_SEARCH: true,
-
+  
   MENU_CATEGORY: true,
 
   MENU_TAG: true,
