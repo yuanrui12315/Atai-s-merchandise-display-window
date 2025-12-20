@@ -119,7 +119,7 @@ const BLOG = {
 
     process.env.NEXT_PUBLIC_GREETING_WORDS ||
 
-    'Hi，欢迎光临阿泰小店,', '最新货源实时更新🎉',
+    'Hi，欢迎光临阿泰小店, 最新货源实时更新🎉',
 
   // uuid重定向至 slug
 
