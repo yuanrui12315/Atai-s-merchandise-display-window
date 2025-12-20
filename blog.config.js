@@ -13,7 +13,13 @@ const BLOG = {
   SEARCH: true,  // 开启搜索框
   
   MENU_SEARCH: true,
+  
+  SHOW_POST_TITLE_IN_CARD: true,
 
+  POST_TITLE_FONT_SIZE: '18px',
+  
+  POST_TITLE_COLOR: '#000000',
+  
   POST_CARD_PRICE: true,
   
   MENU_CATEGORY: true,
