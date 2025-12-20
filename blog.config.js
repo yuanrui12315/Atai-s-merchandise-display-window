@@ -45,7 +45,9 @@ const BLOG = {
 
   BEI_AN_GONGAN: process.env.NEXT_PUBLIC_BEI_AN_GONGAN || '', // 公安备案号，例如 '浙公网安备3xxxxxxxx8号'
 
-  SITE_TITLE: 'AtaiWu 爆珠专卖',
+  SITE_TITLE: '阿泰小店 -爆珠专卖',
+  
+  SEARCH_PLACEHOLDER: '搜索商品名称或标签...',
 
   SITE_DESCRIPTION: '正品爆珠商品展示',
 
