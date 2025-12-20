@@ -50,7 +50,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                 alt={post?.title}
                 className='h-full w-full object-cover group-hover:scale-105 group-hover:brightness-75 transition-all duration-500 ease-in-out' //宽高都调整为自适应,保证封面居中
               />
-                            </div> {/* 闭合图片容器 div */}
+                 </div> {/* 闭合图片容器 div */}
         </SmartLink> {/* 闭合图片 SmartLink */}
             </div>
           </SmartLink>
