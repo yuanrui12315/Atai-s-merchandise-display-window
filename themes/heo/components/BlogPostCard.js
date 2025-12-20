@@ -44,31 +44,12 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                 (POST_TWO_COLS ? ' 2xl:w-full' : '') +
                 ' w-full md:w-5/12 overflow-hidden cursor-pointer select-none'
               }>
-                          <LazyImage
+              <LazyImage
                 priority={index === 0}
                 src={post?.pageCoverThumbnail}
                 alt={post?.title}
-                className='h-full w-full object-cover group-hover:scale-105 group-hover:brightness-75 transition-all duration-500 ease-in-out'
+                className='h-full w-full object-cover group-hover:scale-105 group-hover:brightness-75 transition-all duration-500 ease-in-out' //宽高都调整为自适应,保证封面居中
               />
-            </div> {/* 闭合图片容器 div */}
-          </SmartLink> {/* 闭合图片 SmartLink */}
-
-          {/* 商品标题 - 强制显示在图片下方/右侧 */}
-          <div className="mt-4 px-4 text-center">
-            <SmartLink 
-              href={post?.href} 
-              passHref 
-              className="text-black dark:text-white text-xl font-bold hover:text-indigo-600 dark:hover:text-yellow-500"
-            >
-              {siteConfig('POST_TITLE_ICON') && (
-                <NotionIcon 
-                  icon={post.pageIcon} 
-                  className="heo-icon w-6 h-6 mr-1 align-middle transform translate-y-[-8%]" 
-                />
-              )}
-              <span>{post.title}</span>
-            </SmartLink>
-          </div>
             </div>
           </SmartLink>
         )}
