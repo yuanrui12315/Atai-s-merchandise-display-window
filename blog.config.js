@@ -61,7 +61,7 @@ const BLOG = {
 
   ...require('./conf/comment.config'), // 评论插件
 
-  ...require('./conf/contact.config'), // 作者联系方式配置
+  ...require('./conf/contact.config'),CARD_URL: 'https://t.me/@wy6691888', // 作者联系方式配置
 
   ...require('./conf/post.config'), // 文章与列表配置
 
