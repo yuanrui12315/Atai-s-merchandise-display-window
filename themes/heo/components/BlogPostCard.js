@@ -63,7 +63,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
               />
               )}
               <span className='menu-link '>{post.title}</span>
-            </SmartLink>
+            </SmartLink>className='block mt-4 text-center text-black dark:text-white text-xl font-bold px-4'
                   
             </div>
           </SmartLink>
