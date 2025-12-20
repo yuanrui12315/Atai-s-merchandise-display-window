@@ -49,7 +49,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                 src={post?.pageCoverThumbnail}
                 alt={post?.title}
                 className='h-full w-full object-cover group-hover:scale-105 group-hover:brightness-75 transition-all duration-500 ease-in-out' //宽高都调整为自适应,保证封面居中
-              />
+              />className='block mt-4 text-center text-black dark:text-white text-xl font-bold px-4'
                   <SmartLink
               href={post?.href}
               passHref
