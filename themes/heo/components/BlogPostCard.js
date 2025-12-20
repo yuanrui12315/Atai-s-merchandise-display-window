@@ -50,6 +50,21 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                 alt={post?.title}
                 className='h-full w-full object-cover group-hover:scale-105 group-hover:brightness-75 transition-all duration-500 ease-in-out' //宽高都调整为自适应,保证封面居中
               />
+                  <SmartLink
+              href={post?.href}
+              passHref
+              className={
+                ' group-hover:text-indigo-700 dark:hover:text-yellow-700 dark:group-hover:text-yellow-600 text-black dark:text-gray-100  line-clamp-2 replace cursor-pointer text-xl font-extrabold leading-tight'
+              }>
+              {siteConfig('POST_TITLE_ICON') && (
+                <NotionIcon
+                icon={post.pageIcon}
+                className="heo-icon w-6 h-6 mr-1 align-middle transform translate-y-[-8%]" // 专门为 Heo 主题的图标设置样式
+              />
+              )}
+              <span className='menu-link '>{post.title}</span>
+            </SmartLink>
+                  
             </div>
           </SmartLink>
         )}
@@ -75,20 +90,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
             )}
 
             {/* 标题和图标 */}
-            <SmartLink
-              href={post?.href}
-              passHref
-              className={
-                ' group-hover:text-indigo-700 dark:hover:text-yellow-700 dark:group-hover:text-yellow-600 text-black dark:text-gray-100  line-clamp-2 replace cursor-pointer text-xl font-extrabold leading-tight'
-              }>
-              {siteConfig('POST_TITLE_ICON') && (
-                <NotionIcon
-                icon={post.pageIcon}
-                className="heo-icon w-6 h-6 mr-1 align-middle transform translate-y-[-8%]" // 专门为 Heo 主题的图标设置样式
-              />
-              )}
-              <span className='menu-link '>{post.title}</span>
-            </SmartLink>
+            
           </header>
 
           {/* 摘要 */}
