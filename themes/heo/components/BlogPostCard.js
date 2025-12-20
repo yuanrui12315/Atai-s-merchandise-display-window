@@ -44,29 +44,17 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                 (POST_TWO_COLS ? ' 2xl:w-full' : '') +
                 ' w-full md:w-5/12 overflow-hidden cursor-pointer select-none'
               }>
-              <LazyImage
-                priority={index === 0}
-                src={post?.pageCoverThumbnail}
-                alt={post?.title}
-                className='h-full w-full object-cover group-hover:scale-105 group-hover:brightness-75 transition-all duration-500 ease-in-out' //宽高都调整为自适应,保证封面居中
-              />className='block mt-4 text-center text-black dark:text-white text-xl font-bold px-4'
-                  <SmartLink
-              href={post?.href}
-              passHref
-              className={
-                ' group-hover:text-indigo-700 dark:hover:text-yellow-700 dark:group-hover:text-yellow-600 text-black dark:text-gray-100  line-clamp-2 replace cursor-pointer text-xl font-extrabold leading-tight'
-              }>
-              {siteConfig('POST_TITLE_ICON') && (
-                <NotionIcon
-                icon={post.pageIcon}
-                className="heo-icon w-6 h-6 mr-1 align-middle transform translate-y-[-8%]" // 专门为 Heo 主题的图标设置样式
-              />
-              )}
-              <span className='menu-link '>{post.title}</span>
-            </SmartLink>className='block mt-4 text-center text-black dark:text-white text-xl font-bold px-4'
-                  
-            </div>
-          </SmartLink>
+             </LazyImage>
+
+{/* 商品标题 - 强制显示在图片下方 */}
+<div className="mt-4 px-4 text-center">
+  <SmartLink href={post?.href} passHref className="text-black dark:text-white text-xl font-bold hover:text-indigo-600 dark:hover:text-yellow-500">
+    {siteConfig('POST_TITLE_ICON') && (
+      <NotionIcon icon={post.pageIcon} className="heo-icon w-6 h-6 mr-1 align-middle transform translate-y-[-8%]" />
+    )}
+    <span>{post.title}</span>
+  </SmartLink>
+</div>
         )}
 
         {/* 文字区块 */}
