@@ -44,10 +44,10 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                 (POST_TWO_COLS ? ' 2xl:w-full' : '') +
                 ' w-full md:w-5/12 overflow-hidden cursor-pointer select-none'
               }>
-            </LazyImage>
+      </LazyImage>
 
-{/* 商品标题 - 强制显示在图片下方 */}
 <div className="mt-4 px-4 text-center">
+  {/* 商品标题 - 强制显示在图片下方 */}
   <SmartLink 
     href={post?.href} 
     passHref 
@@ -62,7 +62,6 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
     <span>{post.title}</span>
   </SmartLink>
 </div>
-
         {/* 文字区块 */}
         <div
           className={
