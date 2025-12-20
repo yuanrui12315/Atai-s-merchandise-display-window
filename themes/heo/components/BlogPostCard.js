@@ -45,6 +45,8 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                 ' w-full md:w-5/12 overflow-hidden cursor-pointer select-none'
               }>
               <LazyImage
+          </div> {/* 闭合图片容器 div */}
+        </SmartLink> {/* 闭合图片 SmartLink */}
                 priority={index === 0}
                 src={post?.pageCoverThumbnail}
                 alt={post?.title}
