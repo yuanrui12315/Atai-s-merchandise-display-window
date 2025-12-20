@@ -45,25 +45,20 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
                 ' w-full md:w-5/12 overflow-hidden cursor-pointer select-none'
               }>
                      </LazyImage>
+                          </div> {/* 闭合图片容器 div */}
+        </SmartLink> {/* 闭合图片 SmartLink */}
         </div> {/* 闭合图片的 div */}
       </SmartLink> {/* 闭合图片的 SmartLink */}
 
       {/* 商品标题 - 强制显示在文字区上方 */}
-      <div className="mt-4 px-4 text-center">
-        <SmartLink 
-          href={post?.href} 
-          passHref 
-          className="text-black dark:text-white text-xl font-bold hover:text-indigo-600 dark:hover:text-yellow-500"
-        >
-          {siteConfig('POST_TITLE_ICON') && (
-            <NotionIcon 
-              icon={post.pageIcon} 
-              className="heo-icon w-6 h-6 mr-1 align-middle transform translate-y-[-8%]" 
-            />
-          )}
-          <span>{post.title}</span>
-        </SmartLink>
-      </div>
+         <div className="mt-4 px-4 text-center">
+          <SmartLink href={post?.href} passHref className="text-black dark:text-white text-xl font-bold hover:text-indigo-600 dark:hover:text-yellow-500">
+            {siteConfig('POST_TITLE_ICON') && (
+              <NotionIcon icon={post.pageIcon} className="heo-icon w-6 h-6 mr-1 align-middle transform translate-y-[-8%]" />
+            )}
+            <span>{post.title}</span>
+          </SmartLink>
+        </div>
         {/* 文字区块 */}
         <div
           className={
