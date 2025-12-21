@@ -66,4 +66,12 @@ const Style = () => {
 }
 
 export { Style }
+/* 强行隐藏首页英雄区右侧的所有内容（包含那三个彩色方块） */
+.hero-right {
+    display: none !important;
+}
 
+/* 让左侧的文字滚动区域占满整行，不再留白 */
+.hero-left {
+    width: 100% !important;
+}
