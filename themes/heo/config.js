@@ -60,10 +60,10 @@ const CONFIG = {
   HEO_GROUP_ICONS: [
     {
       title_1: 'AfterEffect',
-      img_1: '/images/heo/nse-2450786388214037294-1765588709986.jpg.jpg',
+      img_1: '/images/nse-2450786388214037294-1765588709986.jpg.jpg',
       color_1: '#989bf8',
       title_2: 'Sketch',
-      img_2: '/images/heo/2023e0ded7b724a39f12d59c3dc8fbdc7cbe074202.webp',
+      img_2: '/images/nse-5176509901434608761-1765591009734.png.png',
       color_2: '#ffffff'
     },
     {
