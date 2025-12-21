@@ -77,23 +77,23 @@ const CONFIG = {
     },
     {
       title_1: 'FinalCutPro',
-      img_1: '/images/heo/20233e777652412247dd57fd9b48cf997c01070702.webp',
+      img_1: '/images/1690370690760.jpg',
       color_1: '#ffffff',
       title_2: 'Python',
-      img_2: '/images/heo/20235c0731cd4c0c95fc136a8db961fdf963071502.webp',
+      img_2: '/images/1766335584925.jpg',
       color_2: '#ffffff'
     },
     {
       title_1: 'Swift',
-      img_1: '/images/heo/202328bbee0b314297917b327df4a704db5c072402.webp',
+      img_1: '/images/1766335584980.jpg',
       color_1: '#eb6840',
       title_2: 'Principle',
-      img_2: '/images/heo/2023f76570d2770c8e84801f7e107cd911b5073202.webp',
+      img_2: '/images/1766335585026.jpg',
       color_2: '#8f55ba'
     },
     {
       title_1: 'illustrator',
-      img_1: '/images/heo/20237359d71b45ab77829cee5972e36f8c30073902.webp',
+      img_1: '/images/1766335585005.jpg',
       color_1: '#f29e39',
       title_2: 'CSS3',
       img_2: '/images/heo/20237c548846044a20dad68a13c0f0e1502f074602.webp',
