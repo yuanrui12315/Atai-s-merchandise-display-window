@@ -1,7 +1,6 @@
 const CONFIG = {
   HEO_HOME_POST_TWO_COLS: true, // 首页博客两列显示，若为false则只显示一列
   HEO_LOADING_COVER: true, // 页面加载的遮罩动画
-  HEO_HERO_ENABLE: false,
   HEO_HOME_BANNER_ENABLE: true,
 
   HEO_SITE_CREATE_TIME: '2025-12-19', // 建站日期，用于计算网站运行的第几天
@@ -26,11 +25,11 @@ const CONFIG = {
   HEO_HERO_TITLE_LINK: 'https://www.ataiwu888.com/category',
   // 英雄区遮罩文字
   HEO_HERO_COVER_TITLE: '诚信第一',
- HEO_HERO_ENABLE: false,
+
   // 英雄区显示三个置顶分类
-  HEO_HERO_CATEGORY_1: { title: '必看精选', url: '/tag/必看精选' },
-  HEO_HERO_CATEGORY_2: { title: '热门文章', url: '/tag/热门文章' },
-  HEO_HERO_CATEGORY_3: { title: '实用教程', url: '/tag/实用教程' },
+  HEO_HERO_CATEGORY_1:null,
+  HEO_HERO_CATEGORY_2:null,
+  HEO_HERO_CATEGORY_3:null,
 
   // 英雄区右侧推荐文章标签, 例如 [推荐] , 最多六篇文章; 若留空白''，则推荐最近更新文章
   HEO_HERO_RECOMMEND_POST_TAG: '',
@@ -115,7 +114,7 @@ const CONFIG = {
       color_2: '#1f1f1f'
     }
   ],
-HEO_HERO_ENABLE: false,
+
   HEO_SOCIAL_CARD: true, // 是否显示右侧，点击加入社群按钮
   HEO_SOCIAL_CARD_TITLE_1: '加我电报✈️✈️',
  // HEO_SOCIAL_CARD_TITLE_2: '加入我们的社群讨论分享',
@@ -157,4 +156,3 @@ HEO_HERO_ENABLE: false,
   HEO_WIDGET_TOC: true // 移动端悬浮目录
 }
 export default CONFIG
-HEO_HERO_ENABLE: false,
