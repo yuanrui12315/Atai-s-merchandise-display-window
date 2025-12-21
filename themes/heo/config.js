@@ -25,7 +25,7 @@ const CONFIG = {
   HEO_HERO_TITLE_LINK: 'https://www.ataiwu888.com/category',
   // 英雄区遮罩文字
   HEO_HERO_COVER_TITLE: '诚信第一',
-
+HEO_HERO_RIGHT_ENABLE: false,
   // 英雄区显示三个置顶分类
   HEO_HERO_CATEGORY_1:null,
   HEO_HERO_CATEGORY_2:null,
