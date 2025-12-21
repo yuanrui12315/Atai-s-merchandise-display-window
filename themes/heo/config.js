@@ -24,7 +24,7 @@ const CONFIG = {
   HEO_HERO_TITLE_3: 'ATAIWU888.COM',
   HEO_HERO_TITLE_4: '分类浏览',
   HEO_HERO_TITLE_5: '阿泰小店商品目录',
-  HEO_HERO_TITLE_LINK: 'https://www.ataiwu888.com/',
+  HEO_HERO_TITLE_LINK: 'https://www.ataiwu888.com/category',
   // 英雄区遮罩文字
   HEO_HERO_COVER_TITLE: '诚信第一',
  HEO_HERO_RIGHT: false,
