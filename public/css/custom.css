@@ -6,3 +6,12 @@
 .fa-info:before {
     content: "\f05a";
 }
+/* 彻底隐藏那三个彩色占位块 */
+.hero-right {
+    display: none !important;
+}
+
+/* 让左侧的文字区域（永不跑路等）自动拉伸占满全宽 */
+.hero-left {
+    width: 100% !important;
+}
