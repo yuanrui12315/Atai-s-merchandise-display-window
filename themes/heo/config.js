@@ -64,15 +64,15 @@ const CONFIG = {
       img_1: '/images/1690369547620.jpg',
       color_1: '#989bf8',
       title_2: 'Sketch',
-      img_2: '/images/nse-5176509901434608761-1765591009734.png.png',
+      img_2: '/images/1690369817996.jpg',
       color_2: '#ffffff'
     },
     {
       title_1: 'Docker',
-      img_1: '/images/heo/20231108a540b2862d26f8850172e4ea58ed075102.webp',
+      img_1: '/images/1690369911757.jpg',
       color_1: '#57b6e6',
       title_2: 'Photoshop',
-      img_2: '/images/heo/2023e4058a91608ea41751c4f102b131f267075902.webp',
+      img_2: '/images/1690369996702.jpg',
       color_2: '#4082c3'
     },
     {
