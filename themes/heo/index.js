@@ -311,10 +311,10 @@ const LayoutSlug = props => {
                 <ArticleExpirationNotice post={post} />
                 <AISummary aiSummary={post.aiSummary} />
                 <WWAds orientation='horizontal' className='w-full' />
-          {/* 在这里插入详情页价格 */}
-{post?.properties?.price && (
+ {/* 尝试直接读取扁平化后的 price */}
+{(post?.price || post?.properties?.price) && (
   <div className="px-5 py-2 mb-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded text-red-600 dark:text-red-400 font-bold text-xl">
-    惊喜价：￥{post.properties.price}
+    惊喜价：￥{post?.price || post?.properties?.price}
   </div>
 )}
                 {post && <NotionPage post={post} />}
