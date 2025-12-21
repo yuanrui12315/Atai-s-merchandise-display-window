@@ -115,7 +115,7 @@ const CONFIG = {
       color_2: '#1f1f1f'
     }
   ],
-
+HEO_HERO_ENABLE: false,
   HEO_SOCIAL_CARD: true, // 是否显示右侧，点击加入社群按钮
   HEO_SOCIAL_CARD_TITLE_1: '加我电报✈️✈️',
  // HEO_SOCIAL_CARD_TITLE_2: '加入我们的社群讨论分享',
@@ -157,3 +157,4 @@ const CONFIG = {
   HEO_WIDGET_TOC: true // 移动端悬浮目录
 }
 export default CONFIG
+HEO_HERO_ENABLE: false,
