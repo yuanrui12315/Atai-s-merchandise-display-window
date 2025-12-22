@@ -163,9 +163,9 @@ function TagsGroupBar() {
 }
 
 /**
- * 英雄区左下角3个指定分类按钮
- * @returns
- */
+// * 英雄区左下角3个指定分类按钮
+// * @returns
+// */
 //function GroupMenu() {
  // const url_1 = siteConfig('HEO_HERO_CATEGORY_1', {}, CONFIG)?.url || ''
 //  const title_1 = siteConfig('HEO_HERO_CATEGORY_1', {}, CONFIG)?.title || ''
@@ -182,7 +182,7 @@ function TagsGroupBar() {
     //    <div className='font-bold lg:text-lg  pl-5 relative -mt-2'>
    //       {title_1}
    //       <span className='absolute -bottom-0.5 left-5 w-5 h-0.5 bg-white rounded-full'></span>
-        </div>
+     //   </div>
         <div className='hidden lg:block absolute right-6  duration-700 ease-in-out transition-all scale-[2] translate-y-6 rotate-12 opacity-20 group-hover:opacity-80 group-hover:scale-100 group-hover:translate-y-0 group-hover:rotate-0'>
           <i className='fa-solid fa-star text-4xl'></i>
         </div>
