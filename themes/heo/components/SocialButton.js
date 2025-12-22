@@ -70,15 +70,7 @@ const SocialButton = () => {
             <i className='transform hover:scale-125 duration-150 fab fa-instagram dark:hover:text-indigo-400 hover:text-indigo-600' />
           </a>
         )}
-        {CONTACT_EMAIL && (
-          <a
-            onClick={e => handleEmailClick(e, emailIcon, CONTACT_EMAIL)}
-            title='email'
-            className='cursor-pointer'
-            ref={emailIcon}>
-            <i className='transform hover:scale-125 duration-150 fas fa-envelope dark:hover:text-indigo-400 hover:text-indigo-600' />
-          </a>
-        )}
+    
         {ENABLE_RSS && (
           <a
             target='_blank'
@@ -88,15 +80,7 @@ const SocialButton = () => {
             <i className='transform hover:scale-125 duration-150 fas fa-rss dark:hover:text-indigo-400 hover:text-indigo-600' />
           </a>
         )}
-        {CONTACT_BILIBILI && (
-          <a
-            target='_blank'
-            rel='noreferrer'
-            title={'bilibili'}
-            href={CONTACT_BILIBILI}>
-            <i className='transform hover:scale-125 duration-150 fab fa-bilibili dark:hover:text-indigo-400 hover:text-indigo-600' />
-          </a>
-        )}
+   
         {CONTACT_YOUTUBE && (
           <a
             target='_blank'
