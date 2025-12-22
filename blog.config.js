@@ -63,7 +63,7 @@ const BLOG = {
 
   // RSS订阅
 
-  ENABLE_RSS: process.env.NEXT_PUBLIC_ENABLE_RSS || true, // 是否开启RSS订阅功能
+  ENABLE_RSS: process.env.NEXT_PUBLIC_ENABLE_RSS || false, // 是否开启RSS订阅功能
 
   // 其它复杂配置
 
