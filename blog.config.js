@@ -2,6 +2,8 @@
 
 const BLOG = {
 
+  POSTS_PER_PAGE: 18, // 强制每页显示 18 个商品（电脑端和手机端都会变多）
+  POST_LIST_STYLE: 'scroll', // 开启“无限滚动”模式，手机端往下滑自动加载，无需点下一页
   API_BASE_URL: process.env.API_BASE_URL || 'https://www.notion.so/api/v3', // API默认请求地址,可以配置成自己的地址例如：https://[xxxxx].notion.site/api/v3
 
   // Important page_id！！！Duplicate Template from https://tanghh.notion.site/02ab3b8678004aa69e9e415905ef32a5
