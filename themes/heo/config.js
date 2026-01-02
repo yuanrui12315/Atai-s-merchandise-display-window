@@ -3,7 +3,9 @@ const CONFIG = {
   HEO_LOADING_COVER: true, // 页面加载的遮罩动画
   HEO_HOME_BANNER_ENABLE: false,// 关闭首页大图，让商品列表更靠上
   HEO_SITE_CREATE_TIME: '2025-12-19', // 建站日期，用于计算网站运行的第几天
-
+// 这里的配置会覆盖系统默认，让手机端和电脑端一次性展示更多商品
+  POSTS_PER_PAGE: 18, 
+  POST_LIST_STYLE: 'scroll', // 开启丝滑滚动模式，滑到底部自动加载下一页
   // 首页顶部通知条滚动内容，如不需要可以留空 []
   HEO_NOTICE_BAR: [
     { title: '点击查看购买须知！很重要.必看', url:'/tag/必看'  },
