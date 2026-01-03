@@ -58,7 +58,17 @@ export default function PostHeader({ post, siteInfo, isDarkMode }) {
           className='absolute top-48 z-10 flex flex-col space-y-4 lg:-mt-12 w-full max-w-[86rem] px-5'>
           {/* 分类+标签 */}
           <div className='flex justify-center md:justify-start items-center gap-4'>
-{post?.category && <div className='text-xs text-white bg-blue-500 px-2 py-1 rounded'>{String(post.category)}</div>}
+{post?.allCategories && (
+  <div className='flex items-center flex-wrap gap-2'>
+    {String(post.allCategories).split(',').map((cat, index) => (
+      <SmartLink key={index} href={`/category/${cat.trim()}`} passHref legacyBehavior>
+        <div className='cursor-pointer font-sm font-bold px-3 py-1 rounded-lg hover:bg-white text-white bg-blue-500 dark:bg-yellow-500 hover:text-blue-500 duration-200 '>
+          {cat.trim()}
+        </div>
+      </SmartLink>
+    ))}
+  </div>
+)}
 
             {post.tagItems && (
               <div className='hidden md:flex justify-center flex-nowrap overflow-x-auto'>
