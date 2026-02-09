@@ -270,6 +270,7 @@ const nextConfig = {
       }
     },
     forceSwcTransforms: true,
+    missingSuspenseWithCSRBailout: false,
   },
 
   exportPathMap: function (
