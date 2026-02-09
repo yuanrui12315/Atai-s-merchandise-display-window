@@ -263,7 +263,7 @@ const nextConfig = {
     // 性能优化实验性功能
     optimizePackageImports: ['@heroicons/react', 'lodash']
       turbopack: {},
-  },
+  }
   exportPathMap: function (
     defaultPathMap,
     { dev, dir, outDir, distDir, buildId }
