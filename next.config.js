@@ -269,6 +269,7 @@ const nextConfig = {
         }
       }
     },
+    forceSwcTransforms: true,
   },
 
   exportPathMap: function (
