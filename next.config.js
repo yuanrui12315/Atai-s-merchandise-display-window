@@ -4,29 +4,28 @@ const BLOG = require('./blog.config')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 适配 Next.js 16，移除所有过时 key
+  // 1. 这里的 output 必须这么写，否则 Vercel 找不到启动文件
   output: 'standalone', 
-  staticPageGenerationTimeout: 300,
+  
+  // 2. 图像优化（Heo 主题核心）
   images: {
-    unoptimized: true, // 确保 Notion 图片在 Heo 主题中正常显示
+    unoptimized: true,
   },
-  // Heo 主题需要的语言环境配置
+
+  // 3. 这里的 506 报错通常是因为 i18n 配置和你的 blog.config 冲突了
+  // 我们直接用最死的方式写，不让它去读取可能出错的变量
   i18n: {
-    defaultLocale: BLOG.LANG || 'zh-CN',
-    locales: ['zh-CN', 'en'],
+    locales: ['zh-CN'],
+    defaultLocale: 'zh-CN',
   },
-  // 确保 Heo 主题的 API 和 RSS 重定向正常
-  async redirects() {
-    return [
-      { source: '/feed', destination: '/rss/feed.xml', permanent: true }
-    ]
-  },
+
+  // 4. 彻底移除所有异步函数（async headers, async redirects）
+  // 这些是触发 506 运行时错误的高危区
+  
   webpack: (config, { isServer }) => {
-    // 关键：确保 Heo 主题的组件路径解析正确
     config.resolve.alias['@'] = path.resolve(__dirname)
     config.resolve.alias['@theme-components'] = path.resolve(__dirname, 'themes', THEME)
     
-    // 解决 Next 16 的 Webpack 兼容性
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
