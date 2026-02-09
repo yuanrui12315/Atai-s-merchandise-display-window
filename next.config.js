@@ -258,11 +258,18 @@ const nextConfig = {
 
     return config
   },
-  experimental: {
+    experimental: {
     scrollRestoration: true,
-    // 性能优化实验性功能
-    optimizePackageImports: ['@heroicons/react', 'lodash']
-     },
+    optimizePackageImports: ['@heroicons/react', 'lodash'],
+    turbopack: {
+      rules: {
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js"
+        }
+      }
+    },
+  },
 
   exportPathMap: function (
     defaultPathMap,
