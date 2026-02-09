@@ -262,6 +262,7 @@ const nextConfig = {
     scrollRestoration: true,
     // 性能优化实验性功能
     optimizePackageImports: ['@heroicons/react', 'lodash']
+      turbopack: {},
   },
   exportPathMap: function (
     defaultPathMap,
