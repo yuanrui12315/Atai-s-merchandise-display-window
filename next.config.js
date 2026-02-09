@@ -3,169 +3,67 @@ const fs = require('fs')
 const path = require('path')
 const BLOG = require('./blog.config')
 
-// 打包时是否分析代码
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: BLOG.BUNDLE_ANALYZER
 })
 
-// 扫描项目 /themes下的目录名
-const themes = scanSubdirectories(path.resolve(__dirname, 'themes'))
-const locales = ['zh-CN']
-
-/**
- * 扫描指定目录下的文件夹名，用于获取所有主题
- */
 function scanSubdirectories(directory) {
   const subdirectories = []
   if (!fs.existsSync(directory)) return subdirectories
   fs.readdirSync(directory).forEach(file => {
     const fullPath = path.join(directory, file)
-    if (fs.statSync(fullPath).isDirectory()) {
-      subdirectories.push(file)
-    }
+    if (fs.statSync(fullPath).isDirectory()) subdirectories.push(file)
   })
   return subdirectories
 }
 
-/**
- * @type {import('next').NextConfig}
- */
-const nextConfig = {
-  // 适配 Next.js 16：移除已弃用的 eslint, swcMinify 配置
-  output: process.env.EXPORT
-    ? 'export'
-    : process.env.NEXT_BUILD_STANDALONE === 'true'
-      ? 'standalone'
-      : undefined,
-  staticPageGenerationTimeout: 120,
+const themes = scanSubdirectories(path.resolve(__dirname, 'themes'))
 
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // 1. 彻底移除 Next.js 16 不再支持的过时 key (swcMinify, eslint, publicRuntimeConfig)
+  output: process.env.EXPORT ? 'export' : (process.env.NEXT_BUILD_STANDALONE === 'true' ? 'standalone' : undefined),
+  staticPageGenerationTimeout: 120,
   compress: true,
   poweredByHeader: false,
-  generateEtags: true,
-
-  modularizeImports: {
-    '@heroicons/react/24/outline': {
-      transform: '@heroicons/react/24/outline/{{member}}'
-    },
-    '@heroicons/react/24/solid': {
-      transform: '@heroicons/react/24/solid/{{member}}'
-    }
-  },
-
-  i18n: process.env.EXPORT
-    ? undefined
-    : {
-        defaultLocale: BLOG.LANG,
-        locales: locales
-      },
-
+  
+  // 2. 修正图片配置：Next.js 16 弃用了 domains
   images: {
-    // 兼容新版本：使用 unoptimized 确保 Notion 图片加载不报错
-    unoptimized: true,
+    unoptimized: true, // 这是兼容 Notion 动态图片最稳的做法
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
   },
 
-  redirects: process.env.EXPORT
-    ? undefined
-    : async () => {
-        return [
-          {
-            source: '/feed',
-            destination: '/rss/feed.xml',
-            permanent: true
-          }
-        ]
-      },
+  // 3. 环境变量（替代原来的 publicRuntimeConfig）
+  env: {
+    THEMES: JSON.stringify(themes),
+  },
 
-  rewrites: async () => [],
+  // 4. 路由逻辑优化
+  i18n: process.env.EXPORT ? undefined : {
+    defaultLocale: BLOG.LANG || 'zh-CN',
+    locales: ['zh-CN', 'en'],
+  },
 
-  headers: process.env.EXPORT
-    ? undefined
-    : async () => {
-        return [
-          {
-            source: '/:path*{/}?',
-            headers: [
-              { key: 'Access-Control-Allow-Credentials', value: 'true' },
-              { key: 'Access-Control-Allow-Origin', value: '*' },
-              {
-                key: 'Access-Control-Allow-Methods',
-                value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT'
-              },
-              {
-                key: 'Access-Control-Allow-Headers',
-                value: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-              }
-            ]
-          }
-        ]
-      },
+  async redirects() {
+    return [
+      { source: '/feed', destination: '/rss/feed.xml', permanent: true }
+    ]
+  },
 
-  webpack: (config, { dev, isServer }) => {
+  // 5. Webpack 降级兼容（针对 Next.js 16 强制 Turbopack 的补救）
+  webpack: (config, { isServer }) => {
     config.resolve.alias['@'] = path.resolve(__dirname)
-
+    config.resolve.alias['@theme-components'] = path.resolve(__dirname, 'themes', THEME)
+    
+    // 解决部分 Node.js 模块在客户端无法解析的问题
     if (!isServer) {
-      console.log('[默认主题]', path.resolve(__dirname, 'themes', THEME))
-    }
-    config.resolve.alias['@theme-components'] = path.resolve(
-      __dirname,
-      'themes',
-      THEME
-    )
-
-    if (!dev) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-            },
-            common: {
-              name: 'common',
-              minChunks: 2,
-              chunks: 'all',
-              enforce: true,
-            },
-          },
-        },
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
       }
     }
-
-    if (dev || process.env.NODE_ENV_API === 'development') {
-      config.devtool = 'eval-source-map'
-    }
-
-    config.resolve.modules = [
-      path.resolve(__dirname, 'node_modules'),
-      'node_modules'
-    ]
-
     return config
-  },
-
-  experimental: {
-    scrollRestoration: true,
-    optimizePackageImports: ['@heroicons/react', 'lodash']
-  },
-
-  exportPathMap: function (defaultPathMap) {
-    const pages = { ...defaultPathMap }
-    delete pages['/sitemap.xml']
-    delete pages['/auth']
-    return pages
-  },
-
-  // 适配 Next.js 16：将原 publicRuntimeConfig 的 THEMES 注入到 env 中，避免报错
-  env: {
-    THEMES: themes
   }
 }
 
-module.exports = process.env.ANALYZE
-  ? withBundleAnalyzer(nextConfig)
-  : nextConfig
+module.exports = process.env.ANALYZE ? withBundleAnalyzer(nextConfig) : nextConfig
