@@ -64,7 +64,7 @@
     "notion-utils": "7.7.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-facebook": "10.2.0",
+    "react-facebook": "8.1.4",
     "react-hotkeys-hook": "^4.6.2",
     "react-notion-x": "7.7.1",
     "react-share": "5.1.0",
