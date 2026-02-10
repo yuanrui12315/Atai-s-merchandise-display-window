@@ -46,7 +46,7 @@
     "final-validation": "node scripts/final-validation.js"
   },
   "dependencies": {
-    "@clerk/localizations": "^3.17.1",
+    "@clerk/localizations": "1.26.15",
     "@clerk/nextjs": "4.29.9",
     "@headlessui/react": "^1.7.19",
     "@next/bundle-analyzer": "^12.3.7",
@@ -64,10 +64,10 @@
     "notion-utils": "7.7.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-facebook": "^8.1.4",
+    "react-facebook": "10.2.0",
     "react-hotkeys-hook": "^4.6.2",
     "react-notion-x": "7.7.1",
-    "react-share": "^5.2.2",
+    "react-share": "5.1.0",
     "react-tweet-embed": "~2.0.0"
   },
   "devDependencies": {
