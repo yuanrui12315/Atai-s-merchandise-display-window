@@ -13,15 +13,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "5.0.0",
+    "@clerk/nextjs": "^5.0.0",
     "next": "14.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "notion-client": "6.16.0",
     "notion-utils": "6.16.0",
     "react-notion-x": "6.16.0",
-    "react-facebook": "9.0.0",
-    "react-share": "5.1.0",
+    "react-facebook": "^9.0.0",
+    "react-share": "^5.0.0",
     "lucide-react": "0.378.0",
     "axios": "1.6.8",
     "lodash.throttle": "4.1.1",
