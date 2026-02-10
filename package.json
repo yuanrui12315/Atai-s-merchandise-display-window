@@ -15,12 +15,11 @@
     "email": "mail@tangly1024.com",
     "url": "http://tangly1024.com"
   },
- "scripts": {
+  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next build"
-},
+    "export": "next build",
     "build-all-in-dev": "cross-env VERCEL_ENV=production next build",
     "version": "echo $npm_package_version",
     "lint": "next lint",
