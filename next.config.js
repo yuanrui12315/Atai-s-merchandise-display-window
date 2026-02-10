@@ -10,18 +10,14 @@ const nextConfig = {
     esmExternals: 'loose'
   },
   webpack: (config) => {
-    // 这里的 path.resolve(__dirname, 'themes') 如果找不到，
-    // 我们直接尝试用相对路径强制注入
-    config.resolve.alias = {
-      ...config.resolve.alias,
+    // 强制把路径别名注入到最顶层
+    config.resolve.alias = Object.assign({}, config.resolve.alias, {
       '@': path.resolve(__dirname),
-      '@theme-components': path.resolve(__dirname, 'themes'),
-    }
+      '@theme-components': path.resolve(__dirname, 'themes')
+    })
 
-    // 解决 fs 报错
-    config.resolve.fallback = { ...config.resolve.fallback, fs: false };
-    
-    return config;
+    config.resolve.fallback = { ...config.resolve.fallback, fs: false }
+    return config
   }
 }
 
