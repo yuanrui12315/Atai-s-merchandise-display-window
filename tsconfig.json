@@ -3,16 +3,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@theme-components": ["themes"],
+      "@theme-components": ["themes/theme.js"],
       "@theme-components/*": ["themes/*"],
-      "@/blog.config": ["./blog.config"],
       "@/components/*": ["components/*"],
-      "@/hooks/*": ["hooks/*"],
-      "@/themes/*": ["themes/*"],
-      "@/pages/*": ["pages/*"],
-      "@/data/*": ["data/*"],
       "@/lib/*": ["lib/*"],
-      "@/styles/*": ["styles/*"]
+      "@/themes/*": ["themes/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
