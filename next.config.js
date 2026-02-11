@@ -10,13 +10,15 @@ const nextConfig = {
     esmExternals: 'loose'
   },
   webpack: (config) => {
-    // 强制路径映射：直接指向你截图里的 theme.js 文件
-    config.resolve.alias['@'] = path.resolve(process.cwd())
-    config.resolve.alias['@theme-components'] = path.resolve(process.cwd(), 'themes', 'theme.js')
+    // 获取当前主题名称，如果没有设置则默认为 'heo' (根据你的截图，你用的是 heo)
+    const theme = process.env.NEXT_PUBLIC_THEME || 'heo'
     
-    // 解决 fs 模块在客户端找不到的问题
+    config.resolve.alias['@'] = path.resolve(__dirname)
+    
+    // 【关键修正】：别名必须指向具体的主题目录，而不是 theme.js 文件
+    config.resolve.alias['@theme-components'] = path.resolve(__dirname, 'themes', theme)
+    
     config.resolve.fallback = { ...config.resolve.fallback, fs: false }
-    
     return config
   }
 }
