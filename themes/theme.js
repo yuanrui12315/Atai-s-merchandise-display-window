@@ -1,5 +1,9 @@
 import BLOG, { LAYOUT_MAPPINGS } from '@/blog.config'
-import * as ThemeComponents from '@theme-components'
+/**
+ * 【关键修正】阿泰注意：这里直接引用 './heo' 主题文件夹，
+ * 避免了原先引用 '@theme-components' 导致的自循环报错。
+ */
+import * as ThemeComponents from './heo'
 import getConfig from 'next/config'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -123,7 +127,6 @@ export const useLayoutByTheme = ({ layoutName, theme }) => {
  */
 const getLayoutNameByPath = path => {
   const layoutName = LAYOUT_MAPPINGS[path] || 'LayoutSlug'
-  //   console.log('path-layout',path,layoutName)
   return layoutName
 }
 
