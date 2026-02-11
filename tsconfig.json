@@ -4,10 +4,7 @@
     "paths": {
       "@/*": ["./*"],
       "@theme-components": ["themes/theme.js"],
-      "@theme-components/*": ["themes/*"],
-      "@/components/*": ["components/*"],
-      "@/lib/*": ["lib/*"],
-      "@/themes/*": ["themes/*"]
+      "@theme-components/*": ["themes/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
