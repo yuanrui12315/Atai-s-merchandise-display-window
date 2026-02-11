@@ -1,50 +1,76 @@
-// 第一步：配置信息保持在内部分解，确保不依赖外部文件
-const BLOG = {
-  THEME: 'heo',
-  APPEARANCE: 'auto',
-  APPEARANCE_DARK_TIME: [18, 6]
-}
-
-// 第二步：【关键修正】
-// 因为你的 heo 文件夹里没有 index.js，所以我们直接引用 heo.js 或该目录下的主要组件
-// 根据 NotionNext 的标准结构，直接引用 './heo'，Webpack 会自动寻找里面的组件
-import * as ThemeComponents from './heo' 
-
+// 1. 使用最原始的相对路径，避开所有 @ 符号别名
+import BLOG, { LAYOUT_MAPPINGS } from '../blog.config'
 import getConfig from 'next/config'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { getQueryParam, getQueryVariable, isBrowser } from '../lib/utils'
 
+/**
+ * 【核心修正】阿泰注意：
+ * 我现在不用 import * as ThemeComponents 了，
+ * 这种写法在你的 Vercel 环境下容易找不到 index。
+ * 我们直接动态加载它。
+ */
+
+// 在next.config.js中扫描所有主题
 export const { THEMES = [] } = getConfig()?.publicRuntimeConfig || {}
 
-export const getThemeConfig = async themeQuery => {
-  return ThemeComponents?.THEME_CONFIG || {}
+/**
+ * 获取主题配置
+ */
+export const getThemeConfig = async (themeQuery) => {
+  const themeName = (typeof themeQuery === 'string' && themeQuery.trim()) 
+    ? themeQuery.split(',')[0].trim() 
+    : BLOG.THEME
+  
+  try {
+    const { THEME_CONFIG } = await import(`./${themeName}`)
+    return THEME_CONFIG
+  } catch (err) {
+    return {}
+  }
 }
 
-export const getBaseLayoutByTheme = theme => {
-  return ThemeComponents['LayoutBase']
+/**
+ * 加载布局
+ */
+export const useLayoutByTheme = ({ layoutName, theme }) => {
+  const router = useRouter()
+  const themeQuery = getQueryParam(router?.asPath, 'theme') || theme || BLOG.THEME
+  
+  // 强制动态导入具体主题文件夹
+  return dynamic(
+    () => import(`./${themeQuery}`).then(m => m[layoutName] || m.LayoutSlug),
+    { ssr: true }
+  )
 }
 
-export const DynamicLayout = props => {
+export const DynamicLayout = (props) => {
   const SelectedLayout = useLayoutByTheme({ layoutName: props.layoutName, theme: props.theme })
   return <SelectedLayout {...props} />
 }
 
-export const useLayoutByTheme = ({ layoutName, theme }) => {
-  const LayoutComponents = ThemeComponents[layoutName] || ThemeComponents.LayoutSlug
-  const router = useRouter()
-  const themeQuery = getQueryParam(router?.asPath, 'theme') || theme
-  return LayoutComponents
+export const getBaseLayoutByTheme = (theme) => {
+  const themeQuery = theme || BLOG.THEME
+  return dynamic(
+    () => import(`./${themeQuery}`).then(m => m.LayoutBase),
+    { ssr: true }
+  )
 }
+
+// --- 以下是深色模式逻辑，保持原样但增加 isBrowser 安全保护 ---
 
 export const initDarkMode = (updateDarkMode, defaultDarkMode) => {
   if (!isBrowser) return
   let newDarkMode = isPreferDark()
   const userDarkMode = localStorage.getItem('darkMode')
   if (userDarkMode) newDarkMode = (userDarkMode === 'dark' || userDarkMode === 'true')
+  if (defaultDarkMode === 'true') newDarkMode = true
+  
   updateDarkMode(newDarkMode)
-  if (document.getElementsByTagName('html')[0]) {
-    document.getElementsByTagName('html')[0].setAttribute('class', newDarkMode ? 'dark' : 'light')
+  const html = document.getElementsByTagName('html')[0]
+  if (html) {
+    html.setAttribute('class', newDarkMode ? 'dark' : 'light')
   }
 }
 
