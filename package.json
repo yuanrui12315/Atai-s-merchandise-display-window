@@ -38,8 +38,7 @@
     "next-sitemap": "^4.2.3",
     "@headlessui/react": "^1.7.19",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^2.3.0",
-    "theme-components": "link:./themes"
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@types/node": "20.12.7",
