@@ -1,8 +1,6 @@
-// 修正：使用相对路径确保能找到根目录的配置文件
-import BLOG, { LAYOUT_MAPPINGS } from '../blog.config'
-// 修正：直接指向 heo 文件夹
+import BLOG, { LAYOUT_MAPPINGS } from '@/blog.config'
+// 关键修正：直接引用 heo 文件夹，打破别名死循环
 import * as ThemeComponents from './heo' 
-
 import getConfig from 'next/config'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -25,13 +23,9 @@ export const getThemeConfig = async themeQuery => {
             console.error(`Failed to load theme ${themeName}:`, err)
             return null
           })
-
-        if (THEME_CONFIG) {
-          return THEME_CONFIG
-        } else {
-          return ThemeComponents?.THEME_CONFIG
-        }
+        if (THEME_CONFIG) return THEME_CONFIG
       } catch (error) {
+        console.error(`Error loading theme configuration for ${themeName}:`, error)
         return ThemeComponents?.THEME_CONFIG
       }
     }
@@ -67,18 +61,14 @@ export const DynamicLayout = props => {
  * 加载主题文件
  */
 export const useLayoutByTheme = ({ layoutName, theme }) => {
-  const LayoutComponents =
-    ThemeComponents[layoutName] || ThemeComponents.LayoutSlug
-
+  const LayoutComponents = ThemeComponents[layoutName] || ThemeComponents.LayoutSlug
   const router = useRouter()
   const themeQuery = getQueryParam(router?.asPath, 'theme') || theme
   const isDefaultTheme = !themeQuery || themeQuery === BLOG.THEME
 
   if (!isDefaultTheme) {
     const loadThemeComponents = componentsSource => {
-      const components =
-        componentsSource[layoutName] || componentsSource.LayoutSlug
-      setTimeout(fixThemeDOM, 500)
+      const components = componentsSource[layoutName] || componentsSource.LayoutSlug
       return components
     }
     return dynamic(
@@ -87,36 +77,7 @@ export const useLayoutByTheme = ({ layoutName, theme }) => {
     )
   }
 
-  setTimeout(fixThemeDOM, 100)
   return LayoutComponents
-}
-
-/**
- * 根据路径 获取对应的layout名称
- */
-const getLayoutNameByPath = path => {
-  return LAYOUT_MAPPINGS[path] || 'LayoutSlug'
-}
-
-/**
- * 切换主题时的特殊处理
- */
-const fixThemeDOM = () => {
-  if (isBrowser) {
-    const elements = document.querySelectorAll('[id^="theme-"]')
-    if (elements?.length > 1) {
-      for (let i = 0; i < elements.length - 1; i++) {
-        if (
-          elements[i] &&
-          elements[i].parentNode &&
-          elements[i].parentNode.contains(elements[i])
-        ) {
-          elements[i].parentNode.removeChild(elements[i])
-        }
-      }
-      elements[0]?.scrollIntoView()
-    }
-  }
 }
 
 /**
@@ -129,24 +90,24 @@ export const initDarkMode = (updateDarkMode, defaultDarkMode) => {
     newDarkMode = userDarkMode === 'dark' || userDarkMode === 'true'
     saveDarkModeToLocalStorage(newDarkMode)
   }
-  if (defaultDarkMode === 'true') {
-    newDarkMode = true
-  }
+  if (defaultDarkMode === 'true') newDarkMode = true
   const queryMode = getQueryVariable('mode')
-  if (queryMode) {
-    newDarkMode = queryMode === 'dark'
-  }
+  if (queryMode) newDarkMode = queryMode === 'dark'
+
   updateDarkMode(newDarkMode)
   if (isBrowser) {
     document.getElementsByTagName('html')[0].setAttribute('class', newDarkMode ? 'dark' : 'light')
   }
 }
 
+/**
+ * 是否优先深色模式
+ */
 export function isPreferDark() {
   if (BLOG.APPEARANCE === 'dark') return true
   if (BLOG.APPEARANCE === 'auto') {
     const date = new Date()
-    if (typeof window !== 'undefined') {
+    if (isBrowser) {
       const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
       return (
         prefersDarkMode ||
@@ -159,10 +120,16 @@ export function isPreferDark() {
   return false
 }
 
+/**
+ * 读取深色模式
+ */
 export const loadDarkModeFromLocalStorage = () => {
   return isBrowser ? localStorage.getItem('darkMode') : null
 }
 
+/**
+ * 保存深色模式
+ */
 export const saveDarkModeToLocalStorage = newTheme => {
   if (isBrowser) localStorage.setItem('darkMode', newTheme)
 }
