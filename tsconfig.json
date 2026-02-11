@@ -3,8 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@theme-components": ["themes/theme.js"],
-      "@theme-components/*": ["themes/*"]
+      "@theme-components": ["./themes/theme.js"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -18,7 +17,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
     "allowSyntheticDefaultImports": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
