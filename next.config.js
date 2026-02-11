@@ -10,14 +10,15 @@ const nextConfig = {
     esmExternals: 'loose'
   },
   webpack: (config) => {
-    // 获取当前主题名称，如果没有设置则默认为 'heo' (根据你的截图，你用的是 heo)
-    const theme = process.env.NEXT_PUBLIC_THEME || 'heo'
-    
+    // 1. 设置根目录别名
     config.resolve.alias['@'] = path.resolve(__dirname)
     
-    // 【关键修正】：别名必须指向具体的主题目录，而不是 theme.js 文件
-    config.resolve.alias['@theme-components'] = path.resolve(__dirname, 'themes', theme)
+    // 2. 设置主题目录别名
+    config.resolve.alias['@theme-components'] = path.resolve(__dirname, 'themes')
     
+    // 3. 【最关键的一步】：告诉 Webpack 如果找不到 index，就去找你截图里的 theme.js
+    config.resolve.mainFiles = ['index', 'theme']
+
     config.resolve.fallback = { ...config.resolve.fallback, fs: false }
     return config
   }
