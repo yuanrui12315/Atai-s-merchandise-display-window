@@ -2,10 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@theme-components": ["themes/theme.js"],
-      "@theme-components/*": ["themes/*"],
-      "@/themes/*": ["themes/*"]
+      "@/*": ["./*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
