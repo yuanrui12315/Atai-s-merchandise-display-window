@@ -1,62 +1,102 @@
+import BLOG, { LAYOUT_MAPPINGS } from '../blog.config'
+import * as ThemeComponents from './heo'
 import getConfig from 'next/config'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { getQueryParam, getQueryVariable, isBrowser } from '../lib/utils'
+
+// 在next.config.js中扫描所有主题
+export const { THEMES = [] } = getConfig()?.publicRuntimeConfig || {}
 
 /**
- * 既然 Vercel 找不到 ./heo 这个文件夹
- * 我们直接把路径指向具体的文件（假设你的 heo 主题入口在 heo 文件夹下）
+ * 获取主题配置
  */
-
-// 1. 尝试直接定位 heo 的组件。如果 heo 下面有 LayoutBase.js，这样写就稳了。
-const themeName = 'heo' 
-
-export const useLayoutByTheme = ({ layoutName, theme }) => {
-  const t = theme || themeName
-  // 这里直接指向文件夹，如果报错，说明 Webpack 认不出没有 index 的文件夹
-  return dynamic(
-    () => import(`./${t}/LayoutSlug`).then(m => m.default || m[layoutName] || m.LayoutSlug).catch(err => {
-      // 这里的保底方案确保部署不会变红
-      return () => <div id="theme-loading" style={{display: 'none'}}>Loading...</div>
-    }),
-    { ssr: true }
-  )
+export const getThemeConfig = async themeQuery => {
+  if (themeQuery && themeQuery !== BLOG.THEME) {
+    try {
+      const { THEME_CONFIG } = await import(`./${themeQuery}`)
+      return THEME_CONFIG || ThemeComponents.THEME_CONFIG
+    } catch (err) {
+      console.error('Failed to load theme config', err)
+      return ThemeComponents.THEME_CONFIG
+    }
+  }
+  return ThemeComponents.THEME_CONFIG
 }
 
-export const DynamicLayout = (props) => {
-  const SelectedLayout = useLayoutByTheme({ layoutName: props.layoutName, theme: props.theme })
+/**
+ * 加载全局布局
+ */
+export const getBaseLayoutByTheme = theme => {
+  const isDefaultTheme = !theme || theme === BLOG.THEME
+  if (!isDefaultTheme) {
+    return dynamic(() => import(`./${theme}`).then(m => m.LayoutBase), { ssr: true })
+  }
+  return ThemeComponents.LayoutBase
+}
+
+/**
+ * 动态获取布局组件
+ */
+export const DynamicLayout = props => {
+  const { theme, layoutName } = props
+  const SelectedLayout = useLayoutByTheme({ layoutName, theme })
   return <SelectedLayout {...props} />
 }
 
-export const getBaseLayoutByTheme = (theme) => {
-  const t = theme || themeName
-  return dynamic(
-    () => import(`./${t}/LayoutBase`).then(m => m.LayoutBase || m.default),
-    { ssr: true }
-  )
-}
+/**
+ * 根据主题加载对应的 Layout 文件
+ */
+export const useLayoutByTheme = ({ layoutName, theme }) => {
+  const router = useRouter()
+  const themeQuery = getQueryParam(router?.asPath, 'theme') || theme || BLOG.THEME
+  const isDefaultTheme = themeQuery === BLOG.THEME
 
-export const getThemeConfig = async (themeQuery) => {
-  const t = themeQuery || themeName
-  try {
-    const m = await import(`./${t}/config`)
-    return m.THEME_CONFIG || m.default || {}
-  } catch (e) {
-    return {}
+  if (!isDefaultTheme) {
+    return dynamic(() => import(`./${themeQuery}`).then(m => m[layoutName] || m.LayoutSlug), { ssr: true })
   }
+
+  return ThemeComponents[layoutName] || ThemeComponents.LayoutSlug
 }
 
-// 2. 彻底独立的深色模式，不产生任何外部引用
-export const initDarkMode = (updateDarkMode) => {
-  if (typeof window === 'undefined') return
-  const isDark = localStorage.getItem('darkMode') === 'true'
-  updateDarkMode(isDark)
-  if (document.documentElement) {
-    document.documentElement.classList.toggle('dark', isDark)
+/**
+ * 初始化深色模式
+ */
+export const initDarkMode = (updateDarkMode, defaultDarkMode) => {
+  if (!isBrowser) return
+  let newDarkMode = isPreferDark()
+  const userDarkMode = localStorage.getItem('darkMode')
+  
+  if (userDarkMode) {
+    newDarkMode = userDarkMode === 'dark' || userDarkMode === 'true'
   }
+  if (defaultDarkMode === 'true') {
+    newDarkMode = true
+  }
+
+  updateDarkMode(newDarkMode)
+  document.getElementsByTagName('html')[0].setAttribute('class', newDarkMode ? 'dark' : 'light')
 }
 
-// 补齐导出函数，防止其他文件 import 时报错导致变红
-export const isPreferDark = () => false
-export const loadDarkModeFromLocalStorage = () => null
-export const saveDarkModeToLocalStorage = () => {}
-export const THEMES = ['heo']
+/**
+ * 检测系统深色模式偏好
+ */
+export function isPreferDark() {
+  if (BLOG.APPEARANCE === 'dark') return true
+  if (BLOG.APPEARANCE === 'auto' && isBrowser) {
+    const date = new Date()
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    return (
+      prefersDarkMode ||
+      (BLOG.APPEARANCE_DARK_TIME &&
+        (date.getHours() >= BLOG.APPEARANCE_DARK_TIME[0] ||
+          date.getHours() < BLOG.APPEARANCE_DARK_TIME[1]))
+    )
+  }
+  return false
+}
+
+export const loadDarkModeFromLocalStorage = () => isBrowser ? localStorage.getItem('darkMode') : null
+export const saveDarkModeToLocalStorage = (newTheme) => {
+  if (isBrowser) localStorage.setItem('darkMode', newTheme)
+}
