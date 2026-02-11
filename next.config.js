@@ -4,7 +4,8 @@ module.exports = {
   output: 'standalone',
   images: { unoptimized: true },
   webpack: (config) => {
-    // 强制 @ 符号指向根目录，这样 theme.js 里的 "@/blog.config" 才能找到文件
+    // 官方别名：这才是最稳的寻路方式
+    config.resolve.alias['@theme-components'] = path.resolve(__dirname, 'themes/theme.js')
     config.resolve.alias['@'] = path.resolve(__dirname)
     config.resolve.fallback = { ...config.resolve.fallback, fs: false }
     return config
