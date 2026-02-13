@@ -311,10 +311,27 @@ const LayoutSlug = props => {
                 <ArticleExpirationNotice post={post} />
                 <AISummary aiSummary={post.aiSummary} />
                 <WWAds orientation='horizontal' className='w-full' />
- {/* 尝试直接读取扁平化后的 price */}
+ {/* 商品属性：价格、摘要、分类、标签 */}
 {(post?.price || post?.properties?.price) && (
   <div className="px-5 py-2 mb-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded text-red-600 dark:text-red-400 font-bold text-xl">
     价格：￥{post?.price || post?.properties?.price}
+  </div>
+)}
+{post?.summary && (
+  <div className="px-5 py-3 mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+    {post.summary}
+  </div>
+)}
+{(post?.allCategories || post?.tagItems?.length) && (
+  <div className="px-5 py-2 mb-4 flex flex-wrap gap-2 items-center">
+    {post?.allCategories && String(post.allCategories).split(',').map((cat, i) => (
+      <SmartLink key={i} href={`/category/${cat.trim()}`} passHref legacyBehavior>
+        <span className="px-2 py-1 text-sm rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 cursor-pointer hover:underline">{cat.trim()}</span>
+      </SmartLink>
+    ))}
+    {post?.tagItems?.map((tag, i) => (
+      <span key={i} className="px-2 py-1 text-sm rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">{tag.name}</span>
+    ))}
   </div>
 )}
                 {post && <NotionPage post={post} />}
