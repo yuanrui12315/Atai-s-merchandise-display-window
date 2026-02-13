@@ -10,17 +10,20 @@ const filterDOMProps = props => {
 const SmartLink = ({ href, children, ...rest }) => {
   const LINK = siteConfig('LINK')
 
+  // 防止 undefined/null href 导致 Next.js Link 报错（formatUrl 无法解析）
+  const safeHref = href ?? '/'
+
   // 获取 URL 字符串用于判断是否是外链
   let urlString = ''
 
-  if (typeof href === 'string') {
-    urlString = href
+  if (typeof safeHref === 'string') {
+    urlString = safeHref
   } else if (
-    typeof href === 'object' &&
-    href !== null &&
-    typeof href.pathname === 'string'
+    typeof safeHref === 'object' &&
+    safeHref !== null &&
+    typeof safeHref.pathname === 'string'
   ) {
-    urlString = href.pathname
+    urlString = safeHref.pathname
   }
 
   const isExternal = urlString.startsWith('http') && !urlString.startsWith(LINK)
@@ -28,7 +31,7 @@ const SmartLink = ({ href, children, ...rest }) => {
   if (isExternal) {
     // 对于外部链接，必须是 string 类型
     const externalUrl =
-      typeof href === 'string' ? href : new URL(href.pathname, LINK).toString()
+      typeof safeHref === 'string' ? safeHref : new URL(safeHref.pathname, LINK).toString()
 
     return (
       <a
@@ -43,7 +46,7 @@ const SmartLink = ({ href, children, ...rest }) => {
 
   // 内部链接（可为对象形式）
   return (
-    <Link href={href} {...rest}>
+    <Link href={safeHref} {...rest}>
       {children}
     </Link>
   )
