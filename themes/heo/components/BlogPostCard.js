@@ -98,6 +98,13 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
             </main>
           )}
 
+          {/* 价格（商品卡片） */}
+          {siteConfig('POST_CARD_PRICE', false) && (post?.price || post?.properties?.price) && (
+            <div className='text-red-600 dark:text-red-400 font-bold text-lg mt-1'>
+              ￥{post?.price ?? post?.properties?.price}
+            </div>
+          )}
+
           <div className='md:flex-nowrap flex-wrap md:justify-start inline-block'>
             <div>
               {' '}
