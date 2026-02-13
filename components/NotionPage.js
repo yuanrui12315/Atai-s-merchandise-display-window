@@ -116,14 +116,20 @@ const NotionPage = ({ post, className }) => {
     return () => clearTimeout(timer)
   }, [post])
 
+  // 占位页（如 /oops）无 blockMap，NotionRenderer 会 crash，需渲染兜底内容
+  const recordMap = post?.blockMap
+  const blockObj = recordMap?.block ?? null
+  const hasValidRecordMap = blockObj && typeof blockObj === 'object' && Object.keys(blockObj).length > 0
+
   return (
     <div
       id='notion-article'
       className={`mx-auto overflow-hidden ${className || ''}`}>
-      <NotionRenderer
-        recordMap={post?.blockMap}
-        mapPageUrl={mapPageUrl}
-        mapImageUrl={mapImgUrl}
+      {recordMap && hasValidRecordMap ? (
+        <NotionRenderer
+          recordMap={recordMap}
+          mapPageUrl={mapPageUrl}
+          mapImageUrl={mapImgUrl}
         components={{
           Code,
           Collection,
@@ -133,6 +139,12 @@ const NotionPage = ({ post, className }) => {
           Tweet
         }}
       />
+      ) : (
+        <div className="py-12 text-center text-gray-500 dark:text-gray-400">
+          <p className="mb-2">{post?.title || '无法获取内容'}</p>
+          <p className="text-sm">{post?.summary || '请检查 Notion 配置或数据库连接。'}</p>
+        </div>
+      )}
 
       <AdEmbed />
       <PrismMac />
