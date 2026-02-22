@@ -89,6 +89,7 @@ const SEO = props => {
     null,
     NOTION_CONFIG
   )
+  const ROBOTS_ALLOW = siteConfig('ROBOTS_ALLOW', true, NOTION_CONFIG)
   const ANALYTICS_BUSUANZI_ENABLE = siteConfig(
     'ANALYTICS_BUSUANZI_ENABLE',
     null,
@@ -107,7 +108,7 @@ const SEO = props => {
         name='viewport'
         content='width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0'
       />
-      <meta name='robots' content='follow, index, max-snippet:-1, max-image-preview:large, max-video-preview:-1' />
+      <meta name='robots' content={ROBOTS_ALLOW ? 'follow, index, max-snippet:-1, max-image-preview:large, max-video-preview:-1' : 'noindex, nofollow'} />
       <meta charSet='UTF-8' />
       <meta name='format-detection' content='telephone=no' />
       <meta name='mobile-web-app-capable' content='yes' />
