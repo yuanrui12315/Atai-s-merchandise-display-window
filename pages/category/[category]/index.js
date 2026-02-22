@@ -21,10 +21,12 @@ export async function getStaticProps({ params: { category }, locale }) {
   props.posts = props.allPages?.filter(
     page => page.type === 'Post' && page.status === 'Published'
   )
-  // 处理过滤
-  props.posts = props.posts.filter(
-    post => post && post.category && post.category.includes(category)
-  )
+  // 处理过滤：支持多选分类，商品在任一分类下都应显示
+  props.posts = props.posts.filter(post => {
+    if (!post) return false
+    const cats = (post.allCategories || post.category || '').toString().split(',').map(c => c.trim()).filter(Boolean)
+    return cats.includes(category)
+  })
   // 处理文章页数
   props.postCount = props.posts.length
   // 处理分页

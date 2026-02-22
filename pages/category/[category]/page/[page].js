@@ -18,10 +18,14 @@ export async function getStaticProps({ params: { category, page } }) {
   const from = 'category-page-props'
   let props = await getGlobalData({ from })
 
-  // 过滤状态类型
+  // 过滤状态类型：支持多选分类，商品在任一分类下都应显示
   props.posts = props.allPages
     ?.filter(page => page.type === 'Post' && page.status === 'Published')
-    .filter(post => post && post.category && post.category.includes(category))
+    .filter(post => {
+      if (!post) return false
+      const cats = (post.allCategories || post.category || '').toString().split(',').map(c => c.trim()).filter(Boolean)
+      return cats.includes(category)
+    })
   // 处理文章页数
   props.postCount = props.posts.length
   const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, props?.NOTION_CONFIG)
@@ -59,9 +63,11 @@ export async function getStaticPaths() {
     // 过滤状态类型
     const categoryPosts = allPages
       ?.filter(page => page.type === 'Post' && page.status === 'Published')
-      .filter(
-        post => post && post.category && post.category.includes(category.name)
-      )
+      .filter(post => {
+        if (!post) return false
+        const cats = (post.allCategories || post.category || '').toString().split(',').map(c => c.trim()).filter(Boolean)
+        return cats.includes(category.name)
+      })
     // 处理文章页数
     const postCount = categoryPosts.length
     const totalPages = Math.ceil(
