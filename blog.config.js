@@ -25,14 +25,15 @@ const BLOG = {
   APPEARANCE: 'light',
   APPEARANCE_DARK_TIME: [18, 6],
 
-  AUTHOR: '阿泰阿泰',
+  AUTHOR: '阿泰
+    对人以诚信，人不欺我；对事以诚信，事无不成👍🏻不辜负客户的信赖是立身之本！！！我负责的是稳定和品质，你上来就单纯的比价格，那我不是你的选择。这个行业永远都有更低的价格！！有问题不怕，怕的是出了事，有没有给你解决问题的人.感谢一直以来的信任与支持！🍂 愿所有朋友们合合美美，万事顺遂✨',
   BIO: '阿泰小店，全天候在线，欢迎咨询',
   LINK: 'https://ataiwu888.com',
   ROBOTS_ALLOW: false, // 设为 false 可禁止搜索引擎收录（私人网站用）
   KEYWORDS: 'Notion, 博客, 爆珠',
   BLOG_FAVICON: '/favicon.ico',
 
-  SITE_TITLE: '阿泰小店 - 爆珠专卖',
+  SITE_TITLE: '阿泰小店 - 烟草专卖',
   SEARCH_PLACEHOLDER: '搜索商品名称或标签...',
   SITE_DESCRIPTION: '正品爆珠商品展示',
   SITE_URL: 'https://ataiwu888.com',
