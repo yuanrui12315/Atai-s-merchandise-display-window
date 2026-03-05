@@ -29,6 +29,7 @@
     "js-md5": "0.8.3",
     "algoliasearch": "4.23.3",
     "@vercel/analytics": "1.2.2",
+    "@vercel/speed-insights": "^1.0.0",
     "react-tweet-embed": "2.0.0",
     "@waline/client": "^3.0.0",
     "ioredis": "^5.0.0",
