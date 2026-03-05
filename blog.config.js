@@ -25,7 +25,7 @@ const BLOG = {
   APPEARANCE: 'light',
   APPEARANCE_DARK_TIME: [18, 6],
 
-  AUTHOR: '阿泰',
+  AUTHOR: '阿泰阿泰',
   BIO: '阿泰小店，全天候在线，欢迎咨询',
   LINK: 'https://ataiwu888.com',
   ROBOTS_ALLOW: false, // 设为 false 可禁止搜索引擎收录（私人网站用）
