@@ -20,7 +20,9 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
     post?.pageCoverThumbnail &&
     !showPreview
 
+  const POST_COLS = siteConfig('HEO_HOME_POST_COLS', 5, CONFIG)
   const POST_TWO_COLS = siteConfig('HEO_HOME_POST_TWO_COLS', true, CONFIG)
+  const isFiveCols = POST_COLS === 5
   const COVER_HOVER_ENLARGE = siteConfig(
     'HEO_POST_LIST_COVER_HOVER_ENLARGE',
     true,
@@ -33,7 +35,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
       <div
         data-wow-delay='.2s'
         className={
-          (POST_TWO_COLS ? '2xl:h-96 2xl:flex-col' : '') +
+          (isFiveCols ? 'flex-col h-auto min-h-[16rem] md:flex-col md:h-auto' : POST_TWO_COLS ? '2xl:h-96 2xl:flex-col' : '') +
           ' wow fadeInUp border bg-white dark:bg-[#1e1e1e] flex mb-4 flex-col h-[23rem] md:h-52 md:flex-row  group w-full dark:border-gray-600 hover:border-indigo-600  dark:hover:border-yellow-600 duration-300 transition-colors justify-between overflow-hidden rounded-xl'
         }>
         {/* 图片封面 */}
@@ -41,7 +43,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
           <SmartLink href={post?.href} passHref legacyBehavior>
             <div
               className={
-                (POST_TWO_COLS ? ' 2xl:w-full' : '') +
+                (isFiveCols ? ' w-full aspect-[4/3] md:w-full' : POST_TWO_COLS ? ' 2xl:w-full' : '') +
                 ' w-full md:w-5/12 overflow-hidden cursor-pointer select-none'
               }>
               <LazyImage
@@ -57,7 +59,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
         {/* 文字区块 */}
         <div
           className={
-            (POST_TWO_COLS ? '2xl:p-4 2xl:h-48 2xl:w-full' : '') +
+            (isFiveCols ? ' p-3 w-full flex-1 min-h-0 md:w-full md:h-auto' : POST_TWO_COLS ? '2xl:p-4 2xl:h-48 2xl:w-full' : '') +
             ' flex p-6  flex-col justify-between h-48 md:h-full w-full md:w-7/12'
           }>
           <header>
@@ -79,7 +81,8 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
               href={post?.href}
               passHref
               className={
-                ' group-hover:text-indigo-700 dark:hover:text-yellow-700 dark:group-hover:text-yellow-600 text-black dark:text-gray-100  line-clamp-2 replace cursor-pointer text-xl font-extrabold leading-tight'
+                (isFiveCols ? ' text-base font-bold' : ' text-xl font-extrabold') +
+                ' group-hover:text-indigo-700 dark:hover:text-yellow-700 dark:group-hover:text-yellow-600 text-black dark:text-gray-100  line-clamp-2 replace cursor-pointer leading-tight'
               }>
               {siteConfig('POST_TITLE_ICON') && (
                 <NotionIcon
@@ -100,7 +103,7 @@ const BlogPostCard = ({ index, post, showSummary, siteInfo }) => {
 
           {/* 价格（商品卡片） */}
           {siteConfig('POST_CARD_PRICE', false) && (post?.price || post?.properties?.price) && (
-            <div className='text-red-600 dark:text-red-400 font-bold text-lg mt-1'>
+            <div className={`text-red-600 dark:text-red-400 font-bold mt-1 ${isFiveCols ? 'text-base' : 'text-lg'}`}>
               ￥{post?.price ?? post?.properties?.price}
             </div>
           )}

@@ -1,5 +1,6 @@
 const CONFIG = {
-  HEO_HOME_POST_TWO_COLS: true, // 首页博客两列显示，若为false则只显示一列
+  HEO_HOME_POST_TWO_COLS: true, // 首页博客两列显示，若为false则只显示一列（已弃用，见 HEO_HOME_POST_COLS）
+  HEO_HOME_POST_COLS: 5, // 每行显示商品数：桌面端5个，响应式 手机2/平板3/小屏4/大屏5
   HEO_LOADING_COVER: true, // 页面加载的遮罩动画
   HEO_HOME_BANNER_ENABLE: false,// 关闭首页大图，让商品列表更靠上
   HEO_SITE_CREATE_TIME: '2025-12-19', // 建站日期，用于计算网站运行的第几天
