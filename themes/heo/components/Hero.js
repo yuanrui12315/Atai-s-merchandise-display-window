@@ -185,7 +185,7 @@ function TopGroup(props) {
   const { locale } = useGlobal()
   const todayCardRef = useRef()
   function handleMouseLeave() {
-    todayCardRef.current.coverUp()
+    todayCardRef.current?.coverUp?.()
   }
 
   // 获取置顶推荐文章
@@ -222,8 +222,10 @@ function TopGroup(props) {
           )
         })}
       </div>
-      {/* 一个大的跳转文章卡片 */}
-      <TodayCard cRef={todayCardRef} siteInfo={siteInfo} />
+      {/* 一个大的跳转文章卡片，可通过 config 关闭 */}
+      {siteConfig('HEO_HERO_TODAY_CARD_ENABLE', true, CONFIG) && (
+        <TodayCard cRef={todayCardRef} siteInfo={siteInfo} />
+      )}
     </div>
   )
 }
