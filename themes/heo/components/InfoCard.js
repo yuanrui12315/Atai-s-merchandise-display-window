@@ -41,6 +41,11 @@ export function InfoCard(props) {
       </div>
 
       <h2 className='text-3xl font-extrabold mt-3'>{siteConfig('AUTHOR')}</h2>
+      {siteConfig('HEO_INFOCARD_AUTHOR_DESC', '', CONFIG) && (
+        <p className='text-sm mt-1 opacity-90 whitespace-pre-line'>
+          {siteConfig('HEO_INFOCARD_AUTHOR_DESC', '', CONFIG)}
+        </p>
+      )}
 
       {/* 公告栏 */}
       <Announcement post={notice} style={{ color: 'white !important' }} />

@@ -39,6 +39,9 @@ const CONFIG = {
   HEO_HERO_RECOMMEND_POST_SORT_BY_UPDATE_TIME: false, // 推荐文章排序，为`true`时将强制按最后修改时间倒序
   //   HERO_RECOMMEND_COVER: 'https://cdn.pixabay.com/photo/2015/10/30/20/13/sunrise-1014712_1280.jpg', // 英雄区右侧图片
 
+  // 右侧信息卡「阿泰」下方的补充说明，可写长文案（整段必须在同一行，不要换行）
+  HEO_INFOCARD_AUTHOR_DESC: '对人以诚信，人不欺我；对事以诚信，事无不成👍🏻不辜负客户的信赖是立身之本！！！我负责的是稳定和品质，你上来就单纯的比价格，那我不是你的选择。这个行业永远都有更低的价格！！有问题不怕，怕的是出了事，有没有给你解决问题的人.感谢一直以来的信任与支持！🍂 愿所有朋友们合合美美，万事顺遂✨',
+
   // 右侧个人资料卡牌欢迎语，点击可自动切换
   HEO_INFOCARD_GREETINGS: [
     '你好！我是',
