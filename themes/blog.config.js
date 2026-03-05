@@ -4,8 +4,8 @@ const BLOG = {
   API_BASE_URL: process.env.API_BASE_URL || 'https://www.notion.so/api/v3',
 
   // 这里的变量名必须与你在 Vercel 设置的一致
-  NOTION_PAGE_ID: process.env.NOTION_PAGE_ID || '2bc9b11274688061873fe4804d9aa93e',
-  NOTION_ACCESS_TOKEN: process.env.NOTION_ACCESS_TOKEN || 'ntn_41625482344bc9p6cEHGha5GxV6b2YTmTJpYnE1itG38E',
+  NOTION_PAGE_ID: process.env.NOTION_PAGE_ID,
+  NOTION_ACCESS_TOKEN: process.env.NOTION_ACCESS_TOKEN,
 
   THEME: 'heo', 
   SEARCH: true,  
