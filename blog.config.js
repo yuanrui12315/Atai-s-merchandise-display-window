@@ -1,5 +1,5 @@
 const BLOG = {
-  POSTS_PER_PAGE: 18, 
+  POSTS_PER_PAGE: 80, // 每页80个商品，与同行一致 
   POST_LIST_STYLE: 'page',
   POSTS_SORT_BY: 'date', // 按发布时间排序，新商品在前 
   API_BASE_URL: process.env.API_BASE_URL || 'https://www.notion.so/api/v3',
