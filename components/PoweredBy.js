@@ -1,15 +1,7 @@
-import { siteConfig } from '@/lib/config'
-
 /**
- * 驱动版权
+ * 驱动版权（已隐藏 NotionNext 链接，仅保留占位）
  * @returns
  */
 export default function PoweredBy(props) {
-  return (
-    <div className={`inline text-sm font-serif ${props.className || ''}`}>
-      <span className='mr-1'>Powered by</span>
-      <span>NotionNext {siteConfig('VERSION')}</span>
-      .
-    </div>
-  )
+  return null
 }
