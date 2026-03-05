@@ -33,6 +33,10 @@ const CONFIG = {
   HEO_HERO_CATEGORY_2: { title: '热门文章', url: '/tag/热门文章' },
   HEO_HERO_CATEGORY_3: { title: '实用教程', url: '/tag/实用教程' },
 
+  // 首页分类图片：分类名 -> 图片路径。将图片放 public/images/categories/ 后在此配置
+  // 示例: { '万宝路系列': '/images/categories/marlboro.jpg', '七星系列': '/images/categories/sevenstar.jpg' }
+  HEO_CATEGORY_IMAGES: {},
+
   // 英雄区右侧是否显示大卡片（分类浏览+商品目录），false 则直接显示 3 个推荐文章
   HEO_HERO_TODAY_CARD_ENABLE: false,
   // 英雄区右侧推荐文章标签, 例如 [推荐] , 最多六篇文章; 若留空白''，则推荐最近更新文章

@@ -10,7 +10,7 @@ import { useRef, useState } from 'react'
  * @returns
  */
 export default function CategoryBar(props) {
-  const { categoryOptions, border = true } = props
+  const { categoryOptions, border = true, isHomePage = false } = props
   const { locale } = useGlobal()
   const [scrollRight, setScrollRight] = useState(false)
   // 创建一个ref引用
@@ -55,11 +55,19 @@ export default function CategoryBar(props) {
             <ChevronDoubleRight className={'w-5 h-5'} />
           )}
         </div>
-        <SmartLink
-          href='/category'
-          className='whitespace-nowrap font-bold text-gray-900 dark:text-white transition-colors duration-200 hover:text-indigo-600 dark:hover:text-yellow-600'>
-          {locale.MENU.CATEGORY}
-        </SmartLink>
+        {isHomePage ? (
+          <a
+            href='#category-grid'
+            className='whitespace-nowrap font-bold text-gray-900 dark:text-white transition-colors duration-200 hover:text-indigo-600 dark:hover:text-yellow-600'>
+            {locale.MENU.CATEGORY}
+          </a>
+        ) : (
+          <SmartLink
+            href='/category'
+            className='whitespace-nowrap font-bold text-gray-900 dark:text-white transition-colors duration-200 hover:text-indigo-600 dark:hover:text-yellow-600'>
+            {locale.MENU.CATEGORY}
+          </SmartLink>
+        )}
       </div>
     </div>
   )
