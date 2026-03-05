@@ -9,12 +9,21 @@ function getAccessToken(password) {
   return crypto.createHash('sha256').update(password + 'site_access_salt').digest('hex')
 }
 
+// 去除首尾空格和不可见字符
+function normalize(str) {
+  return String(str || '').replace(/[\s\u200B-\u200D\uFEFF]/g, '').trim()
+}
+
+export const config = {
+  api: { bodyParser: { sizeLimit: '1kb' } }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const sitePassword = (process.env.SITE_PASSWORD || '').trim()
+  const sitePassword = normalize(process.env.SITE_PASSWORD)
   if (!sitePassword) {
     return res.status(500).json({ error: '网站未配置密码，请联系管理员' })
   }
@@ -23,14 +32,23 @@ export default async function handler(req, res) {
   let from = ''
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
-    password = body.password ?? body['password'] ?? ''
-    from = body.from ?? body['from'] ?? ''
-    if (typeof password === 'string') password = password.trim()
-    if (typeof from === 'string') from = from.trim()
+    password = normalize(body.password ?? body['password'] ?? '')
+    from = (body.from ?? body['from'] ?? '').trim()
   } catch (_) {
     password = ''
     from = ''
   }
+
+  // 调试模式：添加 SITE_PASSWORD_DEBUG=1 可查看接收情况（排查完请删除此变量）
+  if (process.env.SITE_PASSWORD_DEBUG === '1') {
+    return res.status(200).json({
+      debug: true,
+      receivedLength: password.length,
+      expectedLength: sitePassword.length,
+      match: password === sitePassword
+    })
+  }
+
   const inputToken = getAccessToken(password)
   const correctToken = getAccessToken(sitePassword)
 
