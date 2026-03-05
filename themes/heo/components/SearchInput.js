@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router'
 import { useImperativeHandle, useRef, useState } from 'react'
 import { useGlobal } from '@/lib/global'
+import { siteConfig } from '@/lib/config'
 let lock = false
 
 const SearchInput = props => {
-  const { currentSearch, cRef, className } = props
+  const { currentSearch, cRef, className, placeholder } = props
   const [onLoading, setLoadingState] = useState(false)
   const router = useRouter()
   const searchInputRef = useRef()
@@ -75,7 +76,7 @@ const SearchInput = props => {
         onCompositionStart={lockSearchInput}
         onCompositionUpdate={lockSearchInput}
         onCompositionEnd={unLockSearchInput}
-        placeholder={locale.SEARCH.ARTICLES}
+        placeholder={placeholder || siteConfig('SEARCH_PLACEHOLDER', locale.SEARCH.ARTICLES)}
         onChange={e => updateSearchKey(e.target.value)}
         defaultValue={currentSearch || ''}
       />

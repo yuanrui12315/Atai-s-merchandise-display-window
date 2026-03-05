@@ -9,6 +9,7 @@ import { MenuListTop } from './MenuListTop'
 import RandomPostButton from './RandomPostButton'
 import ReadingProgress from './ReadingProgress'
 import SearchButton from './SearchButton'
+import SearchInput from './SearchInput'
 import SlideOver from './SlideOver'
 
 /**
@@ -144,31 +145,29 @@ const Header = props => {
             ${fixedNav ? 'fixed' : 'relative bg-transparent'} 
             ${textWhite ? 'text-white ' : 'text-black dark:text-white'}  
             ${navBgWhite ? 'bg-white dark:bg-[#18171d] shadow' : 'bg-transparent'}`}>
-        <div className='flex h-full mx-auto justify-between items-center max-w-[86rem] px-6'>
+        <div className='flex h-full mx-auto justify-between items-center max-w-[86rem] px-6 gap-4'>
           {/* 左侧logo */}
           <Logo {...props} />
 
-          {/* 中间菜单 */}
-          <div
-            id='nav-bar-swipe'
-            className={`hidden lg:flex flex-grow flex-col items-center justify-center h-full relative w-full`}>
-            <div
-              className={`absolute transition-all duration-700 ${activeIndex === 0 ? 'opacity-100 mt-0' : '-mt-20 opacity-0 invisible'}`}>
-              <MenuListTop {...props} />
+          {/* 中间：大搜索框 + 菜单（PC端，vapingcountry 风格） */}
+          <div className='hidden lg:flex flex-1 min-w-0 items-center gap-6'>
+            <div className='flex-1 min-w-0 max-w-2xl'>
+              <div className='w-full flex items-center bg-white dark:bg-gray-600 rounded-lg shadow-sm border border-gray-200 dark:border-gray-500 pl-4 pr-2 py-1.5'>
+                <SearchInput {...props} className='border-0 shadow-none' />
+              </div>
             </div>
-            <div
-              className={`absolute transition-all duration-700 ${activeIndex === 1 ? 'opacity-100 mb-0' : '-mb-20 opacity-0 invisible'}`}>
-              <h1 className='font-bold text-center text-light-400 dark:text-gray-400'>
-                {siteConfig('AUTHOR') || siteConfig('TITLE')}{' '}
-                {siteConfig('BIO') && <>|</>} {siteConfig('BIO')}
-              </h1>
+            <div className='flex-shrink-0'>
+              <MenuListTop {...props} />
             </div>
           </div>
 
           {/* 右侧固定 */}
           <div className='flex flex-shrink-0 justify-end items-center w-48'>
             <RandomPostButton {...props} />
-            <SearchButton {...props} />
+            {/* 移动端显示搜索图标，PC端已用大搜索框替代 */}
+            <div className='lg:hidden'>
+              <SearchButton {...props} />
+            </div>
             {!JSON.parse(siteConfig('THEME_SWITCH')) && (
               <div className='hidden md:block'>
                 <DarkModeButton {...props} />
