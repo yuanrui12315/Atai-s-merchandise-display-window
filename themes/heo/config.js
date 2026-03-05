@@ -128,7 +128,7 @@ const CONFIG = {
   HEO_SOCIAL_CARD_URL: 'https://t.me/@wy6691888',
 
   // 底部统计面板文案
-  HEO_POST_COUNT_TITLE: '文章数:',
+  HEO_POST_COUNT_TITLE: '商品数量:',
   HEO_SITE_TIME_TITLE: '建站天数:',
   HEO_SITE_VISIT_TITLE: '访问量:',
   HEO_SITE_VISITOR_TITLE: '访客数:',
