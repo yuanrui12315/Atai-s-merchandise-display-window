@@ -1,5 +1,5 @@
 const BLOG = {
-  POSTS_PER_PAGE: 18, 
+  POSTS_PER_PAGE: 80, 
   POST_LIST_STYLE: 'page', 
   API_BASE_URL: process.env.API_BASE_URL || 'https://www.notion.so/api/v3',
 
