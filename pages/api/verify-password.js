@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const sitePassword = process.env.SITE_PASSWORD
+  const sitePassword = (process.env.SITE_PASSWORD || '').trim()
   if (!sitePassword) {
     return res.status(500).json({ error: '网站未配置密码，请联系管理员' })
   }
@@ -23,13 +23,15 @@ export default async function handler(req, res) {
   let from = ''
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
-    password = body.password || ''
-    from = body.from || ''
+    password = body.password ?? body['password'] ?? ''
+    from = body.from ?? body['from'] ?? ''
+    if (typeof password === 'string') password = password.trim()
+    if (typeof from === 'string') from = from.trim()
   } catch (_) {
     password = ''
     from = ''
   }
-  const inputToken = getAccessToken(password?.trim())
+  const inputToken = getAccessToken(password)
   const correctToken = getAccessToken(sitePassword)
 
   if (inputToken && inputToken === correctToken) {
