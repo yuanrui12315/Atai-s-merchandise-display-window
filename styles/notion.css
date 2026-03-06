@@ -709,6 +709,30 @@ svg.notion-page-icon {
   height: auto !important;
 }
 
+/* PC端详情页：统一图片容器比例 4:3，object-fit: cover 视觉一致 */
+@media (min-width: 768px) {
+  article .notion-asset-wrapper-image > div {
+    aspect-ratio: 4 / 3 !important;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    height: auto !important;
+  }
+  article .notion-asset-wrapper-image img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  article .notion-asset-wrapper-image .lazy-image-wrapper {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
 .notion-asset-wrapper-full {
   max-width: inherit;
 }
