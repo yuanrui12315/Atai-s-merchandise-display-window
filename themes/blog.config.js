@@ -40,7 +40,7 @@ const BLOG = {
   // 插件加载（conf 在项目根目录，themes 下需用 ../conf/）
   ...require('../conf/comment.config'), 
   ...require('../conf/contact.config'),
-  CARD_URL: 'https://t.me/@wy6691888',
+  CARD_URL: 'https://t.me/wy6691888',
 
   ...require('../conf/post.config'),
   ...require('../conf/analytics.config'),

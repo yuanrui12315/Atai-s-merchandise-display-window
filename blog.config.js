@@ -41,7 +41,7 @@ const BLOG = {
   // 插件加载
   ...require('./conf/comment.config.js'), 
   ...require('./conf/contact.config.js'),
-  CARD_URL: 'https://t.me/@wy6691888',
+  CARD_URL: 'https://t.me/wy6691888',
 
   ...require('./conf/post.config.js'),
   POSTS_PER_PAGE: 80, // 覆盖 post.config 默认12，每页80个商品

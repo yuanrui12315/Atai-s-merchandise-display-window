@@ -709,23 +709,35 @@ svg.notion-page-icon {
   height: auto !important;
 }
 
-/* PC端详情页：统一图片容器比例 4:3，object-fit: cover 视觉一致 */
+/* 文章详情页：扩大内容区宽度，让图片更大 */
+#article-wrapper .notion {
+  --notion-max-width: 960px;
+}
+@media (min-width: 1300px) and (min-height: 300px) {
+  #article-wrapper .notion-page-content-has-aside .notion-page-content-inner {
+    width: 960px !important;
+    max-width: 960px !important;
+  }
+}
+
+/* PC端详情页：图片容器更大，保持比例，object-fit: cover */
 @media (min-width: 768px) {
-  article .notion-asset-wrapper-image > div {
+  #article-wrapper .notion-asset-wrapper-image > div {
     aspect-ratio: 4 / 3 !important;
     overflow: hidden;
-    width: 100%;
+    width: 100% !important;
+    min-width: 100% !important;
     position: relative;
     height: auto !important;
   }
-  article .notion-asset-wrapper-image img {
+  #article-wrapper .notion-asset-wrapper-image img {
     position: absolute !important;
     inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
   }
-  article .notion-asset-wrapper-image .lazy-image-wrapper {
+  #article-wrapper .notion-asset-wrapper-image .lazy-image-wrapper {
     position: absolute !important;
     inset: 0 !important;
     width: 100% !important;
