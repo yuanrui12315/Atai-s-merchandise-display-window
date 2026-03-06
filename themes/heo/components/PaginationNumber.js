@@ -69,15 +69,33 @@ const PaginationNumber = ({
 
   return (
     <>
-      {/* 显示第X-Y条，共Z件商品 */}
-      {rangeText && (
-        <div className='mt-8 mb-2 text-sm text-gray-500 dark:text-gray-400'>
-          {rangeText}
-        </div>
-      )}
+      {/* 整排分页：范围文案 + 导航按钮，统一卡片样式 */}
+      <div className='mt-8 rounded-2xl bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 shadow-md px-5 py-4'>
+        {/* PC端：范围文案与按钮同一行 */}
+        <div className='hidden lg:flex flex-wrap items-center justify-between gap-4'>
+          {/* 显示第X-Y条，共Z件商品 - 数字高亮 */}
+          {rangeText && (
+            <div className='flex items-center shrink-0'>
+              <span className='text-sm font-medium text-gray-600 dark:text-gray-400'>
+                显示第{' '}
+              </span>
+              <span className='mx-1 font-bold text-indigo-600 dark:text-yellow-400 tabular-nums'>
+                {startItem}–{endItem}
+              </span>
+              <span className='text-sm font-medium text-gray-600 dark:text-gray-400'>
+                {' '}条，共{' '}
+              </span>
+              <span className='mx-1 font-bold text-indigo-600 dark:text-yellow-400 tabular-nums'>
+                {postCount}
+              </span>
+              <span className='text-sm font-medium text-gray-600 dark:text-gray-400'>
+                {' '}件商品
+              </span>
+            </div>
+          )}
 
-      {/* pc端分页按钮：首页/上一页/页码/下一页/尾页 */}
-      <div className='hidden lg:flex justify-between items-center pt-4 overflow-x-auto'>
+          {/* pc端分页按钮：首页/上一页/页码/下一页/尾页 */}
+          <div className='flex flex-1 justify-between items-center gap-2 overflow-x-auto min-w-0'>
         {/* 左侧：首页 + 上一页 */}
         <div className='flex items-center gap-2'>
           {/* 首页 */}
@@ -161,9 +179,19 @@ const PaginationNumber = ({
           </SmartLink>
         </div>
       </div>
+        </div>
 
-      {/* 移动端分页：首页/上一页/下一页/尾页 */}
-      <div className='lg:hidden w-full flex flex-wrap gap-2 mt-6'>
+      {/* 移动端：范围文案 + 首页/上一页/下一页/尾页 */}
+      {rangeText && (
+        <div className='lg:hidden flex items-center justify-center mb-3 text-sm'>
+          <span className='text-gray-600 dark:text-gray-400'>显示第 </span>
+          <span className='font-bold text-indigo-600 dark:text-yellow-400 tabular-nums mx-0.5'>{startItem}–{endItem}</span>
+          <span className='text-gray-600 dark:text-gray-400'> 条，共 </span>
+          <span className='font-bold text-indigo-600 dark:text-yellow-400 tabular-nums mx-0.5'>{postCount}</span>
+          <span className='text-gray-600 dark:text-gray-400'> 件商品</span>
+        </div>
+      )}
+      <div className='lg:hidden w-full flex flex-wrap gap-2'>
         {showPrev && (
           <>
             <SmartLink
@@ -216,6 +244,7 @@ const PaginationNumber = ({
             </SmartLink>
           </>
         )}
+      </div>
       </div>
     </>
   )
