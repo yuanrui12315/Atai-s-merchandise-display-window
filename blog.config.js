@@ -28,7 +28,7 @@ const BLOG = {
   AUTHOR: '阿泰',
   BIO: '阿泰小店，全天候在线，欢迎咨询',
   LINK: 'https://ataiwu888.com',
-  ROBOTS_ALLOW: true, // 商品站需收录；设为 false 可禁止搜索引擎收录
+  ROBOTS_ALLOW: false, // 私人商品展示站，禁止搜索引擎收录
   KEYWORDS: 'Notion, 博客, 爆珠',
   BLOG_FAVICON: '/favicon.ico',
 
