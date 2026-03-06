@@ -12,17 +12,26 @@ import { useState } from 'react'
  * @returns {JSX.Element}
  * @constructor
  */
-const PaginationNumber = ({ page, totalPage, postCount }) => {
+const PaginationNumber = ({
+  page,
+  totalPage,
+  postCount,
+  currentPageCount = 0
+}) => {
   const router = useRouter()
   const { locale, NOTION_CONFIG } = useGlobal()
   const currentPage = +page
   const showNext = page < totalPage
   const showPrev = currentPage !== 1
   const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 80, NOTION_CONFIG)
+  // 按当前页实际商品数量动态计算，与页面真实展示一致
   const startItem = postCount ? (currentPage - 1) * POSTS_PER_PAGE + 1 : 0
-  const endItem = postCount
-    ? Math.min(currentPage * POSTS_PER_PAGE, postCount)
-    : 0
+  const endItem =
+    postCount && currentPageCount > 0
+      ? startItem + currentPageCount - 1
+      : postCount
+        ? Math.min(currentPage * POSTS_PER_PAGE, postCount)
+        : 0
   const pagePrefix = router.asPath
     .split('?')[0]
     .replace(/\/page\/[1-9]\d*/, '')

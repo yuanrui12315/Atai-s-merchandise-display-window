@@ -46,6 +46,7 @@ const BlogPostListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
             page={page}
             totalPage={totalPage}
             postCount={postCount}
+            currentPageCount={posts?.length ?? 0}
           />
         )}
       </div>
