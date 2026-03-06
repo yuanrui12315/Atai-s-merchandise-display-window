@@ -172,12 +172,15 @@ const LayoutIndex = props => {
  * @returns
  */
 const LayoutPostList = props => {
+  const router = useRouter()
+  // 纯分页页（/page/2、/page/3...）与首页一致：不显示商品分类网格，也不显示标签筛选条，保持视觉一致
+  const isMainPagination = router.route === '/page/[page]'
   return (
     <div id='post-outer-wrapper' className='px-5  md:px-0'>
       {/* 文章分类条 */}
       <CategoryBar {...props} />
-      {/* 标签筛选条：分类页、标签页都显示，方便客户切换 */}
-      <TagFilterBar {...props} />
+      {/* 标签筛选条：分类页、标签页显示；纯分页页不显示（与商品分类网格保持一致） */}
+      {!isMainPagination && <TagFilterBar {...props} />}
       {siteConfig('POST_LIST_STYLE') === 'page' ? (
         <BlogPostListPage {...props} />
       ) : (
