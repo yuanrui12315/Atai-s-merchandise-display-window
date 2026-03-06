@@ -111,26 +111,6 @@ export default function CustomContextMenu(props) {
     router.push({ pathname: router.pathname, query })
   }
 
-  /**
-   * 复制内容
-   */
-  function handleCopy() {
-    const selectedText = document.getSelection().toString()
-    if (selectedText) {
-      const tempInput = document.createElement('input');
-      tempInput.value = selectedText;
-      document.body.appendChild(tempInput);
-      tempInput.select();
-      document.execCommand('copy');
-      if (tempInput && tempInput.parentNode && tempInput.parentNode.contains(tempInput)) {
-        tempInput.parentNode.removeChild(tempInput);
-      }
-      // alert("Text copied: " + selectedText);
-    } else {
-      // alert("Please select some text first.");
-    }
-  }
-
   function handleChangeDarkMode() {
     const newStatus = !isDarkMode
     saveDarkModeToLocalStorage(newStatus)
@@ -150,7 +130,6 @@ export default function CustomContextMenu(props) {
   const CUSTOM_RIGHT_CLICK_CONTEXT_MENU_TAG = siteConfig(
     'CUSTOM_RIGHT_CLICK_CONTEXT_MENU_TAG'
   )
-  const CAN_COPY = siteConfig('CAN_COPY')
   const CUSTOM_RIGHT_CLICK_CONTEXT_MENU_SHARE_LINK = siteConfig(
     'CUSTOM_RIGHT_CLICK_CONTEXT_MENU_SHARE_LINK'
   )
@@ -222,16 +201,6 @@ export default function CustomContextMenu(props) {
 
         {/* 功能按钮 */}
         <div className='w-full px-2'>
-          {CAN_COPY && (
-            <div
-              onClick={handleCopy}
-              title={locale.MENU.COPY}
-              className='w-full px-2 h-10 flex justify-start items-center flex-nowrap cursor-pointer hover:bg-blue-600 hover:text-white rounded-lg duration-200 transition-all'>
-              <i className='fa-solid fa-copy mr-2' />
-              <div className='whitespace-nowrap'>{locale.MENU.COPY}</div>
-            </div>
-          )}
-
           {CUSTOM_RIGHT_CLICK_CONTEXT_MENU_SHARE_LINK && (
             <div
               onClick={handleCopyLink}
