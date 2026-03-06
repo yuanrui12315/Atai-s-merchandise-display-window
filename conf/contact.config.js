@@ -19,5 +19,8 @@ module.exports = {
   CONTACT_YOUTUBE: process.env.NEXT_PUBLIC_CONTACT_YOUTUBE || '', // Youtube主页
   CONTACT_XIAOHONGSHU: process.env.NEXT_PUBLIC_CONTACT_XIAOHONGSHU || '', // 小红书主页
   CONTACT_ZHISHIXINGQIU: process.env.NEXT_PUBLIC_CONTACT_ZHISHIXINGQIU || '', // 知识星球
-  CONTACT_WEHCHAT_PUBLIC: process.env.NEXT_PUBLIC_CONTACT_WEHCHAT_PUBLIC || '' // 微信公众号 格式：https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=【xxxxxx】==#wechat_redirect
+  CONTACT_WEHCHAT_PUBLIC: process.env.NEXT_PUBLIC_CONTACT_WEHCHAT_PUBLIC || '', // 微信公众号
+  CONTACT_WHATSAPP: process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || '', // WhatsApp 格式：https://wa.me/86手机号（含国家码，无+号）
+  CONTACT_WECHAT: process.env.NEXT_PUBLIC_CONTACT_WECHAT || '', // 微信：二维码图片链接 或 添加链接
+  CONTACT_QQ: process.env.NEXT_PUBLIC_CONTACT_QQ || '' // QQ 格式：https://qm.qq.com/cgi-bin/qm/qr?k=你的QQ号 或 tencent://message/?uin=QQ号
 }
