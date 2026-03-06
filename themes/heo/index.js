@@ -71,8 +71,9 @@ const LayoutBase = props => {
         <>
           {siteConfig('HEO_TOP_BANNER_TEXT', '', CONFIG) && (
             <div className='max-w-[86rem] w-full mx-auto mb-2 px-5'>
-              <div className='bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 border border-indigo-100 dark:border-indigo-800 rounded-lg py-3 px-4 flex items-center justify-center text-sm font-medium text-indigo-700 dark:text-indigo-300 text-center'>
-                {siteConfig('HEO_TOP_BANNER_TEXT', '', CONFIG)}
+              <div className='bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-500 border border-red-200 dark:border-red-800 rounded-r-lg py-3 px-4 flex items-center justify-center gap-2 text-base font-bold text-red-700 dark:text-red-200 text-center shadow-sm'>
+                <i className='fas fa-exclamation-triangle text-red-500 dark:text-red-400 text-lg flex-shrink-0' />
+                <span>{siteConfig('HEO_TOP_BANNER_TEXT', '', CONFIG)}</span>
               </div>
             </div>
           )}
