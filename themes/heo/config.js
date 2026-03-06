@@ -36,7 +36,7 @@ const CONFIG = {
   // 首页分类图片：分类名 -> 图片路径。将图片放 public/images/categories/ 后在此配置
   // 示例: { '万宝路系列': '/images/categories/marlboro.jpg', '七星系列': '/images/categories/sevenstar.jpg' }
   HEO_CATEGORY_IMAGES: {
-    '爱喜系列': '/images/categories/1772792442402.jpg'
+    'ESSE爱喜系列': '/images/categories/1772792442402.jpg'
   },
 
   // 英雄区右侧是否显示大卡片（分类浏览+商品目录），false 则直接显示 3 个推荐文章
