@@ -23,7 +23,7 @@ export const getServerSideProps = async ctx => {
       siteData?.siteInfo?.link,
       siteData.NOTION_CONFIG
     )
-    const localeFields = generateLocalesSitemap(link, siteData.allPages, locale)
+    const localeFields = generateLocalesSitemap(link, siteData.allPages, locale, siteData.NOTION_CONFIG)
     fields = fields.concat(localeFields)
   }
 
@@ -37,7 +37,7 @@ export const getServerSideProps = async ctx => {
   return getServerSideSitemap(ctx, fields)
 }
 
-function generateLocalesSitemap(link, allPages, locale) {
+function generateLocalesSitemap(link, allPages, locale, NOTION_CONFIG) {
   // 确保链接不以斜杠结尾
   if (link && link.endsWith('/')) {
     link = link.slice(0, -1)
@@ -47,6 +47,7 @@ function generateLocalesSitemap(link, allPages, locale) {
     locale = '/' + locale
   }
   const dateNow = new Date().toISOString().split('T')[0]
+  const enableRss = siteConfig('ENABLE_RSS', BLOG.ENABLE_RSS, NOTION_CONFIG)
   const defaultFields = [
     {
       loc: `${link}${locale}`,
@@ -66,12 +67,12 @@ function generateLocalesSitemap(link, allPages, locale) {
       changefreq: 'daily',
       priority: '0.7'
     },
-    {
+    ...(enableRss ? [{
       loc: `${link}${locale}/rss/feed.xml`,
       lastmod: dateNow,
       changefreq: 'daily',
       priority: '0.7'
-    },
+    }] : []),
     {
       loc: `${link}${locale}/search`,
       lastmod: dateNow,
@@ -87,18 +88,21 @@ function generateLocalesSitemap(link, allPages, locale) {
   ]
   const postFields =
     allPages
-      ?.filter(p => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish)
+      ?.filter(p => p.status === BLOG.NOTION_PROPERTY_NAME.status_publish && p?.slug && p.type === 'Post')
       ?.map(post => {
         const slugWithoutLeadingSlash = post?.slug.startsWith('/')
           ? post?.slug?.slice(1)
           : post.slug
+        if (!slugWithoutLeadingSlash) return null
+        const lastmod = post?.publishDay || post?.lastEditedTime || post?.date
         return {
           loc: `${link}${locale}/${slugWithoutLeadingSlash}`,
-          lastmod: new Date(post?.publishDay).toISOString().split('T')[0],
+          lastmod: lastmod ? new Date(lastmod).toISOString().split('T')[0] : dateNow,
           changefreq: 'daily',
           priority: '0.7'
         }
-      }) ?? []
+      })
+      ?.filter(Boolean) ?? []
 
   return defaultFields.concat(postFields)
 }
