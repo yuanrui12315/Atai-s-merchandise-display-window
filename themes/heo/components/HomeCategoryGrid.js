@@ -1,10 +1,11 @@
-import LazyImage from '@/components/LazyImage'
+import Image from 'next/image'
 import { siteConfig } from '@/lib/config'
 import SmartLink from '@/components/SmartLink'
 import CONFIG from '../config'
 
 /**
  * 首页全部分类网格（参考同行：分类带图、商品数）
+ * 使用 Next.js Image 自动压缩为 128px 缩略图，大幅加速加载（原图 300KB-2MB → 约 5-15KB）
  * @param {*} props
  * @returns
  */
@@ -22,7 +23,7 @@ export default function HomeCategoryGrid(props) {
         商品分类
       </div>
       <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4'>
-        {categoryOptions.map(category => {
+        {categoryOptions.map((category, index) => {
           const imgSrc = categoryImages[category.name]
           return (
             <SmartLink
@@ -31,12 +32,16 @@ export default function HomeCategoryGrid(props) {
               passHref
               legacyBehavior>
               <div className='group flex flex-col items-center p-4 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl hover:border-indigo-600 dark:hover:border-yellow-600 hover:shadow-lg transition-all duration-200 cursor-pointer'>
-                <div className='w-16 h-16 mb-2 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center'>
+                <div className='w-16 h-16 mb-2 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center relative'>
                   {imgSrc ? (
-                    <LazyImage
+                    <Image
                       src={imgSrc}
                       alt={category.name}
-                      className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-200'
+                      width={128}
+                      height={128}
+                      sizes='64px'
+                      loading={index < 12 ? 'eager' : 'lazy'}
+                      className='object-cover group-hover:scale-110 transition-transform duration-200'
                     />
                   ) : (
                     <i className='fas fa-folder text-2xl text-gray-400 dark:text-gray-500' />
