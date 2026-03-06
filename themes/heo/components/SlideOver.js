@@ -122,7 +122,7 @@ export default function SlideOver(props) {
                                 href={siteConfig('CONTACT_TELEGRAM')}
                                 className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-[#4f65f0] dark:bg-yellow-600 text-white hover:opacity-90'>
                                 <i className='fab fa-telegram' />
-                                加我电报
+                                电报联系
                               </SmartLink>
                             )}
                             {siteConfig('CONTACT_WHATSAPP') && (

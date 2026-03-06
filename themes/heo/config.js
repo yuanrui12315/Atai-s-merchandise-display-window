@@ -154,9 +154,9 @@ const CONFIG = {
   ],
 
   HEO_SOCIAL_CARD: true, // 是否显示右侧，点击加入社群按钮
-  HEO_SOCIAL_CARD_TITLE_1: '加我电报✈️✈️',
+  HEO_SOCIAL_CARD_TITLE_1: '电报联系',
  // HEO_SOCIAL_CARD_TITLE_2: '加入我们的社群讨论分享',
-  HEO_SOCIAL_CARD_TITLE_3: '点击加我电报✈️✈️',
+  HEO_SOCIAL_CARD_TITLE_3: '点击电报联系',
   HEO_SOCIAL_CARD_URL: 'https://t.me/wy6691888',
 
   // 底部统计面板文案
