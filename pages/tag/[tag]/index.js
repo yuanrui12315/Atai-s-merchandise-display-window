@@ -17,10 +17,17 @@ export async function getStaticProps({ params: { tag }, locale }) {
   const from = 'tag-props'
   const props = await getGlobalData({ from, locale })
 
+  // 无效标签返回 404
+  const tagNames = (props.tagOptions || []).map(t => t?.name).filter(Boolean)
+  const decodedTag = decodeURIComponent(tag || '')
+  if (!tagNames.includes(decodedTag)) {
+    return { notFound: true }
+  }
+
   // 过滤状态
   props.posts = props.allPages
     ?.filter(page => page.type === 'Post' && page.status === 'Published')
-    .filter(post => post && post?.tags && post?.tags.includes(tag))
+    .filter(post => post && post?.tags && post?.tags.includes(decodedTag))
 
   // 处理文章页数
   props.postCount = props.posts.length
@@ -35,7 +42,7 @@ export async function getStaticProps({ params: { tag }, locale }) {
     )
   }
 
-  props.tag = tag
+  props.tag = decodedTag
   delete props.allPages
   return {
     props,

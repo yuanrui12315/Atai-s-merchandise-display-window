@@ -17,6 +17,13 @@ export async function getStaticProps({ params: { category }, locale }) {
   const from = 'category-props'
   let props = await getGlobalData({ from, locale })
 
+  // 无效分类返回 404
+  const validCategories = Object.values(props.categoryOptions || {}).map(c => c?.name).filter(Boolean)
+  const decodedCategory = decodeURIComponent(category || '')
+  if (!validCategories.includes(decodedCategory)) {
+    return { notFound: true }
+  }
+
   // 过滤状态
   props.posts = props.allPages?.filter(
     page => page.type === 'Post' && page.status === 'Published'
@@ -25,7 +32,7 @@ export async function getStaticProps({ params: { category }, locale }) {
   props.posts = props.posts.filter(post => {
     if (!post) return false
     const cats = (post.allCategories || post.category || '').toString().split(',').map(c => c.trim()).filter(Boolean)
-    return cats.includes(category)
+    return cats.includes(decodedCategory)
   })
   // 处理文章页数
   props.postCount = props.posts.length

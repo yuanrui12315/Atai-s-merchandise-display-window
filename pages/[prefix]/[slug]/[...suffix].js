@@ -78,11 +78,9 @@ export async function getStaticProps({
   }
 
   if (!props?.post) {
-    // 无法获取文章
-    props.post = null
-  } else {
-    await processPostData(props, from)
+    return { notFound: true }
   }
+  await processPostData(props, from)
   return {
     props,
     revalidate: process.env.EXPORT

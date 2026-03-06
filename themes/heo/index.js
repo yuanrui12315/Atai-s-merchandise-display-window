@@ -408,8 +408,8 @@ const LayoutSlug = props => {
  * @returns
  */
 const Layout404 = props => {
-  // const { meta, siteInfo } = props
-  const { onLoading, fullWidth } = useGlobal()
+  const { onLoading, fullWidth, locale } = useGlobal()
+  const backHomeText = locale?.NAV?.BACK_HOME || '回到首页'
   return (
     <>
       {/* 主区块 */}
@@ -441,11 +441,12 @@ const Layout404 = props => {
                 <h1 className='error-title font-extrabold md:text-9xl text-7xl dark:text-white'>
                   404
                 </h1>
-                <div className='dark:text-white'>请尝试站内搜索寻找文章</div>
+                <div className='dark:text-white'>页面未找到，请尝试站内搜索或返回首页</div>
                 <a
                   href='/'
-                  className='inline-block bg-blue-500 py-2 px-4 text-white shadow rounded-lg hover:bg-blue-600 hover:shadow-md duration-200 transition-all no-underline'>
-                  回到主页
+                  className='inline-flex items-center gap-2 bg-blue-500 py-3 px-6 text-white font-bold shadow rounded-lg hover:bg-blue-600 hover:shadow-md duration-200 transition-all no-underline text-lg'>
+                  <i className='fas fa-home' />
+                  {backHomeText}
                 </a>
               </div>
             </div>
