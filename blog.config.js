@@ -62,7 +62,7 @@ const BLOG = {
   CUSTOM_EXTERNAL_JS: [''],
   CUSTOM_EXTERNAL_CSS: [''],
   CUSTOM_MENU: true,
-  CAN_COPY: true,
+  CAN_COPY: false, // 禁止复制网站文字，保护内容
   LAYOUT_SIDEBAR_REVERSE: false,
   GREETING_WORDS: 'Hi，欢迎光临阿泰小店, 最新货源实时更新🎉',
   UUID_REDIRECT: false,
