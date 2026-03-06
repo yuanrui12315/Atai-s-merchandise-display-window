@@ -1,4 +1,5 @@
 import { ChevronDoubleRight } from '@/components/HeroIcons'
+import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
@@ -11,12 +12,17 @@ import { useState } from 'react'
  * @returns {JSX.Element}
  * @constructor
  */
-const PaginationNumber = ({ page, totalPage }) => {
+const PaginationNumber = ({ page, totalPage, postCount }) => {
   const router = useRouter()
-  const { locale } = useGlobal()
+  const { locale, NOTION_CONFIG } = useGlobal()
   const currentPage = +page
   const showNext = page < totalPage
   const showPrev = currentPage !== 1
+  const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 80, NOTION_CONFIG)
+  const startItem = postCount ? (currentPage - 1) * POSTS_PER_PAGE + 1 : 0
+  const endItem = postCount
+    ? Math.min(currentPage * POSTS_PER_PAGE, postCount)
+    : 0
   const pagePrefix = router.asPath
     .split('?')[0]
     .replace(/\/page\/[1-9]\d*/, '')
@@ -42,26 +48,58 @@ const PaginationNumber = ({ page, totalPage }) => {
     }
   }
 
+  const rangeText =
+    postCount &&
+    locale?.PAGINATION?.RANGE &&
+    locale.PAGINATION.RANGE.replace('%start%', startItem)
+      .replace('%end%', endItem)
+      .replace('%total%', postCount)
+
+  const navBtnClass =
+    'flex items-center gap-2 px-4 py-2.5 min-w-[5rem] justify-center text-sm font-semibold tracking-wide text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl shadow-sm hover:shadow-md hover:border-indigo-500 dark:hover:border-yellow-500 hover:text-indigo-600 dark:hover:text-yellow-400 transition-all duration-200 cursor-pointer'
+
   return (
     <>
-      {/* pc端分页按钮：上一页/下一页文字直接显示，样式统一 */}
-      <div className='hidden lg:flex justify-between items-center mt-10 pt-6 overflow-x-auto'>
-        {/* 上一页：文字+箭头直接显示 */}
-        <SmartLink
-          href={{
-            pathname:
-              currentPage === 2
-                ? `${pagePrefix}/`
-                : `${pagePrefix}/page/${currentPage - 1}`,
-            query: router.query.s ? { s: router.query.s } : {}
-          }}
-          rel='prev'
-          className={`${currentPage === 1 ? 'invisible' : 'block'}`}>
-          <div className='flex items-center gap-2 px-5 py-2.5 min-w-[7rem] justify-center text-sm font-semibold tracking-wide text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl shadow-sm hover:shadow-md hover:border-indigo-500 dark:hover:border-yellow-500 hover:text-indigo-600 dark:hover:text-yellow-400 transition-all duration-200 cursor-pointer'>
-            <i className='fas fa-chevron-left text-xs' />
-            <span>{locale.PAGINATION.PREV}</span>
-          </div>
-        </SmartLink>
+      {/* 显示第X-Y条，共Z件商品 */}
+      {rangeText && (
+        <div className='mt-8 mb-2 text-sm text-gray-500 dark:text-gray-400'>
+          {rangeText}
+        </div>
+      )}
+
+      {/* pc端分页按钮：首页/上一页/页码/下一页/尾页 */}
+      <div className='hidden lg:flex justify-between items-center pt-4 overflow-x-auto'>
+        {/* 左侧：首页 + 上一页 */}
+        <div className='flex items-center gap-2'>
+          {/* 首页 */}
+          <SmartLink
+            href={{
+              pathname: `${pagePrefix}/`,
+              query: router.query.s ? { s: router.query.s } : {}
+            }}
+            className={currentPage === 1 ? 'invisible' : 'block'}>
+            <div className={navBtnClass}>
+              <i className='fas fa-angle-double-left text-xs' />
+              <span>{locale.PAGINATION?.FIRST || '首页'}</span>
+            </div>
+          </SmartLink>
+          {/* 上一页 */}
+          <SmartLink
+            href={{
+              pathname:
+                currentPage === 2
+                  ? `${pagePrefix}/`
+                  : `${pagePrefix}/page/${currentPage - 1}`,
+              query: router.query.s ? { s: router.query.s } : {}
+            }}
+            rel='prev'
+            className={currentPage === 1 ? 'invisible' : 'block'}>
+            <div className={navBtnClass}>
+              <i className='fas fa-chevron-left text-xs' />
+              <span>{locale.PAGINATION.PREV}</span>
+            </div>
+          </SmartLink>
+        </div>
 
         {/* 分页数字 + 跳转 */}
         <div className='flex items-center gap-2'>
@@ -82,49 +120,93 @@ const PaginationNumber = ({ page, totalPage }) => {
           </div>
         </div>
 
-        {/* 下一页：文字+箭头直接显示 */}
-        <SmartLink
-          href={{
-            pathname: `${pagePrefix}/page/${currentPage + 1}`,
-            query: router.query.s ? { s: router.query.s } : {}
-          }}
-          rel='next'
-          className={`${+showNext ? 'block' : 'invisible'}`}>
-          <div className='flex items-center gap-2 px-5 py-2.5 min-w-[7rem] justify-center text-sm font-semibold tracking-wide text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl shadow-sm hover:shadow-md hover:border-indigo-500 dark:hover:border-yellow-500 hover:text-indigo-600 dark:hover:text-yellow-400 transition-all duration-200 cursor-pointer'>
-            <span>{locale.PAGINATION.NEXT}</span>
-            <i className='fas fa-chevron-right text-xs' />
-          </div>
-        </SmartLink>
+        {/* 右侧：下一页 + 尾页 */}
+        <div className='flex items-center gap-2'>
+          {/* 下一页 */}
+          <SmartLink
+            href={{
+              pathname: `${pagePrefix}/page/${currentPage + 1}`,
+              query: router.query.s ? { s: router.query.s } : {}
+            }}
+            rel='next'
+            className={showNext ? 'block' : 'invisible'}>
+            <div className={navBtnClass}>
+              <span>{locale.PAGINATION.NEXT}</span>
+              <i className='fas fa-chevron-right text-xs' />
+            </div>
+          </SmartLink>
+          {/* 尾页 */}
+          <SmartLink
+            href={{
+              pathname:
+                totalPage === 1
+                  ? `${pagePrefix}/`
+                  : `${pagePrefix}/page/${totalPage}`,
+              query: router.query.s ? { s: router.query.s } : {}
+            }}
+            className={currentPage === totalPage ? 'invisible' : 'block'}>
+            <div className={navBtnClass}>
+              <span>{locale.PAGINATION?.LAST || '尾页'}</span>
+              <i className='fas fa-angle-double-right text-xs' />
+            </div>
+          </SmartLink>
+        </div>
       </div>
 
-      {/* 移动端分页：上一页/下一页文字直接显示，样式与PC一致 */}
-      <div className='lg:hidden w-full flex flex-row gap-3 mt-6'>
-        <SmartLink
-          href={{
-            pathname:
-              currentPage === 2
-                ? `${pagePrefix}/`
-                : `${pagePrefix}/page/${currentPage - 1}`,
-            query: router.query.s ? { s: router.query.s } : {}
-          }}
-          rel='prev'
-          className={`${showPrev ? 'flex' : 'hidden'} flex-1 items-center justify-center gap-2 h-12 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl shadow-sm active:scale-[0.98] transition-all`}>
-          <i className='fas fa-chevron-left text-xs' />
-          {locale.PAGINATION.PREV}
-        </SmartLink>
-
-        {showPrev && showNext && <div className='w-4' />}
-
-        <SmartLink
-          href={{
-            pathname: `${pagePrefix}/page/${currentPage + 1}`,
-            query: router.query.s ? { s: router.query.s } : {}
-          }}
-          rel='next'
-          className={`${+showNext ? 'flex' : 'hidden'} flex-1 items-center justify-center gap-2 h-12 text-sm font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl shadow-sm active:scale-[0.98] transition-all`}>
-          {locale.PAGINATION.NEXT}
-          <i className='fas fa-chevron-right text-xs' />
-        </SmartLink>
+      {/* 移动端分页：首页/上一页/下一页/尾页 */}
+      <div className='lg:hidden w-full flex flex-wrap gap-2 mt-6'>
+        {showPrev && (
+          <>
+            <SmartLink
+              href={{
+                pathname: `${pagePrefix}/`,
+                query: router.query.s ? { s: router.query.s } : {}
+              }}
+              className='flex flex-1 min-w-[4.5rem] items-center justify-center gap-1 h-11 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl active:scale-[0.98]'>
+              <i className='fas fa-angle-double-left' />
+              {locale.PAGINATION?.FIRST || '首页'}
+            </SmartLink>
+            <SmartLink
+              href={{
+                pathname:
+                  currentPage === 2
+                    ? `${pagePrefix}/`
+                    : `${pagePrefix}/page/${currentPage - 1}`,
+                query: router.query.s ? { s: router.query.s } : {}
+              }}
+              rel='prev'
+              className='flex flex-1 min-w-[4.5rem] items-center justify-center gap-1 h-11 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl active:scale-[0.98]'>
+              <i className='fas fa-chevron-left' />
+              {locale.PAGINATION.PREV}
+            </SmartLink>
+          </>
+        )}
+        {showNext && (
+          <>
+            <SmartLink
+              href={{
+                pathname: `${pagePrefix}/page/${currentPage + 1}`,
+                query: router.query.s ? { s: router.query.s } : {}
+              }}
+              rel='next'
+              className='flex flex-1 min-w-[4.5rem] items-center justify-center gap-1 h-11 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl active:scale-[0.98]'>
+              {locale.PAGINATION.NEXT}
+              <i className='fas fa-chevron-right' />
+            </SmartLink>
+            <SmartLink
+              href={{
+                pathname:
+                  totalPage === 1
+                    ? `${pagePrefix}/`
+                    : `${pagePrefix}/page/${totalPage}`,
+                query: router.query.s ? { s: router.query.s } : {}
+              }}
+              className='flex flex-1 min-w-[4.5rem] items-center justify-center gap-1 h-11 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl active:scale-[0.98]'>
+              {locale.PAGINATION?.LAST || '尾页'}
+              <i className='fas fa-angle-double-right' />
+            </SmartLink>
+          </>
+        )}
       </div>
     </>
   )

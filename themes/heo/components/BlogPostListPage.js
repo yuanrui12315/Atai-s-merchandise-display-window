@@ -42,7 +42,11 @@ const BlogPostListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
         </div>
 
         {showPagination && (
-          <PaginationNumber page={page} totalPage={totalPage} />
+          <PaginationNumber
+            page={page}
+            totalPage={totalPage}
+            postCount={postCount}
+          />
         )}
       </div>
     )
