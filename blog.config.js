@@ -1,5 +1,4 @@
 const BLOG = {
-  POSTS_PER_PAGE: 80, // 每页80个商品，与同行一致 
   POST_LIST_STYLE: 'page',
   POSTS_SORT_BY: 'date', // 按发布时间排序，新商品在前 
   API_BASE_URL: process.env.API_BASE_URL || 'https://www.notion.so/api/v3',
@@ -45,6 +44,7 @@ const BLOG = {
   CARD_URL: 'https://t.me/@wy6691888',
 
   ...require('./conf/post.config.js'),
+  POSTS_PER_PAGE: 80, // 覆盖 post.config 默认12，每页80个商品
   ...require('./conf/analytics.config.js'),
   ...require('./conf/image.config.js'),
   ...require('./conf/font.config.js'),
