@@ -720,28 +720,37 @@ svg.notion-page-icon {
   }
 }
 
-/* PC端详情页：图片完整显示不裁剪，object-fit: contain */
+/* 文章详情页：多图并排改为单列，每张图全宽统一大小 */
+#article-wrapper .notion-row {
+  flex-direction: column !important;
+}
+#article-wrapper .notion-row .notion-column {
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+/* PC端详情页：图片全宽铺满，完整显示不裁剪 */
 @media (min-width: 768px) {
   #article-wrapper .notion-asset-wrapper-image > div {
-    aspect-ratio: 4 / 3 !important;
-    overflow: hidden;
     width: 100% !important;
     min-width: 100% !important;
     position: relative;
-    height: auto !important;
-  }
-  #article-wrapper .notion-asset-wrapper-image img {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
+    overflow: hidden;
   }
   #article-wrapper .notion-asset-wrapper-image .lazy-image-wrapper {
-    position: absolute !important;
-    inset: 0 !important;
     width: 100% !important;
-    height: 100% !important;
+    position: relative !important;
+    padding-bottom: 0 !important;
+    height: auto !important;
+  }
+  #article-wrapper .notion-asset-wrapper-image .lazy-image-wrapper img,
+  #article-wrapper .notion-asset-wrapper-image img {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: unset !important;
+    display: block !important;
+    object-fit: contain !important;
   }
 }
 
