@@ -36,7 +36,6 @@ import {
   TelegramShareButton,
   TumblrIcon,
   TumblrShareButton,
-  TwitterIcon,
   TwitterShareButton,
   ThreadsIcon,
   ThreadsShareButton,
@@ -51,6 +50,25 @@ import {
   WorkplaceIcon,
   WorkplaceShareButton
 } from 'react-share'
+
+/** X 平台新 logo（原 Twitter 已更名为 X） */
+const XIcon = ({ size = 32, round = true }) => (
+  <div
+    className={`flex items-center justify-center bg-black dark:bg-white ${round ? 'rounded-full' : ''}`}
+    style={{ width: size, height: size }}>
+    <svg
+      width={size * 0.5}
+      height={size * 0.5}
+      viewBox='0 0 24 24'
+      fill='none'
+      className='text-white dark:text-black'>
+      <path
+        d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z'
+        fill='currentColor'
+      />
+    </svg>
+  </div>
+)
 
 const QrCode = dynamic(() => import('@/components/QrCode'), { ssr: false })
 
@@ -163,7 +181,7 @@ const ShareButtons = ({ post }) => {
                 title={titleWithSiteInfo}
                 hashtags={tags}
                 className='mx-1'>
-                <TwitterIcon size={32} round />
+                <XIcon size={32} round />
               </TwitterShareButton>
             )
           case 'telegram':
