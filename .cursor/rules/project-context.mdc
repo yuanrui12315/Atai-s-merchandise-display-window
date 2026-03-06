@@ -1,0 +1,18 @@
+---
+description: 阿泰小店项目约定与重要配置
+alwaysApply: true
+---
+
+# 阿泰小店项目约定
+
+## 项目性质
+- **私人商品展示网站**，不对外公开推广
+- **禁止搜索引擎收录**：ROBOTS_ALLOW 必须保持 false，切勿改为 true
+
+## 工作流程
+- 每次改完代码后**必须提交并部署**（git add → commit → push），不要等用户提醒
+
+## 技术栈
+- NotionNext + heo 主题
+- 部署在 Vercel
+- 商品数据来自 Notion 数据库
