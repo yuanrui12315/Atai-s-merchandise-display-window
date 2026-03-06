@@ -50,9 +50,9 @@ const SocialButton = () => {
             <a
               target='_blank'
               rel='noreferrer'
-              title={'twitter'}
+              title={'X'}
               href={CONTACT_TWITTER}>
-              <i className='transform hover:scale-125 duration-150 fab fa-twitter ' />
+              <i className='transform hover:scale-125 duration-150 fa-brands fa-x-twitter ' />
             </a>
           )}
           {CONTACT_TELEGRAM && (

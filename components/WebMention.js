@@ -150,16 +150,16 @@ const WebMentionBlock = ({ frontMatter }) => {
         <a
           target="_blank"
           id='tweet-post-url'
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`}
+          href={`https://x.com/intent/tweet?text=${encodeURIComponent(tweet)}`}
           rel="noopener noreferrer"
-        >tweet this post</a>{' '}
+        >post on X</a>{' '}
         or{' '}
         <a
           target='_blank'
           id='tweet-discuss-url'
-          href={`https://www.twitter.com/search?q=${url}`}
+          href={`https://x.com/search?q=${url}`}
           rel='noopener noreferrer'
-        >discuss it on Twitter</a>
+        >discuss it on X</a>
         , the comments will show up here.
       </div>
       <div className='webmention-info'>
