@@ -16,3 +16,6 @@ alwaysApply: true
 - NotionNext + heo 主题
 - 部署在 Vercel
 - 商品数据来自 Notion 数据库
+
+## 规则管理
+- 每次提议添加或修改项目规则时，**必须先询问用户是否同意**，不得擅自添加
