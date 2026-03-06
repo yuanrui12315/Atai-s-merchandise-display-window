@@ -132,13 +132,10 @@ export async function getStaticProps({ params: { prefix }, locale }) {
     )
   })
 
-  // 处理非列表内文章的内信息
-  if (!props?.post) {
-    const pageId = prefix
-    if (pageId.length >= 32) {
-      const post = await getPost(pageId)
-      props.post = post
-    }
+  // 处理非列表内文章：prefix 可能为 Notion 页面 ID（32 位 UUID）
+  if (!props?.post && prefix && prefix.length >= 32 && /^[0-9a-f-]{32,36}$/i.test(prefix)) {
+    const post = await getPost(prefix)
+    if (post) props.post = post
   }
   if (!props?.post) {
     return { notFound: true }

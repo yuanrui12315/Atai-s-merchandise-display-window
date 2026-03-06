@@ -57,13 +57,10 @@ export async function getStaticProps({ params: { prefix, slug }, locale }) {
     )
   })
 
-  // 处理非列表内文章的内信息
-  if (!props?.post) {
-    const pageId = slug.slice(-1)[0]
-    if (pageId.length >= 32) {
-      const post = await getPost(pageId)
-      props.post = post
-    }
+  // 处理非列表内文章：slug 可能为 Notion 页面 ID（32 位 UUID）
+  if (!props?.post && slug && slug.length >= 32 && /^[0-9a-f-]{32,36}$/i.test(slug)) {
+    const post = await getPost(slug)
+    if (post) props.post = post
   }
 
   if (!props?.post) {

@@ -7,7 +7,11 @@ import { getServerSideSitemap } from 'next-sitemap'
 
 export const getServerSideProps = async ctx => {
   let fields = []
-  const siteIds = BLOG.NOTION_PAGE_ID.split(',')
+  const siteIds = (BLOG.NOTION_PAGE_ID || '').split(',').filter(Boolean)
+  if (siteIds.length === 0) {
+    ctx.res.setHeader('Cache-Control', 'public, max-age=3600')
+    return getServerSideSitemap(ctx, [])
+  }
 
   for (let index = 0; index < siteIds.length; index++) {
     const siteId = siteIds[index]

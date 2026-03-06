@@ -179,12 +179,15 @@ const ExternalPlugin = props => {
   }, [router])
 
   useEffect(() => {
-    // 执行注入脚本
-    // eslint-disable-next-line no-eval
     if (GLOBAL_JS && GLOBAL_JS.trim() !== '') {
-      console.log('Inject JS:', GLOBAL_JS);
+      try {
+        // 注意：eval 有安全风险，GLOBAL_JS 应仅来自可信配置
+        // eslint-disable-next-line no-eval
+        eval(GLOBAL_JS)
+      } catch (e) {
+        console.warn('[ExternalPlugins] GLOBAL_JS 执行失败:', e)
+      }
     }
-    eval(GLOBAL_JS)
   })
 
   if (DISABLE_PLUGIN) {

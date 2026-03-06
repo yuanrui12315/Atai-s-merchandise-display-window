@@ -68,12 +68,12 @@ export async function getStaticProps({
     )
   })
 
-  // 处理非列表内文章的内信息
+  // 处理非列表内文章：取路径最后一段作为可能的 Notion 页面 ID
   if (!props?.post) {
-    const pageId = fullSlug.slice(-1)[0]
-    if (pageId.length >= 32) {
-      const post = await getPost(pageId)
-      props.post = post
+    const lastSegment = fullSlug.split('/').pop()
+    if (lastSegment && lastSegment.length >= 32 && /^[0-9a-f-]{32,36}$/i.test(lastSegment)) {
+      const post = await getPost(lastSegment)
+      if (post) props.post = post
     }
   }
 

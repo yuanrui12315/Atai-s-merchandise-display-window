@@ -67,9 +67,8 @@ export function getStaticPaths() {
  */
 async function filterByMemCache(allPosts, keyword) {
   const filterPosts = []
-  if (keyword) {
-    keyword = keyword.trim().toLowerCase()
-  }
+  keyword = (keyword || '').trim().toLowerCase()
+  if (!keyword) return allPosts
   for (const post of allPosts) {
     const cacheKey = 'page_block_' + post.id
     const page = await getDataFromCache(cacheKey, true)
@@ -81,25 +80,11 @@ async function filterByMemCache(allPosts, keyword) {
         : ''
     const articleInfo = post.title + post.summary + tagContent + categoryContent
     let hit = articleInfo.toLowerCase().indexOf(keyword) > -1
-    const contentTextList = getPageContentText(post, page)
-    // console.log('全文搜索缓存', cacheKey, page != null)
+    const contentText = getPageContentText(post, page)
     post.results = []
-    let hitCount = 0
-    for (const i of contentTextList) {
-      const c = contentTextList[i]
-      if (!c) {
-        continue
-      }
-      const index = c.toLowerCase().indexOf(keyword)
-      if (index > -1) {
-        hit = true
-        hitCount += 1
-        post.results.push(c)
-      } else {
-        if ((post.results.length - 1) / hitCount < 3 || i === 0) {
-          post.results.push(c)
-        }
-      }
+    if (typeof contentText === 'string' && contentText.toLowerCase().indexOf(keyword) > -1) {
+      hit = true
+      post.results.push(contentText.slice(0, 200))
     }
     if (hit) {
       filterPosts.push(post)
