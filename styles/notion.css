@@ -720,7 +720,7 @@ svg.notion-page-icon {
   }
 }
 
-/* PC端详情页：图片容器更大，保持比例，object-fit: cover */
+/* PC端详情页：图片完整显示不裁剪，object-fit: contain */
 @media (min-width: 768px) {
   #article-wrapper .notion-asset-wrapper-image > div {
     aspect-ratio: 4 / 3 !important;
@@ -735,7 +735,7 @@ svg.notion-page-icon {
     inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
   }
   #article-wrapper .notion-asset-wrapper-image .lazy-image-wrapper {
     position: absolute !important;
