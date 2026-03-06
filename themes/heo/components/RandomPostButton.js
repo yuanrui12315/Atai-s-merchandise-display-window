@@ -10,12 +10,21 @@ export default function RandomPostButton(props) {
   const router = useRouter()
   const { locale } = useGlobal()
   /**
-   * 随机跳转文章
+   * 随机跳转文章 - 使用 href 确保路径正确，空列表时回首页
    */
   function handleClick() {
+    if (!latestPosts || latestPosts.length === 0) {
+      window.location.href = '/'
+      return
+    }
     const randomIndex = Math.floor(Math.random() * latestPosts.length)
     const randomPost = latestPosts[randomIndex]
-    router.push(`${siteConfig('SUB_PATH', '')}/${randomPost?.slug}`)
+    const targetHref = randomPost?.href || (randomPost?.slug ? `/${randomPost.slug}` : null)
+    if (targetHref && targetHref !== '#' && targetHref !== '/undefined') {
+      window.location.href = targetHref.startsWith('/') ? targetHref : `/${targetHref}`
+    } else {
+      window.location.href = '/'
+    }
   }
 
   return (
