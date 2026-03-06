@@ -1,4 +1,5 @@
 import DarkModeButton from '@/components/DarkModeButton'
+import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { Dialog, Transition } from '@headlessui/react'
 import SmartLink from '@/components/SmartLink'
@@ -110,6 +111,47 @@ export default function SlideOver(props) {
                         <div>{locale.COMMON.TAGS}</div>
                         <TagGroups tags={tagOptions} />
                       </section>
+
+                      {/* 联系方式（移动端可见） */}
+                      {(siteConfig('CONTACT_TELEGRAM') || siteConfig('CONTACT_WHATSAPP') || siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_QQ')) && (
+                        <section className='space-y-2 flex flex-col'>
+                          <div>联系方式</div>
+                          <div className='flex gap-2 flex-wrap'>
+                            {siteConfig('CONTACT_TELEGRAM') && (
+                              <SmartLink
+                                href={siteConfig('CONTACT_TELEGRAM')}
+                                className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-[#4f65f0] dark:bg-yellow-600 text-white hover:opacity-90'>
+                                <i className='fab fa-telegram' />
+                                加我电报
+                              </SmartLink>
+                            )}
+                            {siteConfig('CONTACT_WHATSAPP') && (
+                              <SmartLink
+                                href={siteConfig('CONTACT_WHATSAPP')}
+                                className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-green-600 text-white hover:opacity-90'>
+                                <i className='fab fa-whatsapp' />
+                                WhatsApp
+                              </SmartLink>
+                            )}
+                            {siteConfig('CONTACT_WECHAT') && (
+                              <SmartLink
+                                href={siteConfig('CONTACT_WECHAT')}
+                                className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-green-700 text-white hover:opacity-90'>
+                                <i className='fab fa-weixin' />
+                                加微信
+                              </SmartLink>
+                            )}
+                            {siteConfig('CONTACT_QQ') && (
+                              <SmartLink
+                                href={siteConfig('CONTACT_QQ')}
+                                className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-600 text-white hover:opacity-90'>
+                                <i className='fab fa-qq' />
+                                加QQ
+                              </SmartLink>
+                            )}
+                          </div>
+                        </section>
+                      )}
                     </div>
                   </div>
                 </Dialog.Panel>
