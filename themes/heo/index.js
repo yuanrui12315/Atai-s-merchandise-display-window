@@ -442,11 +442,11 @@ const Layout404 = props => {
                   404
                 </h1>
                 <div className='dark:text-white'>请尝试站内搜索寻找文章</div>
-                <SmartLink href='/'>
-                  <button className='bg-blue-500 py-2 px-4 text-white shadow rounded-lg hover:bg-blue-600 hover:shadow-md duration-200 transition-all'>
-                    回到主页
-                  </button>
-                </SmartLink>
+                <a
+                  href='/'
+                  className='inline-block bg-blue-500 py-2 px-4 text-white shadow rounded-lg hover:bg-blue-600 hover:shadow-md duration-200 transition-all no-underline'>
+                  回到主页
+                </a>
               </div>
             </div>
 
