@@ -70,8 +70,8 @@ const LayoutBase = props => {
       {router.route === '/' ? (
         <>
           {siteConfig('HEO_TOP_BANNER_TEXT', '', CONFIG) && (
-            <div className='max-w-[86rem] w-full mx-auto h-10 mb-2 px-5'>
-              <div className='bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 border border-indigo-100 dark:border-indigo-800 rounded-lg h-full flex items-center justify-center text-sm font-medium text-indigo-700 dark:text-indigo-300'>
+            <div className='max-w-[86rem] w-full mx-auto mb-2 px-5'>
+              <div className='bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 border border-indigo-100 dark:border-indigo-800 rounded-lg py-3 px-4 flex items-center justify-center text-sm font-medium text-indigo-700 dark:text-indigo-300 text-center'>
                 {siteConfig('HEO_TOP_BANNER_TEXT', '', CONFIG)}
               </div>
             </div>
