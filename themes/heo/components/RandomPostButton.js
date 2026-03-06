@@ -4,21 +4,23 @@ import { useRouter } from 'next/router'
 
 /**
  * 随机跳转到一个文章
+ * 优先使用 allNavPages（全部已发布商品）扩大随机池，减少重复；无则回退到 latestPosts
  */
 export default function RandomPostButton(props) {
-  const { latestPosts } = props
+  const { allNavPages, latestPosts } = props
+  const pool = (allNavPages && allNavPages.length > 0) ? allNavPages : latestPosts
   const router = useRouter()
   const { locale } = useGlobal()
   /**
    * 随机跳转文章 - 使用 href 确保路径正确，空列表时回首页
    */
   function handleClick() {
-    if (!latestPosts || latestPosts.length === 0) {
+    if (!pool || pool.length === 0) {
       window.location.href = '/'
       return
     }
-    const randomIndex = Math.floor(Math.random() * latestPosts.length)
-    const randomPost = latestPosts[randomIndex]
+    const randomIndex = Math.floor(Math.random() * pool.length)
+    const randomPost = pool[randomIndex]
     const targetHref = randomPost?.href || (randomPost?.slug ? `/${randomPost.slug}` : null)
     if (targetHref && targetHref !== '#' && targetHref !== '/undefined') {
       window.location.href = targetHref.startsWith('/') ? targetHref : `/${targetHref}`
