@@ -49,6 +49,7 @@ const BLOG = {
   ...require('./conf/image.config.js'),
   ...require('./conf/font.config.js'),
   ...require('./conf/right-click-menu.js'),
+  CUSTOM_RIGHT_CLICK_CONTEXT_MENU_THEME_SWITCH: false, // 右键菜单不显示主题切换
   ...require('./conf/code.config.js'),
   ...require('./conf/animation.config.js'),
   ...require('./conf/widget.config.js'),
