@@ -36,7 +36,29 @@ const CONFIG = {
   // 首页分类图片：分类名 -> 图片路径。将图片放 public/images/categories/ 后在此配置
   // 示例: { '万宝路系列': '/images/categories/marlboro.jpg', '七星系列': '/images/categories/sevenstar.jpg' }
   HEO_CATEGORY_IMAGES: {
-    'ESSE爱喜系列': '/images/categories/1772792442402.jpg'
+    'ESSE爱喜系列': '/images/categories/1772792442402.jpg',
+    '520系列': '/images/categories/520系列.jpg',
+    '555系列': '/images/categories/555系列.jpg',
+    'kent肯特系列': '/images/categories/kent肯特系列.jpg',
+    'LUCKY STRIKE好彩系列': '/images/categories/LUCKY STRIKE好彩系列.jpg',
+    'marlboro万宝路系列': '/images/categories/marlboro万宝路系列.jpg',
+    'peel百乐系列': '/images/categories/peel百乐系列.jpg',
+    'SevenStars七星系列': '/images/categories/SevenStars七星系列.jpg',
+    '俄罗斯系列': '/images/categories/俄罗斯系列.jpg',
+    '免税中免系列': '/images/categories/免税中免系列.jpg',
+    '台湾系列': '/images/categories/台湾系列.png',
+    '宝恒树叶系列': '/images/categories/宝恒树叶系列.jpg',
+    '正品朝鲜系列': '/images/categories/正品朝鲜系列.jpg',
+    '澳门系列': '/images/categories/澳门系列.jpg',
+    '铁塔猫RAISON系列': '/images/categories/铁塔猫RAISON系列.jpg',
+    '韩免韩税系列': '/images/categories/韩免韩税系列.jpg',
+    '香港系列': '/images/categories/香港系列.jpg',
+    '热销爆款': '/images/categories/热销爆款.jpg',
+    '蒙古': '/images/categories/蒙古.jpg',
+    '阿里山系列': '/images/categories/阿里山系列.jpg',
+    '高端美免美税': '/images/categories/高端美免美税.jpg',
+    '卡比龙系列': '/images/categories/卡比龙系列.jpg',
+    '日免日税系列': '/images/categories/日免日税系列.jpg'
   },
 
   // 英雄区右侧是否显示大卡片（分类浏览+商品目录），false 则直接显示 3 个推荐文章
