@@ -1,6 +1,5 @@
 import LazyImage from '@/components/LazyImage'
 import { siteConfig } from '@/lib/config'
-import { useGlobal } from '@/lib/global'
 // import Image from 'next/image'
 import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
@@ -14,7 +13,6 @@ import { useRouter } from 'next/router'
 export default function LatestPostsGroupMini({ latestPosts, siteInfo }) {
   // 获取当前路径
   const currentPath = useRouter().asPath
-  const { locale } = useGlobal()
   const SUB_PATH = siteConfig('SUB_PATH', '')
 
   return latestPosts ? (
@@ -22,7 +20,7 @@ export default function LatestPostsGroupMini({ latestPosts, siteInfo }) {
       <div className=' mb-2 px-1 flex flex-nowrap justify-between'>
         <div>
           <i className='mr-2 fas fas fa-history' />
-          {locale.COMMON.LATEST_POSTS}
+          新品上架
         </div>
       </div>
       {latestPosts.map(post => {
