@@ -51,7 +51,7 @@ const SocialButton = () => {
             rel='noreferrer'
             href={CONTACT_TELEGRAM}
             title={'telegram'}>
-            <i className='transform hover:scale-125 duration-150 fab fa-telegram dark:hover:text-indigo-400 hover:text-indigo-600' />
+            <i className='transform hover:scale-125 duration-150 fab fa-telegram text-[#0088cc] hover:text-[#006699] dark:text-[#0088cc] dark:hover:text-[#33aadd]' />
           </a>
         )}
         {CONTACT_WHATSAPP && (
@@ -69,7 +69,7 @@ const SocialButton = () => {
             rel='noreferrer'
             href={CONTACT_WECHAT}
             title={'微信'}>
-            <i className='transform hover:scale-125 duration-150 fab fa-weixin dark:hover:text-indigo-400 hover:text-indigo-600' />
+            <i className='transform hover:scale-125 duration-150 fab fa-weixin text-[#07C160] hover:text-[#06AD56] dark:text-[#07C160] dark:hover:text-[#2CD96A]' />
           </a>
         )}
         {CONTACT_QQ && (
