@@ -67,6 +67,7 @@ alwaysApply: true
 ### 监控
 - **Vercel Analytics**：默认开启（`ANALYTICS_VERCEL`），访问量统计
 - **Speed Insights**：已集成，加载速度（LCP、FID、CLS）在 Vercel 控制台查看
+- **不蒜子 page_pv**：已移除，因每次刷新都+1 不真实，易误导
 
 ### 不做
 - **CDN 加速**：用户选择不备案，国内 CDN 需备案，暂不接入
