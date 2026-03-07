@@ -1,6 +1,10 @@
 module.exports = {
   output: 'standalone',
-  images: { unoptimized: false }, // 启用图片优化，分类缩略图自动压缩加速加载
+  poweredByHeader: false, // 移除 X-Powered-By 减少响应头
+  images: {
+    unoptimized: false,
+    formats: ['image/avif', 'image/webp'], // 优先 AVIF/WebP，体积更小加载更快
+  },
   experimental: {
     extensionAlias: {
       '.js': ['.js']
