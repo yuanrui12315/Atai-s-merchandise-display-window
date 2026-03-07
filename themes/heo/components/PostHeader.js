@@ -2,6 +2,7 @@ import { HashTag } from '@/components/HeroIcons'
 import LazyImage from '@/components/LazyImage'
 import NotionIcon from '@/components/NotionIcon'
 import WordCount from '@/components/WordCount'
+import PageViewCount from '@/components/PageViewCount'
 import { siteConfig } from '@/lib/config'
 import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
@@ -124,7 +125,7 @@ export default function PostHeader({ post, siteInfo, isDarkMode }) {
               </div>
             </div>
 
-            {/* 不蒜子 page_pv 每次刷新都+1，不真实，已移除 */}
+            <PageViewCount pageId={post?.id} />
           </section>
         </div>
 
