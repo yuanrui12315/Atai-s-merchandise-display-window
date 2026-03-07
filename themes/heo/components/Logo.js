@@ -6,9 +6,9 @@ import { useGlobal } from '@/lib/global'
 const Logo = props => {
   const { siteInfo } = props
   const { locale } = useGlobal()
-  const backHomeText = locale.NAV.BACK_HOME || '回到首页'
+  const backHomeTitle = locale.NAV.BACK_HOME || '回到首页'
   return (
-    <a href='/' title={backHomeText} className='flex flex-nowrap items-center cursor-pointer font-extrabold no-underline text-inherit'>
+    <a href='/' title={backHomeTitle} className='flex flex-nowrap items-center cursor-pointer font-extrabold no-underline text-inherit'>
         <LazyImage
           src={siteInfo?.icon}
           width={24}
@@ -24,8 +24,8 @@ const Logo = props => {
             <Home className={'w-6 h-6 stroke-white stroke-2 '} />
           </div>
         </div>
-        <span className='ml-2 text-sm font-normal opacity-80 hover:opacity-100 inline'>
-          {backHomeText}
+        <span className='ml-3 px-3 py-1 text-sm font-medium rounded-lg border border-current border-opacity-40 hover:border-opacity-80 hover:bg-indigo-500 hover:bg-opacity-10 dark:hover:bg-yellow-500 dark:hover:bg-opacity-10 transition-all duration-200'>
+          首页
         </span>
     </a>
   )
