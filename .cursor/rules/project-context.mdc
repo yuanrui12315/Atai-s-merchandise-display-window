@@ -32,3 +32,33 @@ alwaysApply: true
 ## 规则管理
 - 可自由添加或修改项目规则，无需事先征得同意
 - 每次添加或修改规则后，**必须立即告知用户**具体改了什么
+
+---
+
+## 性能与缓存（面向国内用户，客户无 VPN）
+
+### 缓存配置（30 天，勿随意缩短）
+- **NEXT_REVALIDATE_SECOND: 2592000**（30 天）— 页面数据 ISR 缓存，减少 Notion 请求
+- **proxy-image**：图片代理 30 天缓存（`pages/api/proxy-image.js` 内 `max-age=2592000`）
+- **BROWSER_CACHE_TTL: 2592000**（30 天）
+- **CDN_CACHE_TTL: 2592000**（30 天）
+
+### 图片代理（必须开启）
+- **IMAGE_PROXY_ENABLE** 必须为 true，默认开启
+- 国内用户直连 Notion 慢/可能被墙，图片经本站 `/api/proxy-image` 中转，无需 VPN
+
+### 图片压缩
+- **IMAGE_COMPRESS_WIDTH: 900**、**IMG_COMPRESS_WIDTH: 900**
+- **IMAGE_COMPRESS_QUALITY: 80**
+
+### next.config.js
+- `formats: ['image/avif', 'image/webp']` — 优先现代格式
+- `poweredByHeader: false`
+
+### 监控
+- **Vercel Analytics**：默认开启（`ANALYTICS_VERCEL`），访问量统计
+- **Speed Insights**：已集成，加载速度（LCP、FID、CLS）在 Vercel 控制台查看
+
+### 不做
+- **CDN 加速**：用户选择不备案，国内 CDN 需备案，暂不接入
+- **备案**：Vercel + 国际域名（.com）无需备案，可长期正常使用
