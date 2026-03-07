@@ -72,6 +72,9 @@ alwaysApply: true
 ### 联系方式
 - 电报、微信、QQ、**邮件**：在「电报联系」下方，ContactButtons 展示，邮件需配置 `NEXT_PUBLIC_CONTACT_EMAIL`
 
+### 回到顶部
+- **BackToTopButton**：仅滚动到底部（距底 80px 内）时显示，主内容区右下角，不遮挡侧边栏
+
 ### 加载过渡
 - **LoadingCover**：卡哇伊二次元风格，带 SVG 人物 + 进度条 + 渐变背景，支持深色模式
 
