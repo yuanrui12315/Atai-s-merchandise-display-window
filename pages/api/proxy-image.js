@@ -55,7 +55,7 @@ export default async function handler(req, res) {
     }
 
     const contentType = response.headers.get('content-type') || 'image/jpeg'
-    const cacheControl = 'public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=2592000'
+    const cacheControl = 'public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=2592000' // 30天缓存，国内二次访问更快
 
     res.setHeader('Content-Type', contentType)
     res.setHeader('Cache-Control', cacheControl)

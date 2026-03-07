@@ -13,9 +13,9 @@ module.exports = {
   ENABLE_CODE_SPLITTING: process.env.NEXT_PUBLIC_ENABLE_CODE_SPLITTING || true,
   CHUNK_SIZE_LIMIT: process.env.NEXT_PUBLIC_CHUNK_SIZE_LIMIT || 244000, // 244KB
   
-  // 缓存配置
-  BROWSER_CACHE_TTL: process.env.NEXT_PUBLIC_BROWSER_CACHE_TTL || 86400, // 24小时
-  CDN_CACHE_TTL: process.env.NEXT_PUBLIC_CDN_CACHE_TTL || 604800, // 7天
+  // 缓存配置（面向国内用户，长缓存加快二次访问）
+  BROWSER_CACHE_TTL: process.env.NEXT_PUBLIC_BROWSER_CACHE_TTL || 2592000, // 30天
+  CDN_CACHE_TTL: process.env.NEXT_PUBLIC_CDN_CACHE_TTL || 2592000, // 30天
   
   // 压缩配置
   ENABLE_GZIP: process.env.NEXT_PUBLIC_ENABLE_GZIP || true,

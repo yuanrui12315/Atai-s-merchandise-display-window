@@ -20,7 +20,7 @@ const BLOG = {
   LANG: process.env.NEXT_PUBLIC_LANG || 'zh-CN',
   SINCE: 2021,
   PSEUDO_STATIC: false,
-  NEXT_REVALIDATE_SECOND: 300, // 5分钟缓存，减少 Notion API 请求，加快加载
+  NEXT_REVALIDATE_SECOND: 2592000, // 30天缓存，大幅减少 Notion 请求，国内访问更快
   APPEARANCE: 'light',
   APPEARANCE_DARK_TIME: [18, 6],
 
