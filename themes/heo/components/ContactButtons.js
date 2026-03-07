@@ -26,12 +26,12 @@ export default function ContactButtons() {
   }
 
   return (
-    <div className='mt-2 flex flex-wrap gap-2'>
+    <div className='mt-2 flex flex-col gap-2'>
       {buttons.map((b, i) => (
         <SmartLink key={i} href={b.href}>
           <div
-            className={`inline-flex items-center gap-2.5 px-5 py-3 rounded-xl text-white font-bold text-base transition-colors ${b.color}`}>
-            <i className={`${b.icon} text-2xl`} />
+            className={`w-full flex items-center justify-center gap-3 lg:p-6 p-4 rounded-xl text-white font-bold text-2xl transition-colors border dark:border-gray-600 ${b.color}`}>
+            <i className={`${b.icon} text-3xl`} />
             {b.label}
           </div>
         </SmartLink>
