@@ -1,17 +1,19 @@
 import { siteConfig } from '@/lib/config'
 import SmartLink from '@/components/SmartLink'
+import { decryptEmail } from '@/lib/plugins/mailEncrypt'
 
 /**
- * 紧贴「加我电报」下方的其他联系方式按钮
+ * 紧贴「电报联系」下方的其他联系方式按钮
  * 仅显示已配置的，不显示在页脚
  */
 export default function ContactButtons() {
   const whatsapp = siteConfig('CONTACT_WHATSAPP')
   const wechat = siteConfig('CONTACT_WECHAT')
   const qq = siteConfig('CONTACT_QQ')
+  const emailEnc = siteConfig('CONTACT_EMAIL')
+  const email = emailEnc ? decryptEmail(emailEnc) : ''
 
-  // 排除电报（已有 TouchMeCard），只显示其他
-  const hasOthers = whatsapp || wechat || qq
+  const hasOthers = whatsapp || wechat || qq || email
   if (!hasOthers) return null
 
   const buttons = []
@@ -23,6 +25,9 @@ export default function ContactButtons() {
   }
   if (qq) {
     buttons.push({ href: qq, icon: 'fab fa-qq', label: '加QQ', color: 'bg-blue-600 hover:bg-blue-700' })
+  }
+  if (email) {
+    buttons.push({ href: `mailto:${email}`, icon: 'fas fa-envelope', label: '邮件联系', color: 'bg-red-600 hover:bg-red-700' })
   }
 
   return (
