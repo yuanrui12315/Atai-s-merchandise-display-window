@@ -31,9 +31,9 @@ export default function BackToTopButton() {
       type='button'
       title='回到顶部'
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      className='fixed z-40 w-10 h-10 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-indigo-600 dark:bg-gray-600 dark:hover:bg-yellow-500 text-white shadow-lg transition-all duration-200 bottom-6 right-6 xl:right-[20.5rem]'
+      className='fixed z-40 w-12 h-12 flex items-center justify-center rounded-lg bg-gray-700 hover:bg-indigo-600 dark:bg-gray-600 dark:hover:bg-yellow-500 text-white shadow-lg transition-all duration-200 bottom-6 right-6 xl:right-[20.5rem]'
       aria-label='回到顶部'>
-      <i className='fas fa-chevron-up text-lg' />
+      <i className='fas fa-chevron-up text-2xl' />
     </button>
   )
 }
