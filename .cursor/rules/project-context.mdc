@@ -67,7 +67,7 @@ alwaysApply: true
 ### 监控
 - **Vercel Analytics**：默认开启（`ANALYTICS_VERCEL`），访问量统计
 - **Speed Insights**：已集成，加载速度（LCP、FID、CLS）在 Vercel 控制台查看
-- **商品详情页访问量**：使用 PageViewCount + /api/page-view，24h 内同一访客只计 1 次，需配置 Upstash Redis（UPSTASH_REDIS_REST_URL、UPSTASH_REDIS_REST_TOKEN）
+- **商品详情页访问量**：已移除（真实统计需注册 Redis 服务，用户不想要）
 
 ### 不做
 - **CDN 加速**：用户选择不备案，国内 CDN 需备案，暂不接入

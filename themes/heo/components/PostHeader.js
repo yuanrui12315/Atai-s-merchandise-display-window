@@ -2,7 +2,6 @@ import { HashTag } from '@/components/HeroIcons'
 import LazyImage from '@/components/LazyImage'
 import NotionIcon from '@/components/NotionIcon'
 import WordCount from '@/components/WordCount'
-import PageViewCount from '@/components/PageViewCount'
 import { siteConfig } from '@/lib/config'
 import { formatDateFmt } from '@/lib/utils/formatDate'
 import SmartLink from '@/components/SmartLink'
@@ -125,7 +124,6 @@ export default function PostHeader({ post, siteInfo, isDarkMode }) {
               </div>
             </div>
 
-            <PageViewCount pageId={post?.id} />
           </section>
         </div>
 
