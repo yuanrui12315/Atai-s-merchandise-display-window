@@ -30,8 +30,8 @@ export default function ContactButtons() {
       {buttons.map((b, i) => (
         <SmartLink key={i} href={b.href}>
           <div
-            className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-white font-bold text-sm transition-colors ${b.color}`}>
-            <i className={b.icon} />
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-white font-bold text-sm transition-colors ${b.color}`}>
+            <i className={`${b.icon} text-xl`} />
             {b.label}
           </div>
         </SmartLink>
