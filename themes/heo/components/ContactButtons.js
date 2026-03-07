@@ -19,7 +19,7 @@ export default function ContactButtons() {
     buttons.push({ href: whatsapp, icon: 'fab fa-whatsapp', label: 'WhatsApp', color: 'bg-green-600 hover:bg-green-700' })
   }
   if (wechat) {
-    buttons.push({ href: wechat, icon: 'fab fa-weixin', label: '加微信', color: 'bg-green-700 hover:bg-green-800' })
+    buttons.push({ href: wechat, icon: 'fab fa-weixin', label: '微信联系', color: 'bg-green-700 hover:bg-green-800' })
   }
   if (qq) {
     buttons.push({ href: qq, icon: 'fab fa-qq', label: '加QQ', color: 'bg-blue-600 hover:bg-blue-700' })

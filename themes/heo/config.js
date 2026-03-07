@@ -91,7 +91,7 @@ const CONFIG = {
   HEO_INFO_CARD_URL2: process.env.NEXT_PUBLIC_CONTACT_WHATSAPP || '',
   HEO_INFO_CARD_ICON2: 'fab fa-whatsapp',
   HEO_INFO_CARD_URL3: process.env.NEXT_PUBLIC_CONTACT_WECHAT || process.env.NEXT_PUBLIC_CONTACT_QQ || '',
-  HEO_INFO_CARD_TEXT3: '加微信', // 若 URL3 是 QQ 链接，可改为 '加QQ'
+  HEO_INFO_CARD_TEXT3: '微信联系', // 若 URL3 是 QQ 链接，可改为 'QQ联系'
 
   // 用户技能图标
   HEO_GROUP_ICONS: [

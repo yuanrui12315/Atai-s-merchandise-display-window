@@ -138,7 +138,7 @@ export default function SlideOver(props) {
                                 href={siteConfig('CONTACT_WECHAT')}
                                 className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-green-700 text-white hover:opacity-90'>
                                 <i className='fab fa-weixin' />
-                                加微信
+                                微信联系
                               </SmartLink>
                             )}
                             {siteConfig('CONTACT_QQ') && (
