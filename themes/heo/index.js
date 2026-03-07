@@ -29,6 +29,7 @@ import BlogPostListScroll from './components/BlogPostListScroll'
 import CategoryBar from './components/CategoryBar'
 import HomeCategoryGrid from './components/HomeCategoryGrid'
 import FloatTocButton from './components/FloatTocButton'
+import BackToTopButton from './components/BackToTopButton'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import Hero from './components/Hero'
@@ -138,6 +139,7 @@ const LayoutBase = props => {
       <Footer />
 
       {HEO_LOADING_COVER && <LoadingCover />}
+      <BackToTopButton />
     </div>
   )
 }
