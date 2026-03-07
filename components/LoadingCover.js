@@ -66,43 +66,46 @@ export default function LoadingCover() {
           : 'linear-gradient(135deg, #ffeef8 0%, #e8d5f2 50%, #d4e4f7 100%)',
       }}>
       <style global>{`
-        @keyframes kawaii-bounce {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-8px) scale(1.02); }
+        @keyframes anime-float {
+          0%, 100% { transform: translateY(0) rotate(-2deg); }
+          50% { transform: translateY(-10px) rotate(2deg); }
         }
-        @keyframes kawaii-blink {
-          0%, 45%, 55%, 100% { transform: scaleY(1); }
-          50% { transform: scaleY(0.1); }
+        @keyframes anime-eye-shine {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
         }
-        @keyframes sparkle {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.5; transform: scale(1.2); }
+        @keyframes hair-sway {
+          0%, 100% { transform: translateX(0); }
+          50% { transform: translateX(3px); }
         }
       `}</style>
       <div className='loading-cover-content flex flex-col items-center gap-6 px-8'>
-        {/* 可爱角色 - SVG 二次元风格 */}
-        <div className='relative animate-[kawaii-bounce_1.2s_ease-in-out_infinite]'>
-          <svg width='120' height='120' viewBox='0 0 120 120' className='drop-shadow-lg'>
+        {/* 动漫少女 - 大眼二次元风格 */}
+        <div className='relative animate-[anime-float_2s_ease-in-out_infinite]'>
+          <svg width='140' height='140' viewBox='0 0 140 140' className='drop-shadow-xl'>
+            {/* 后层头发 */}
+            <path d='M 15 50 Q 25 25 70 18 Q 115 25 125 50 L 128 100 Q 125 120 100 125 L 40 125 Q 15 120 12 100 Z' fill='#3d2e22' />
+            {/* 刘海 */}
+            <path d='M 25 55 Q 35 35 70 30 Q 105 35 115 55 L 112 75 L 28 75 Z' fill='#5c4033' stroke='#4a3728' strokeWidth='1' />
             {/* 脸 */}
-            <ellipse cx='60' cy='65' rx='45' ry='48' fill='#ffecd2' stroke='#e8c4a0' strokeWidth='2' />
+            <ellipse cx='70' cy='78' rx='36' ry='40' fill='#ffe4c9' stroke='#e8c4a0' strokeWidth='2' />
             {/* 腮红 */}
-            <ellipse cx='35' cy='70' rx='12' ry='8' fill='#ffb7c5' opacity='0.7' />
-            <ellipse cx='85' cy='70' rx='12' ry='8' fill='#ffb7c5' opacity='0.7' />
-            {/* 眼睛 - 闭眼笑 */}
-            <path d='M 38 58 Q 45 65 52 58' stroke='#333' strokeWidth='3' fill='none' strokeLinecap='round' />
-            <path d='M 68 58 Q 75 65 82 58' stroke='#333' strokeWidth='3' fill='none' strokeLinecap='round' />
+            <ellipse cx='44' cy='85' rx='9' ry='5' fill='#ff9eb5' opacity='0.75' />
+            <ellipse cx='96' cy='85' rx='9' ry='5' fill='#ff9eb5' opacity='0.75' />
+            {/* 动漫大眼 - 左 */}
+            <ellipse cx='48' cy='70' rx='13' ry='16' fill='#7dd3fc' stroke='#0ea5e9' strokeWidth='1.5' />
+            <ellipse cx='51' cy='64' rx='4' ry='6' fill='#fff' className='animate-[anime-eye-shine_2s_ease-in-out_infinite]' />
+            <ellipse cx='48' cy='72' rx='3' ry='4' fill='#1e3a5f' />
+            {/* 动漫大眼 - 右 */}
+            <ellipse cx='92' cy='70' rx='13' ry='16' fill='#7dd3fc' stroke='#0ea5e9' strokeWidth='1.5' />
+            <ellipse cx='95' cy='64' rx='4' ry='6' fill='#fff' className='animate-[anime-eye-shine_2s_ease-in-out_infinite]' style={{ animationDelay: '0.15s' }} />
+            <ellipse cx='92' cy='72' rx='3' ry='4' fill='#1e3a5f' />
             {/* 嘴巴 */}
-            <path d='M 50 78 Q 60 88 70 78' stroke='#e67a7a' strokeWidth='2' fill='none' strokeLinecap='round' />
-            {/* 蝴蝶结 */}
-            <ellipse cx='60' cy='25' rx='18' ry='12' fill='#ff9ecd' stroke='#ff69b4' strokeWidth='1.5' />
-            <circle cx='60' cy='25' r='5' fill='#ff69b4' />
-            {/* 星星装饰 */}
-            <g className='animate-[sparkle_1.5s_ease-in-out_infinite]' style={{ animationDelay: '0s' }}>
-              <path d='M 15 45 L 17 50 L 22 50 L 18 53 L 19 58 L 15 55 L 11 58 L 12 53 L 8 50 L 13 50 Z' fill='#ffd700' opacity='0.9' />
-            </g>
-            <g className='animate-[sparkle_1.5s_ease-in-out_infinite]' style={{ animationDelay: '0.5s' }}>
-              <path d='M 105 45 L 107 50 L 112 50 L 108 53 L 109 58 L 105 55 L 101 58 L 102 53 L 98 50 L 103 50 Z' fill='#ffd700' opacity='0.9' />
-            </g>
+            <path d='M 62 95 Q 70 102 78 95' stroke='#e67a7a' strokeWidth='2' fill='none' strokeLinecap='round' />
+            {/* 蝴蝶结头饰 */}
+            <ellipse cx='42' cy='32' rx='11' ry='7' fill='#ff69b4' />
+            <ellipse cx='98' cy='32' rx='11' ry='7' fill='#ff69b4' />
+            <circle cx='70' cy='32' r='5' fill='#ff1493' />
           </svg>
         </div>
 
