@@ -555,8 +555,37 @@ const LayoutTagIndex = props => {
   )
 }
 
+/**
+ * 关于页面 - 静态备用（当 Notion 中 about 页面未同步时使用）
+ */
+const LayoutAbout = props => {
+  const { fullWidth } = useGlobal()
+  return (
+    <main
+      id='wrapper-outer'
+      className={`flex-grow ${fullWidth ? '' : 'max-w-4xl'} w-screen mx-auto px-5`}>
+      <div className='mt-8 mb-12'>
+        <h1 className='text-3xl font-bold dark:text-white mb-6'>关于</h1>
+        <div className='prose dark:prose-invert max-w-none'>
+          <div className='bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 rounded-r-lg p-5 text-amber-800 dark:text-amber-200'>
+            <p className='font-semibold mb-2'>警告 🔞</p>
+            <p>本店所售产品不适合以下人群使用：未满18周岁的未成年人以及孕妇。订购产品的顾客必须年满18周岁。</p>
+          </div>
+          <p className='mt-6 text-gray-600 dark:text-gray-400'>
+            如需了解更多，欢迎通过页脚联系方式咨询。
+          </p>
+          <SmartLink href='/' className='inline-flex gap-2 mt-6 text-indigo-600 dark:text-yellow-500 hover:underline'>
+            <i className='fas fa-home' /> 返回首页
+          </SmartLink>
+        </div>
+      </div>
+    </main>
+  )
+}
+
 export {
   Layout404,
+  LayoutAbout,
   LayoutArchive,
   LayoutBase,
   LayoutCategoryIndex,
