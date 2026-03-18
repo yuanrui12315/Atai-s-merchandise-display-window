@@ -22,6 +22,8 @@ const SocialButton = () => {
     (url.startsWith('http') && !/\.(png|jpg|jpeg|webp|gif)(\?|$)/i.test(url))
   const wechatIsLink = CONTACT_WECHAT && isWechatLink(CONTACT_WECHAT)
   const wechatQrImage = CONTACT_WECHAT_QR || (CONTACT_WECHAT && !wechatIsLink ? CONTACT_WECHAT : null)
+  // 有二维码或链接时都显示微信图标
+  const showWechat = CONTACT_WECHAT || CONTACT_WECHAT_QR
   const CONTACT_QQ = siteConfig('CONTACT_QQ')
   const CONTACT_LINKEDIN = siteConfig('CONTACT_LINKEDIN')
   const CONTACT_WEIBO = siteConfig('CONTACT_WEIBO')
@@ -72,8 +74,8 @@ const SocialButton = () => {
             <i className='transform hover:scale-125 duration-150 fab fa-whatsapp dark:hover:text-indigo-400 hover:text-indigo-600' />
           </a>
         )}
-        {CONTACT_WECHAT && (
-          wechatIsLink && !wechatQrImage ? (
+        {showWechat && (
+          wechatIsLink && !wechatQrImage && CONTACT_WECHAT ? (
             <a
               target='_blank'
               rel='noreferrer'
