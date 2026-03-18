@@ -137,7 +137,7 @@ const ShareButtons = ({ post }) => {
                 key={singleService}
                 url={shareUrl}
                 appId={siteConfig('FACEBOOK_APP_ID')}
-                className='mx-1 [&_path]:!fill-[#0084FF] [&_circle]:!fill-[#0084FF]'>
+                className='mx-1 [&_circle]:!fill-[#0084FF] [&_path]:!fill-white'>
                 <FacebookMessengerIcon size={32} round />
               </FacebookMessengerShareButton>
             )
@@ -146,7 +146,7 @@ const ShareButtons = ({ post }) => {
               <LineShareButton
                 key={singleService}
                 url={shareUrl}
-                className='mx-1 [&_path]:!fill-[#00B900] [&_circle]:!fill-[#00B900]'>
+                className='mx-1 [&_circle]:!fill-[#00B900] [&_path]:!fill-white'>
                 <LineIcon size={32} round />
               </LineShareButton>
             )
@@ -190,7 +190,7 @@ const ShareButtons = ({ post }) => {
                 key={singleService}
                 url={shareUrl}
                 title={titleWithSiteInfo}
-                className='mx-1 [&_path]:!fill-[#0088cc] [&_circle]:!fill-[#0088cc]'>
+                className='mx-1 [&_circle]:!fill-[#0088cc] [&_path]:!fill-white'>
                 <TelegramIcon size={32} round />
               </TelegramShareButton>
             )
@@ -201,7 +201,7 @@ const ShareButtons = ({ post }) => {
                 url={shareUrl}
                 title={titleWithSiteInfo}
                 separator=':: '
-                className='mx-1 [&_path]:!fill-[#25D366] [&_circle]:!fill-[#25D366]'>
+                className='mx-1 [&_circle]:!fill-[#25D366] [&_path]:!fill-white'>
                 <WhatsappIcon size={32} round />
               </WhatsappShareButton>
             )
