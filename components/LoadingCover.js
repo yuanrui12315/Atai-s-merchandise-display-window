@@ -3,7 +3,8 @@ import { useGlobal } from '@/lib/global'
 import { useEffect, useState, useRef } from 'react'
 
 /**
- * 卡哇伊二次元风格加载动画 - 带人物 + 进度条
+ * 可爱二次元风格加载动画 - 柔和马卡龙配色 + 萌系角色 + 进度条
+ * 参考：pastel 粉紫、银发、大眼、腮红、漂浮粒子
  */
 export default function LoadingCover() {
   const { onLoading, setOnLoading, isDarkMode } = useGlobal()
@@ -62,69 +63,117 @@ export default function LoadingCover() {
       }`}
       style={{
         background: isDarkMode
-          ? 'linear-gradient(135deg, #2d1b4e 0%, #1a1a2e 50%, #16213e 100%)'
-          : 'linear-gradient(135deg, #ffeef8 0%, #e8d5f2 50%, #d4e4f7 100%)',
+          ? 'linear-gradient(160deg, #2d1f3d 0%, #1e1a2e 40%, #1a2438 100%)'
+          : 'linear-gradient(160deg, #fff5f8 0%, #f8f0ff 35%, #f0f4ff 70%, #e8f4ff 100%)',
       }}>
       <style global>{`
-        @keyframes anime-float {
-          0%, 100% { transform: translateY(0) rotate(-2deg); }
-          50% { transform: translateY(-10px) rotate(2deg); }
+        @keyframes loading-float {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-8px) scale(1.02); }
         }
-        @keyframes anime-eye-shine {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
+        @keyframes loading-sparkle {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.2); }
         }
-        @keyframes hair-sway {
-          0%, 100% { transform: translateX(0); }
-          50% { transform: translateX(3px); }
+        @keyframes loading-heart-float {
+          0%, 100% { opacity: 0.4; transform: translateY(0) rotate(0deg); }
+          50% { opacity: 0.8; transform: translateY(-6px) rotate(5deg); }
         }
       `}</style>
-      <div className='loading-cover-content flex flex-col items-center gap-6 px-8'>
-        {/* 动漫少女 - 大眼二次元风格 */}
-        <div className='relative animate-[anime-float_2s_ease-in-out_infinite]'>
-          <svg width='140' height='140' viewBox='0 0 140 140' className='drop-shadow-xl'>
-            {/* 后层头发 */}
-            <path d='M 15 50 Q 25 25 70 18 Q 115 25 125 50 L 128 100 Q 125 120 100 125 L 40 125 Q 15 120 12 100 Z' fill='#3d2e22' />
+
+      {/* 背景漂浮粒子 */}
+      <div className='absolute inset-0 overflow-hidden pointer-events-none'>
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className='absolute w-2 h-2 rounded-full'
+            style={{
+              left: `${15 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
+              background: isDarkMode ? 'rgba(255,182,193,0.4)' : 'rgba(255,182,193,0.6)',
+              animation: `loading-sparkle 2s ease-in-out infinite`,
+              animationDelay: `${i * 0.2}s`,
+            }}
+          />
+        ))}
+        {[...Array(4)].map((_, i) => (
+          <div
+            key={`h-${i}`}
+            className='absolute text-lg opacity-40'
+            style={{
+              left: `${25 + i * 20}%`,
+              top: `${30 + (i % 2) * 40}%`,
+              animation: `loading-heart-float 3s ease-in-out infinite`,
+              animationDelay: `${i * 0.4}s`,
+            }}>
+            ♡
+          </div>
+        ))}
+      </div>
+
+      <div className='loading-cover-content flex flex-col items-center gap-5 px-8 relative z-10'>
+        {/* 萌系动漫少女 - 柔和马卡龙配色 */}
+        <div className='relative animate-[loading-float_2.5s_ease-in-out_infinite]'>
+          <svg width='130' height='130' viewBox='0 0 130 130' className='drop-shadow-2xl'>
+            {/* 后层头发 - 银灰粉 */}
+            <path
+              d='M 20 45 Q 35 18 65 12 Q 95 18 110 45 L 112 95 Q 108 115 85 120 L 45 120 Q 22 115 18 95 Z'
+              fill={isDarkMode ? '#4a3d5c' : '#e8dce8'}
+              stroke={isDarkMode ? '#3d3250' : '#ddd0e0'}
+              strokeWidth='1'
+            />
             {/* 刘海 */}
-            <path d='M 25 55 Q 35 35 70 30 Q 105 35 115 55 L 112 75 L 28 75 Z' fill='#5c4033' stroke='#4a3728' strokeWidth='1' />
-            {/* 脸 */}
-            <ellipse cx='70' cy='78' rx='36' ry='40' fill='#ffe4c9' stroke='#e8c4a0' strokeWidth='2' />
+            <path
+              d='M 28 50 Q 40 28 65 24 Q 90 28 102 50 L 100 72 L 30 72 Z'
+              fill={isDarkMode ? '#5c4d6e' : '#f0e4f0'}
+              stroke={isDarkMode ? '#4a3d5c' : '#e5d8e8'}
+              strokeWidth='1'
+            />
+            {/* 呆毛 */}
+            <path d='M 62 8 Q 58 0 65 2 Q 72 0 68 8 L 65 18' stroke={isDarkMode ? '#6b5b7a' : '#d8c8e0'} strokeWidth='2' fill='none' strokeLinecap='round' />
+            {/* 脸 - 柔和肤色 */}
+            <ellipse cx='65' cy='75' rx='34' ry='38' fill={isDarkMode ? '#c9b8a8' : '#ffe8e0'} stroke={isDarkMode ? '#b8a898' : '#f5d8d0'} strokeWidth='1.5' />
             {/* 腮红 */}
-            <ellipse cx='44' cy='85' rx='9' ry='5' fill='#ff9eb5' opacity='0.75' />
-            <ellipse cx='96' cy='85' rx='9' ry='5' fill='#ff9eb5' opacity='0.75' />
-            {/* 动漫大眼 - 左 */}
-            <ellipse cx='48' cy='70' rx='13' ry='16' fill='#7dd3fc' stroke='#0ea5e9' strokeWidth='1.5' />
-            <ellipse cx='51' cy='64' rx='4' ry='6' fill='#fff' className='animate-[anime-eye-shine_2s_ease-in-out_infinite]' />
-            <ellipse cx='48' cy='72' rx='3' ry='4' fill='#1e3a5f' />
-            {/* 动漫大眼 - 右 */}
-            <ellipse cx='92' cy='70' rx='13' ry='16' fill='#7dd3fc' stroke='#0ea5e9' strokeWidth='1.5' />
-            <ellipse cx='95' cy='64' rx='4' ry='6' fill='#fff' className='animate-[anime-eye-shine_2s_ease-in-out_infinite]' style={{ animationDelay: '0.15s' }} />
-            <ellipse cx='92' cy='72' rx='3' ry='4' fill='#1e3a5f' />
-            {/* 嘴巴 */}
-            <path d='M 62 95 Q 70 102 78 95' stroke='#e67a7a' strokeWidth='2' fill='none' strokeLinecap='round' />
-            {/* 蝴蝶结头饰 */}
-            <ellipse cx='42' cy='32' rx='11' ry='7' fill='#ff69b4' />
-            <ellipse cx='98' cy='32' rx='11' ry='7' fill='#ff69b4' />
-            <circle cx='70' cy='32' r='5' fill='#ff1493' />
+            <ellipse cx='42' cy='82' rx='8' ry='4' fill='#ffb6c1' opacity='0.7' />
+            <ellipse cx='88' cy='82' rx='8' ry='4' fill='#ffb6c1' opacity='0.7' />
+            {/* 左眼 - 紫蓝大眼 */}
+            <ellipse cx='46' cy='68' rx='12' ry='14' fill={isDarkMode ? '#a8c8e8' : '#c8d8f0'} stroke={isDarkMode ? '#7ba3d0' : '#a8c0e0'} strokeWidth='1' />
+            <ellipse cx='48' cy='64' rx='4' ry='5' fill='#fff' opacity='0.95' />
+            <ellipse cx='46' cy='70' rx='2.5' ry='3' fill={isDarkMode ? '#4a5a7a' : '#5a6a8a'} />
+            {/* 右眼 */}
+            <ellipse cx='84' cy='68' rx='12' ry='14' fill={isDarkMode ? '#a8c8e8' : '#c8d8f0'} stroke={isDarkMode ? '#7ba3d0' : '#a8c0e0'} strokeWidth='1' />
+            <ellipse cx='86' cy='64' rx='4' ry='5' fill='#fff' opacity='0.95' />
+            <ellipse cx='84' cy='70' rx='2.5' ry='3' fill={isDarkMode ? '#4a5a7a' : '#5a6a8a'} />
+            {/* 嘴巴 - 可爱小嘴 */}
+            <path d='M 58 92 Q 65 98 72 92' stroke={isDarkMode ? '#c09890' : '#e8a8a0'} strokeWidth='1.5' fill='none' strokeLinecap='round' />
+            {/* 蝴蝶结头饰 - 粉紫 */}
+            <ellipse cx='38' cy='28' rx='10' ry='6' fill='#ffb6c1' />
+            <ellipse cx='92' cy='28' rx='10' ry='6' fill='#ffb6c1' />
+            <circle cx='65' cy='28' r='4' fill='#e8a0b8' />
+            {/* 白色小团子 */}
+            <ellipse cx='95' cy='55' rx='12' ry='14' fill='#fff' opacity='0.95' stroke='#f0f0f0' strokeWidth='1' />
+            <ellipse cx='93' cy='52' rx='2' ry='2.5' fill='#ddd' />
+            <ellipse cx='98' cy='54' rx='2' ry='2.5' fill='#ddd' />
           </svg>
         </div>
 
-        {/* 加载文字 */}
-        <p className={`text-lg font-medium ${isDarkMode ? 'text-pink-300' : 'text-pink-600/90'}`} style={{ fontFamily: 'cursive' }}>
+        <p className={`text-base font-medium ${isDarkMode ? 'text-pink-300' : 'text-pink-500/90'}`} style={{ fontFamily: 'cursive' }}>
           加载中...
         </p>
 
-        {/* 进度条 */}
-        <div className={`w-48 h-2.5 rounded-full overflow-hidden shadow-inner ${isDarkMode ? 'bg-black/40' : 'bg-white/60'}`}>
+        {/* 进度条 - 柔和渐变 */}
+        <div className={`w-44 h-2 rounded-full overflow-hidden shadow-inner ${isDarkMode ? 'bg-black/30' : 'bg-white/70'}`}>
           <div
             className='h-full rounded-full transition-all duration-200 ease-out'
             style={{
               width: `${progress}%`,
-              background: 'linear-gradient(90deg, #ff9ecd, #ff69b4)',
+              background: isDarkMode
+                ? 'linear-gradient(90deg, #c8a0d8, #e8b8f0)'
+                : 'linear-gradient(90deg, #ffc8e0, #e8b8f0)',
             }}
           />
         </div>
-        <p className={`text-sm ${isDarkMode ? 'text-pink-400' : 'text-pink-500/80'}`}>{progress}%</p>
+        <p className={`text-xs ${isDarkMode ? 'text-pink-400/90' : 'text-pink-500/70'}`}>{progress}%</p>
       </div>
     </div>
   ) : null
