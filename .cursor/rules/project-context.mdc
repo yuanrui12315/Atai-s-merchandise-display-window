@@ -71,7 +71,10 @@ alwaysApply: true
 
 ### 联系方式
 - 电报、微信、QQ、**邮件**：在「电报联系」下方，ContactButtons 展示，邮件需配置 `NEXT_PUBLIC_CONTACT_EMAIL`
-- **微信**：支持两种方式。① **跳转链接**（手机端点击直接打开微信）：`weixin://dl/chat?username=你的微信号`（永久有效）；② **二维码图片**：放 `public/wechat-qr.png` 后填 `/wechat-qr.png`。可同时配置 `NEXT_PUBLIC_CONTACT_WECHAT_QR` 作为二维码，与链接一起在弹窗展示
+- **微信**（用户已配置，需牢记）：
+  - **跳转链接**（手机端点击直接打开微信）：Vercel 环境变量 `NEXT_PUBLIC_CONTACT_WECHAT` = `weixin://dl/chat?username=微信号`（永久有效，把「微信号」换成真实微信号）
+  - **二维码图片**：① 图片放 `public/wechat-qr.png`；② Vercel 环境变量 `NEXT_PUBLIC_CONTACT_WECHAT_QR` = `/wechat-qr.png`；③ 可同时配置跳转链接，弹窗会显示「点击打开微信」按钮 + 二维码
+  - **行为**：手机端点链接可跳转微信，电脑端无微信时需扫码；同时配置链接+二维码时体验最佳
 
 ### 回到顶部
 - **BackToTopButton**：仅滚动到底部（距底 80px 内）时显示，主内容区右下角，不遮挡侧边栏
