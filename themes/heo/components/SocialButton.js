@@ -1,5 +1,5 @@
 import { siteConfig } from '@/lib/config'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { handleEmailClick } from '@/lib/plugins/mailEncrypt'
 
 /**
@@ -8,6 +8,7 @@ import { handleEmailClick } from '@/lib/plugins/mailEncrypt'
  * @constructor
  */
 const SocialButton = () => {
+  const [wechatModalOpen, setWechatModalOpen] = useState(false)
   const CONTACT_GITHUB = siteConfig('CONTACT_GITHUB')
   const CONTACT_TWITTER = siteConfig('CONTACT_TWITTER')
   const CONTACT_TELEGRAM = siteConfig('CONTACT_TELEGRAM')
@@ -64,13 +65,53 @@ const SocialButton = () => {
           </a>
         )}
         {CONTACT_WECHAT && (
-          <a
-            target='_blank'
-            rel='noreferrer'
-            href={CONTACT_WECHAT}
-            title={'微信'}>
-            <i className='transform hover:scale-125 duration-150 fab fa-weixin text-[#07C160] hover:text-[#06AD56] dark:text-[#07C160] dark:hover:text-[#2CD96A]' />
-          </a>
+          <>
+            <button
+              type='button'
+              onClick={() => setWechatModalOpen(true)}
+              title={'微信'}
+              className='bg-transparent border-none cursor-pointer p-0'>
+              <i className='transform hover:scale-125 duration-150 fab fa-weixin text-[#07C160] hover:text-[#06AD56] dark:text-[#07C160] dark:hover:text-[#2CD96A]' />
+            </button>
+            {wechatModalOpen && (
+              <div
+                className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/50'
+                onClick={() => setWechatModalOpen(false)}
+                role='presentation'>
+                <div
+                  className='bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl max-w-[90vw]'
+                  onClick={e => e.stopPropagation()}>
+                  <div className='flex justify-between items-center mb-4'>
+                    <span className='text-lg font-semibold dark:text-gray-100'>微信扫码添加</span>
+                    <button
+                      type='button'
+                      onClick={() => setWechatModalOpen(false)}
+                      className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-2xl leading-none'>
+                      ×
+                    </button>
+                  </div>
+                  <div className='w-64 h-64 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-lg'>
+                    <img
+                      src={CONTACT_WECHAT}
+                      alt='微信二维码'
+                      className='w-full h-full object-contain'
+                      onError={e => {
+                        e.target.style.display = 'none'
+                        const parent = e.target.parentElement
+                        if (parent && !parent.querySelector('.wechat-error-msg')) {
+                          const msg = document.createElement('p')
+                          msg.className = 'wechat-error-msg text-sm text-red-500 p-4 text-center'
+                          msg.textContent = '图片加载失败，请将微信二维码图片放到 public 目录并配置永久链接'
+                          parent.appendChild(msg)
+                        }
+                      }}
+                    />
+                  </div>
+                  <p className='mt-2 text-sm text-gray-500 dark:text-gray-400'>请使用微信扫描二维码添加好友</p>
+                </div>
+              </div>
+            )}
+          </>
         )}
         {CONTACT_QQ && (
           <a
