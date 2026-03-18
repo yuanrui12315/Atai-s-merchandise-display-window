@@ -159,6 +159,8 @@ const LayoutIndex = props => {
       <HomeCategoryGrid {...props} />
       {/* 标签筛选条：与分类同等重要，放在主内容区让客户一眼看到 */}
       <TagFilterBar {...props} />
+      {/* 商品区域标题 */}
+      <div className='text-2xl font-bold dark:text-gray-200 mb-4'>所有商品</div>
       {siteConfig('POST_LIST_STYLE') === 'page' ? (
         <BlogPostListPage {...props} />
       ) : (
@@ -183,6 +185,8 @@ const LayoutPostList = props => {
       <CategoryBar {...props} />
       {/* 标签筛选条：分类页、标签页显示；纯分页页不显示（与商品分类网格保持一致） */}
       {!isMainPagination && <TagFilterBar {...props} />}
+      {/* 商品区域标题 */}
+      <div className='text-2xl font-bold dark:text-gray-200 mb-4'>所有商品</div>
       {siteConfig('POST_LIST_STYLE') === 'page' ? (
         <BlogPostListPage {...props} />
       ) : (
