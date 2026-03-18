@@ -153,6 +153,15 @@ const SocialButton = () => {
             <i className='transform hover:scale-125 duration-150 fab fa-qq dark:hover:text-indigo-400 hover:text-indigo-600' />
           </a>
         )}
+        {CONTACT_EMAIL && (
+          <a
+            onClick={e => handleEmailClick(e, emailIcon, CONTACT_EMAIL)}
+            title='邮件'
+            className='cursor-pointer'
+            ref={emailIcon}>
+            <i className='transform hover:scale-125 duration-150 fas fa-envelope text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400' />
+          </a>
+        )}
         {CONTACT_LINKEDIN && (
           <a
             target='_blank'

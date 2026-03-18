@@ -1,5 +1,6 @@
 import DarkModeButton from '@/components/DarkModeButton'
 import { siteConfig } from '@/lib/config'
+import { decryptEmail } from '@/lib/plugins/mailEncrypt'
 import { useGlobal } from '@/lib/global'
 import { Dialog, Transition } from '@headlessui/react'
 import SmartLink from '@/components/SmartLink'
@@ -113,7 +114,7 @@ export default function SlideOver(props) {
                       </section>
 
                       {/* 联系方式（移动端可见） */}
-                      {(siteConfig('CONTACT_TELEGRAM') || siteConfig('CONTACT_WHATSAPP') || siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_QQ')) && (
+                      {(siteConfig('CONTACT_TELEGRAM') || siteConfig('CONTACT_WHATSAPP') || siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_WECHAT_QR') || siteConfig('CONTACT_QQ') || siteConfig('CONTACT_EMAIL')) && (
                         <section className='space-y-2 flex flex-col'>
                           <div>联系方式</div>
                           <div className='flex gap-2 flex-wrap'>
@@ -133,9 +134,9 @@ export default function SlideOver(props) {
                                 WhatsApp
                               </SmartLink>
                             )}
-                            {siteConfig('CONTACT_WECHAT') && (
+                            {(siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_WECHAT_QR')) && (
                               <SmartLink
-                                href={siteConfig('CONTACT_WECHAT')}
+                                href={siteConfig('CONTACT_WECHAT_QR') || siteConfig('CONTACT_WECHAT')}
                                 className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-green-700 text-white hover:opacity-90'>
                                 <i className='fab fa-weixin' />
                                 微信联系
@@ -147,6 +148,14 @@ export default function SlideOver(props) {
                                 className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-600 text-white hover:opacity-90'>
                                 <i className='fab fa-qq' />
                                 加QQ
+                              </SmartLink>
+                            )}
+                            {siteConfig('CONTACT_EMAIL') && (
+                              <SmartLink
+                                href={`mailto:${decryptEmail(siteConfig('CONTACT_EMAIL'))}`}
+                                className='inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-red-600 text-white hover:opacity-90'>
+                                <i className='fas fa-envelope' />
+                                邮件联系
                               </SmartLink>
                             )}
                           </div>
