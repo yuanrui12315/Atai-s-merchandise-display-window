@@ -30,7 +30,8 @@ export default function HomeCategoryGrid(props) {
       <div className='text-2xl font-bold dark:text-gray-200 mb-4'>
         商品分类
       </div>
-      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5'>
+      {/* 手机端：单行横向滑动；PC端：网格 */}
+      <div className='flex lg:grid overflow-x-auto lg:overflow-visible gap-4 lg:gap-5 pb-2 lg:pb-0 scroll-hidden lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6'>
         {categoryOptions.map((category, index) => {
           const imgSrc = categoryImages[category.name]
           const accent = CARD_ACCENTS[index % CARD_ACCENTS.length]
@@ -41,7 +42,7 @@ export default function HomeCategoryGrid(props) {
               passHref
               legacyBehavior>
               <div
-                className={`group relative flex flex-col overflow-hidden bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-2xl border-t-4 ${accent} shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer`}>
+                className={`group relative flex flex-col overflow-hidden bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-2xl border-t-4 ${accent} shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer flex-shrink-0 w-[140px] lg:w-auto`}>
                 {/* 图片区：更大、圆角、悬停时图片放大 */}
                 <div className='aspect-square w-full overflow-hidden bg-gray-100 dark:bg-gray-700/50'>
                   {imgSrc ? (

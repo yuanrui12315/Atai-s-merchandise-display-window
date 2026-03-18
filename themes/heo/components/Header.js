@@ -145,9 +145,11 @@ const Header = props => {
             ${fixedNav ? 'fixed' : 'relative bg-transparent'} 
             ${textWhite ? 'text-white ' : 'text-black dark:text-white'}  
             ${navBgWhite ? 'bg-white dark:bg-[#18171d] shadow' : 'bg-transparent'}`}>
-        <div className='flex h-full mx-auto justify-between items-center max-w-[86rem] px-6 gap-4'>
-          {/* 左侧logo */}
-          <Logo {...props} />
+        <div className='flex h-full mx-auto justify-between items-center max-w-[86rem] px-4 lg:px-6 gap-2 lg:gap-4'>
+          {/* 左侧logo - 移动端缩小避免与右侧重叠 */}
+          <div className='min-w-0 flex-1 lg:flex-initial'>
+            <Logo {...props} />
+          </div>
 
           {/* 中间：大搜索框 + 菜单（PC端，vapingcountry 风格） */}
           <div className='hidden lg:flex flex-1 min-w-0 items-center gap-6'>
@@ -161,8 +163,8 @@ const Header = props => {
             </div>
           </div>
 
-          {/* 右侧固定 */}
-          <div className='flex flex-shrink-0 justify-end items-center w-48'>
+          {/* 右侧固定 - 移动端加 gap 避免重叠 */}
+          <div className='flex flex-shrink-0 justify-end items-center gap-1 lg:gap-2 w-auto lg:w-48'>
             <RandomPostButton {...props} />
             {/* 移动端显示搜索图标，PC端已用大搜索框替代 */}
             <div className='lg:hidden'>

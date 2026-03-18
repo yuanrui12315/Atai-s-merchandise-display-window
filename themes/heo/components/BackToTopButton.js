@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react'
  * 回到顶部按钮
  * 仅当滚动到底部时显示，位置：主内容区右下角（避免遮挡侧边栏）
  */
-const BOTTOM_THRESHOLD = 80 // 距离底部多少 px 时显示
+const BOTTOM_THRESHOLD = 100 // 距离底部多少 px 时显示
+const MOBILE_THRESHOLD = 150 // 手机端阈值稍大，避免首页内容未完全渲染时漏显
 
 export default function BackToTopButton() {
   const [show, setShow] = useState(false)
@@ -16,12 +17,21 @@ export default function BackToTopButton() {
       const scrollHeight = document.documentElement.scrollHeight
       const clientHeight = document.documentElement.clientHeight
       const distanceFromBottom = scrollHeight - scrollY - clientHeight
-      setShow(distanceFromBottom <= BOTTOM_THRESHOLD)
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+      const threshold = isMobile ? MOBILE_THRESHOLD : BOTTOM_THRESHOLD
+      setShow(distanceFromBottom <= threshold)
     }
 
     checkScroll()
-    window.addEventListener('scroll', checkScroll, { passive: true })
-    return () => window.removeEventListener('scroll', checkScroll)
+    const rafCheck = () => requestAnimationFrame(checkScroll)
+    window.addEventListener('scroll', rafCheck, { passive: true })
+    window.addEventListener('resize', rafCheck)
+    const t = setTimeout(checkScroll, 300)
+    return () => {
+      window.removeEventListener('scroll', rafCheck)
+      window.removeEventListener('resize', rafCheck)
+      clearTimeout(t)
+    }
   }, [])
 
   if (!show) return null
