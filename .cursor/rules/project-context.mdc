@@ -84,12 +84,14 @@ alwaysApply: true
 - **LoadingCover**：柔和马卡龙配色二次元风格，银灰粉发少女 + 白色小团子 + 漂浮爱心/光点 + 进度条，支持深色模式
 
 ### 关于页面
-- `/about` 需在 Notion 数据库中创建一篇 type=Page 或 Post、slug 为 `about` 的页面，否则会 404
+- **静态备用**：`pages/about.js` + heo 主题 `LayoutAbout`，保证 `/about` 始终可访问（含年龄限制警告）
+- 若 Notion 中有 slug=`about` 的页面，会走 `[prefix]` 动态路由；静态页优先级更高，当前使用静态页
 
 ### 手机端专项
 - 首页分类：单行横向滑动（PC 端保持网格）
 - 回到顶部：手机端阈值 150px，增加 resize 监听和延迟检查
 - 搜索图标：手机端 48×48px、图标 text-xl
+- **三条杠菜单**（SlideOver）：「关于」上方显示网站名称（`siteConfig('TITLE')`），与首页顶部 Logo 一致，不再显示「博客」
 
 ### 不做
 - **CDN 加速**：用户选择不备案，国内 CDN 需备案，暂不接入
