@@ -71,6 +71,7 @@ alwaysApply: true
 
 ### 联系方式
 - 电报、微信、QQ、**邮件**：在「电报联系」下方，ContactButtons 展示，邮件需配置 `NEXT_PUBLIC_CONTACT_EMAIL`
+- **微信**：支持两种方式。① **跳转链接**（手机端点击直接打开微信）：`weixin://dl/chat?username=你的微信号`（永久有效）；② **二维码图片**：放 `public/wechat-qr.png` 后填 `/wechat-qr.png`。可同时配置 `NEXT_PUBLIC_CONTACT_WECHAT_QR` 作为二维码，与链接一起在弹窗展示
 
 ### 回到顶部
 - **BackToTopButton**：仅滚动到底部（距底 80px 内）时显示，主内容区右下角，不遮挡侧边栏
