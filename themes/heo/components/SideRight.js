@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import { siteConfig } from '@/lib/config'
 import { AnalyticsCard } from './AnalyticsCard'
 import Card from './Card'
 import Catalog from './Catalog'
@@ -6,6 +7,7 @@ import { InfoCard } from './InfoCard'
 import LatestPostsGroupMini from './LatestPostsGroupMini'
 import TagGroups from './TagGroups'
 import TouchMeCard from './TouchMeCard'
+import WeChatCard from './WeChatCard'
 import ContactButtons from './ContactButtons'
 
 const FaceBookPage = dynamic(
@@ -44,9 +46,18 @@ export default function SideRight(props) {
           </Card>
         )}
 
-        {/* 联系交流群：加我电报 + 紧贴下方的其他联系方式 */}
+        {/* 联系交流群：电报 + 微信紧贴并排，下方其他联系方式 */}
         <div className='wow fadeInUp space-y-0'>
-          <TouchMeCard />
+          <div className='flex gap-2'>
+            <div className={(siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_WECHAT_QR')) ? 'flex-1 min-w-0' : 'w-full'}>
+              <TouchMeCard />
+            </div>
+            {(siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_WECHAT_QR')) && (
+              <div className='flex-1 min-w-0'>
+                <WeChatCard />
+              </div>
+            )}
+          </div>
           <ContactButtons />
         </div>
 

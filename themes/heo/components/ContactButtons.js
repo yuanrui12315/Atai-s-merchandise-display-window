@@ -3,25 +3,21 @@ import SmartLink from '@/components/SmartLink'
 import { decryptEmail } from '@/lib/plugins/mailEncrypt'
 
 /**
- * 紧贴「电报联系」下方的其他联系方式按钮
- * 仅显示已配置的，不显示在页脚
+ * 紧贴「电报+微信」下方的其他联系方式按钮
+ * 微信已在侧栏与电报并排显示，此处不重复
  */
 export default function ContactButtons() {
   const whatsapp = siteConfig('CONTACT_WHATSAPP')
-  const wechat = siteConfig('CONTACT_WECHAT')
   const qq = siteConfig('CONTACT_QQ')
   const emailEnc = siteConfig('CONTACT_EMAIL')
   const email = emailEnc ? decryptEmail(emailEnc) : ''
 
-  const hasOthers = whatsapp || wechat || qq || email
+  const hasOthers = whatsapp || qq || email
   if (!hasOthers) return null
 
   const buttons = []
   if (whatsapp) {
     buttons.push({ href: whatsapp, icon: 'fab fa-whatsapp', label: 'WhatsApp', color: 'bg-green-600 hover:bg-green-700' })
-  }
-  if (wechat) {
-    buttons.push({ href: wechat, icon: 'fab fa-weixin', label: '微信联系', color: 'bg-green-700 hover:bg-green-800' })
   }
   if (qq) {
     buttons.push({ href: qq, icon: 'fab fa-qq', label: '加QQ', color: 'bg-blue-600 hover:bg-blue-700' })

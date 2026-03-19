@@ -70,7 +70,7 @@ alwaysApply: true
 - **商品详情页访问量**：已移除（真实统计需注册 Redis 服务，用户不想要）
 
 ### 联系方式
-- 电报、微信、QQ、**邮件**：在「电报联系」下方，ContactButtons 展示，邮件需配置 `NEXT_PUBLIC_CONTACT_EMAIL`
+- **PC 侧栏**：电报 + 微信紧贴并排（TouchMeCard + WeChatCard），下方 ContactButtons 展示 WhatsApp、QQ、邮件
 - **邮件图标**：页脚 SocialButton、移动端三条杠菜单 SlideOver 均展示邮件联系，与首页一致
 - **微信**（用户已配置，需牢记）：
   - **跳转链接**（手机端点击直接打开微信）：Vercel 环境变量 `NEXT_PUBLIC_CONTACT_WECHAT` = `weixin://dl/chat?username=微信号`（永久有效，把「微信号」换成真实微信号）
