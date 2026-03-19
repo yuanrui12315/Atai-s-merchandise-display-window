@@ -16,18 +16,13 @@ export default function TouchMeCard() {
       <FlipCard
         className='cursor-pointer lg:p-6 p-4 border rounded-xl bg-[#4f65f0] dark:bg-yellow-600 dark:border-gray-600'
         frontContent={
-          <div className='h-full overflow-hidden'>
-            <h2 className='font-[1000] text-xl flex items-center gap-2 whitespace-nowrap overflow-hidden'>
-              <i className='fab fa-telegram text-xl flex-shrink-0' />
-              <span className='truncate'>{siteConfig('HEO_SOCIAL_CARD_TITLE_1', null, CONFIG)}</span>
-            </h2>
-            {siteConfig('HEO_SOCIAL_CARD_TITLE_2', null, CONFIG) && (
-              <h3 className='pt-2 text-sm truncate'>
-                {siteConfig('HEO_SOCIAL_CARD_TITLE_2', null, CONFIG)}
-              </h3>
-            )}
+          <div className='h-full flex flex-col justify-center items-center overflow-hidden relative'>
+            <i className='fab fa-telegram text-2xl mb-1 flex-shrink-0' />
+            <span className='font-[1000] text-base whitespace-nowrap'>
+              {siteConfig('HEO_SOCIAL_CARD_TITLE_1', null, CONFIG)}
+            </span>
             <div
-              className='absolute left-0 top-0 w-full h-full'
+              className='absolute left-0 top-0 w-full h-full pointer-events-none opacity-30'
               style={{
                 background:
                   'url(https://bu.dusays.com/2023/05/16/64633c4cd36a9.png) center center no-repeat'
@@ -36,9 +31,11 @@ export default function TouchMeCard() {
         }
         backContent={
           <SmartLink href={siteConfig('HEO_SOCIAL_CARD_URL', null, CONFIG)}>
-            <div className='font-[1000] text-base h-full flex items-center justify-center gap-2 whitespace-nowrap overflow-hidden'>
-              <i className='fab fa-telegram text-lg flex-shrink-0' />
-              <span className='truncate'>{siteConfig('HEO_SOCIAL_CARD_TITLE_3', null, CONFIG)}</span>
+            <div className='h-full flex flex-col justify-center items-center'>
+              <i className='fab fa-telegram text-2xl mb-1 flex-shrink-0' />
+              <span className='font-[1000] text-base whitespace-nowrap'>
+                {siteConfig('HEO_SOCIAL_CARD_TITLE_3', null, CONFIG)}
+              </span>
             </div>
           </SmartLink>
         }
