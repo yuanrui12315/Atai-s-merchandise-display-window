@@ -12,18 +12,20 @@ export default function TouchMeCard() {
     return <></>
   }
   return (
-    <div className={'relative h-28 text-white flex flex-col'}>
+    <div className='relative h-28 text-white flex flex-col overflow-hidden rounded-xl'>
       <FlipCard
         className='cursor-pointer lg:p-6 p-4 border rounded-xl bg-[#4f65f0] dark:bg-yellow-600 dark:border-gray-600'
         frontContent={
-          <div className='h-full'>
-            <h2 className='font-[1000] text-3xl flex items-center gap-2'>
-              <i className='fab fa-telegram text-2xl' />
-              {siteConfig('HEO_SOCIAL_CARD_TITLE_1', null, CONFIG)}
+          <div className='h-full overflow-hidden'>
+            <h2 className='font-[1000] text-xl flex items-center gap-2 whitespace-nowrap overflow-hidden'>
+              <i className='fab fa-telegram text-xl flex-shrink-0' />
+              <span className='truncate'>{siteConfig('HEO_SOCIAL_CARD_TITLE_1', null, CONFIG)}</span>
             </h2>
-            <h3 className='pt-2'>
-              {siteConfig('HEO_SOCIAL_CARD_TITLE_2', null, CONFIG)}
-            </h3>
+            {siteConfig('HEO_SOCIAL_CARD_TITLE_2', null, CONFIG) && (
+              <h3 className='pt-2 text-sm truncate'>
+                {siteConfig('HEO_SOCIAL_CARD_TITLE_2', null, CONFIG)}
+              </h3>
+            )}
             <div
               className='absolute left-0 top-0 w-full h-full'
               style={{
@@ -34,9 +36,9 @@ export default function TouchMeCard() {
         }
         backContent={
           <SmartLink href={siteConfig('HEO_SOCIAL_CARD_URL', null, CONFIG)}>
-            <div className='font-[1000] text-xl h-full flex items-center justify-center gap-2'>
-              <i className='fab fa-telegram text-xl' />
-              {siteConfig('HEO_SOCIAL_CARD_TITLE_3', null, CONFIG)}
+            <div className='font-[1000] text-base h-full flex items-center justify-center gap-2 whitespace-nowrap overflow-hidden'>
+              <i className='fab fa-telegram text-lg flex-shrink-0' />
+              <span className='truncate'>{siteConfig('HEO_SOCIAL_CARD_TITLE_3', null, CONFIG)}</span>
             </div>
           </SmartLink>
         }

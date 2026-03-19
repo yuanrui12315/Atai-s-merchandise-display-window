@@ -27,9 +27,9 @@ export default function WeChatCard() {
     return (
       <SmartLink href={CONTACT_WECHAT}>
         <div
-          className='h-28 flex flex-col justify-center items-center lg:p-6 p-4 border rounded-xl bg-[#07C160] hover:bg-[#06AD56] dark:bg-[#07C160] dark:hover:bg-[#06AD56] dark:border-gray-600 text-white font-[1000] text-xl transition-colors cursor-pointer'>
-          <i className='fab fa-weixin text-3xl mb-1' />
-          <span>微信联系</span>
+          className='h-28 flex flex-col justify-center items-center p-4 border rounded-xl bg-[#07C160] hover:bg-[#06AD56] dark:bg-[#07C160] dark:hover:bg-[#06AD56] dark:border-gray-600 text-white font-[1000] text-base transition-colors cursor-pointer overflow-hidden'>
+          <i className='fab fa-weixin text-2xl mb-1 flex-shrink-0' />
+          <span className='whitespace-nowrap truncate'>微信联系</span>
         </div>
       </SmartLink>
     )
@@ -41,9 +41,9 @@ export default function WeChatCard() {
       <button
         type='button'
         onClick={() => setModalOpen(true)}
-        className='w-full h-28 flex flex-col justify-center items-center lg:p-6 p-4 border rounded-xl bg-[#07C160] hover:bg-[#06AD56] dark:bg-[#07C160] dark:hover:bg-[#06AD56] dark:border-gray-600 text-white font-[1000] text-xl transition-colors cursor-pointer'>
-        <i className='fab fa-weixin text-3xl mb-1' />
-        <span>微信联系</span>
+        className='w-full h-28 flex flex-col justify-center items-center p-4 border rounded-xl bg-[#07C160] hover:bg-[#06AD56] dark:bg-[#07C160] dark:hover:bg-[#06AD56] dark:border-gray-600 text-white font-[1000] text-base transition-colors cursor-pointer overflow-hidden'>
+        <i className='fab fa-weixin text-2xl mb-1 flex-shrink-0' />
+        <span className='whitespace-nowrap truncate'>微信联系</span>
       </button>
       {modalOpen && (
         <div

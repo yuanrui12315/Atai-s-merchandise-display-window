@@ -47,13 +47,13 @@ export default function SideRight(props) {
         )}
 
         {/* 联系交流群：电报 + 微信紧贴并排，下方其他联系方式 */}
-        <div className='wow fadeInUp space-y-0'>
-          <div className='flex gap-2'>
-            <div className={(siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_WECHAT_QR')) ? 'flex-1 min-w-0' : 'w-full'}>
+        <div className='wow fadeInUp space-y-0 overflow-hidden'>
+          <div className={`gap-2 min-w-0 ${(siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_WECHAT_QR')) ? 'grid grid-cols-2' : 'block'}`}>
+            <div className='min-w-0 overflow-hidden'>
               <TouchMeCard />
             </div>
             {(siteConfig('CONTACT_WECHAT') || siteConfig('CONTACT_WECHAT_QR')) && (
-              <div className='flex-1 min-w-0'>
+              <div className='min-w-0 overflow-hidden'>
                 <WeChatCard />
               </div>
             )}
