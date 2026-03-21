@@ -59,19 +59,31 @@ export default function TagFilterBar(props) {
     return 0
   })
 
+  const pillBase =
+    'inline-flex items-center font-semibold border-2 transition-all duration-200 md:rounded-xl md:px-4 md:py-2 md:text-sm rounded-lg px-2.5 py-1 text-xs md:transform md:hover:scale-105'
+
   return (
     <div
       id='tag-filter-bar'
-      className='wow fadeInUp mb-8'>
-      <div className='text-2xl font-bold dark:text-gray-200 mb-4'>
-        按标签筛选
+      className='wow fadeInUp mb-4 md:mb-8'>
+      <div className='flex items-baseline justify-between gap-2 mb-2 md:mb-4'>
+        <div className='text-lg md:text-2xl font-bold dark:text-gray-200'>
+          按标签筛选
+        </div>
+        <span className='md:hidden text-[11px] text-gray-500 dark:text-gray-400 shrink-0'>
+          横向滑动
+        </span>
       </div>
-      <div className='p-5 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl hover:border-indigo-600 dark:hover:border-yellow-600 transition-colors duration-200 shadow-sm'>
-        <div className='flex flex-wrap gap-3'>
+      <div className='p-3 md:p-5 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl hover:border-indigo-600 dark:hover:border-yellow-600 transition-colors duration-200 shadow-sm'>
+        {/* 手机：单行横向滑动，省纵向空间；桌面：自动换行 */}
+        <div className='flex flex-nowrap md:flex-wrap gap-2 md:gap-3 overflow-x-auto overflow-y-hidden pb-1 md:pb-0 -mx-0.5 px-0.5 md:mx-0 md:px-0 scroll-smooth overscroll-x-contain touch-pan-x [scrollbar-width:thin]'>
           {/* 全部 */}
-          <SmartLink href='/' passHref className='cursor-pointer inline-block'>
+          <SmartLink
+            href='/'
+            passHref
+            className='cursor-pointer inline-block shrink-0'>
             <span
-              className={`inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold border-2 transition-all duration-200 transform hover:scale-105 ${
+              className={`${pillBase} ${
                 !currentTag
                   ? 'bg-indigo-600 dark:bg-yellow-600 text-white border-indigo-600 dark:border-yellow-600 shadow-md'
                   : 'bg-gray-50 dark:bg-gray-800/50 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:bg-indigo-600 dark:hover:bg-yellow-600 hover:text-white hover:border-indigo-600 dark:hover:border-yellow-600'
@@ -89,16 +101,18 @@ export default function TagFilterBar(props) {
                 key={index}
                 href={`/tag/${encodeURIComponent(tag.name)}`}
                 passHref
-                className='cursor-pointer inline-block'>
+                className='cursor-pointer inline-block shrink-0'>
                 <span
-                  className={`inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold border-2 transition-all duration-200 transform hover:scale-105 ${
+                  className={`${pillBase} ${
                     selected
                       ? 'bg-indigo-600 dark:bg-yellow-600 text-white border-indigo-600 dark:border-yellow-600 shadow-md'
                       : `${baseStyle} border ${hoverStyle}`
                   }`}>
                   {tag.name}
                   {tag.count != null && (
-                    <sup className='ml-1 text-xs opacity-90'>{tag.count}</sup>
+                    <sup className='ml-0.5 md:ml-1 text-[9px] md:text-xs opacity-90 align-super'>
+                      {tag.count}
+                    </sup>
                   )}
                 </span>
               </SmartLink>
