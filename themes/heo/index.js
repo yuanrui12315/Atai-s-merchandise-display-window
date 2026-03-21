@@ -228,16 +228,27 @@ const LayoutSearch = props => {
           <SearchNav {...props} />
         ) : (
           <>
-            <TagFilterBar {...props} />
-            <div id='posts-wrapper'>
-              {siteConfig('POST_LIST_STYLE') === 'page' ? (
-                <BlogPostListPage {...props} />
-              ) : (
-                <BlogPostListScroll {...props} />
-              )}
+            {/* 手机端：商品优先；桌面端：保持「按标签筛选」在上（flex order） */}
+            <div className='flex flex-col'>
+              <div className='order-1 lg:order-2 mb-6 lg:mb-0'>
+                <div className='text-xl font-bold dark:text-gray-200 mb-3 lg:hidden'>
+                  搜索结果
+                </div>
+                <div id='posts-wrapper'>
+                  {siteConfig('POST_LIST_STYLE') === 'page' ? (
+                    <BlogPostListPage {...props} />
+                  ) : (
+                    <BlogPostListScroll {...props} />
+                  )}
+                </div>
+              </div>
+              <div className='order-2 lg:order-1'>
+                <TagFilterBar {...props} />
+              </div>
+              <div className='order-3'>
+                <SearchTagsCategories {...props} />
+              </div>
             </div>
-            {/* 搜索结果下方显示分类和标签 */}
-            <SearchTagsCategories {...props} />
           </>
         )}
       </div>
