@@ -234,12 +234,20 @@ const HERO_TOP_MAX = 12
 
 /**
  * 获取推荐置顶文章
- * 优先级：① 环境变量手动 slug 列表 ② 推荐标签 ③ 最近更新 latestPosts
+ * 优先级：① Notion「首页置顶」数字列 ② 环境变量 slug 列表 ③ 推荐标签 ④ 最近更新
  */
 function getTopPosts({ latestPosts, allNavPages }) {
   const pages = allNavPages || []
 
-  // ① 手动置顶：NEXT_PUBLIC_HERO_PINNED_SLUGS=slug1,slug2,slug3（与 Notion slug 字段一致）
+  // ① Notion 数字列 heroPinOrder：1 最前，2 其次…；仅展示填了正整数的商品
+  const notionPinned = pages
+    .filter(p => p?.heroPinOrder > 0)
+    .sort((a, b) => (a.heroPinOrder || 999) - (b.heroPinOrder || 999))
+  if (notionPinned.length > 0) {
+    return notionPinned.slice(0, HERO_TOP_MAX)
+  }
+
+  // ② 环境变量 slug 列表（无 Notion 置顶时使用）
   const pinnedRaw = siteConfig('HERO_PINNED_SLUGS', '', CONFIG)
   if (pinnedRaw && String(pinnedRaw).trim()) {
     const slugs = String(pinnedRaw)
@@ -264,7 +272,7 @@ function getTopPosts({ latestPosts, allNavPages }) {
     return latestPosts
   }
 
-  // ② 显示包含指定标签的文章（最多 6 篇）
+  // ③ 显示包含指定标签的文章（最多 6 篇）
   let sortPosts = []
   const sortByUpdate = siteConfig(
     'HEO_HERO_RECOMMEND_POST_SORT_BY_UPDATE_TIME',
