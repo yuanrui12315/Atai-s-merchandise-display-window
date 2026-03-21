@@ -69,6 +69,8 @@ const CONFIG = {
   // 英雄区右侧推荐文章标签, 例如 [推荐] , 最多六篇文章; 若留空白''，则推荐最近更新文章
   HEO_HERO_RECOMMEND_POST_TAG: '',
   HEO_HERO_RECOMMEND_POST_SORT_BY_UPDATE_TIME: false, // 推荐文章排序，为`true`时将强制按最后修改时间倒序
+  // 首页 Hero 横滑商品手动置顶：Vercel 环境变量 NEXT_PUBLIC_HERO_PINNED_SLUGS，英文逗号分隔 slug，顺序即展示顺序；配置后优先生效，不受 Notion「仅查看」更新时间影响。最多 12 个
+  HERO_PINNED_SLUGS: process.env.NEXT_PUBLIC_HERO_PINNED_SLUGS || '',
   //   HERO_RECOMMEND_COVER: 'https://cdn.pixabay.com/photo/2015/10/30/20/13/sunrise-1014712_1280.jpg', // 英雄区右侧图片
 
   // 右侧信息卡「阿泰」下方的补充说明，可写长文案（整段必须在同一行，不要换行）

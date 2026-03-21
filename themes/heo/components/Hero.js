@@ -230,47 +230,68 @@ function TopGroup(props) {
   )
 }
 
+const HERO_TOP_MAX = 12
+
 /**
  * 获取推荐置顶文章
+ * 优先级：① 环境变量手动 slug 列表 ② 推荐标签 ③ 最近更新 latestPosts
  */
 function getTopPosts({ latestPosts, allNavPages }) {
+  const pages = allNavPages || []
+
+  // ① 手动置顶：NEXT_PUBLIC_HERO_PINNED_SLUGS=slug1,slug2,slug3（与 Notion slug 字段一致）
+  const pinnedRaw = siteConfig('HERO_PINNED_SLUGS', '', CONFIG)
+  if (pinnedRaw && String(pinnedRaw).trim()) {
+    const slugs = String(pinnedRaw)
+      .split(/[,，\n\r]+/)
+      .map(s => s.trim())
+      .filter(Boolean)
+    const bySlug = new Map(pages.map(p => [p?.slug, p]))
+    const pinned = []
+    for (const slug of slugs) {
+      const post = bySlug.get(slug)
+      if (post) pinned.push(post)
+      if (pinned.length >= HERO_TOP_MAX) break
+    }
+    if (pinned.length > 0) {
+      return pinned
+    }
+  }
+
+  const tagName = siteConfig('HEO_HERO_RECOMMEND_POST_TAG', null, CONFIG)
   // 默认展示最近更新
-  if (
-    !siteConfig('HEO_HERO_RECOMMEND_POST_TAG', null, CONFIG) ||
-    siteConfig('HEO_HERO_RECOMMEND_POST_TAG', null, CONFIG) === ''
-  ) {
+  if (!tagName || tagName === '') {
     return latestPosts
   }
 
-  // 显示包含‘推荐’标签的文章
+  // ② 显示包含指定标签的文章（最多 6 篇）
   let sortPosts = []
+  const sortByUpdate = siteConfig(
+    'HEO_HERO_RECOMMEND_POST_SORT_BY_UPDATE_TIME',
+    false,
+    CONFIG
+  )
+  const useUpdateSort =
+    sortByUpdate === true ||
+    sortByUpdate === 'true' ||
+    (typeof sortByUpdate === 'string' && JSON.parse(sortByUpdate) === true)
 
-  // 排序方式
-  if (
-    JSON.parse(
-      siteConfig('HEO_HERO_RECOMMEND_POST_SORT_BY_UPDATE_TIME', null, CONFIG)
-    )
-  ) {
-    sortPosts = Object.create(allNavPages).sort((a, b) => {
+  if (useUpdateSort) {
+    sortPosts = Object.create(pages).sort((a, b) => {
       const dateA = new Date(a?.lastEditedDate)
       const dateB = new Date(b?.lastEditedDate)
       return dateB - dateA
     })
   } else {
-    sortPosts = Object.create(allNavPages)
+    sortPosts = Object.create(pages)
   }
 
   const topPosts = []
   for (const post of sortPosts) {
-    if (topPosts.length === 6) {
+    if (topPosts.length >= 6) {
       break
     }
-    // 查找标签
-    if (
-      post?.tags?.indexOf(
-        siteConfig('HEO_HERO_RECOMMEND_POST_TAG', null, CONFIG)
-      ) >= 0
-    ) {
+    if (post?.tags?.indexOf(tagName) >= 0) {
       topPosts.push(post)
     }
   }

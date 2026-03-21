@@ -25,6 +25,11 @@ alwaysApply: true
 - 部署在 Vercel
 - 商品数据来自 Notion 数据库
 
+### 首页 Hero 横滑商品
+- 默认按「最近编辑时间」取 `latestPosts`；仅打开 Notion 也会更新 `lastEditedDate` 导致顺序变化
+- **手动置顶**：Vercel 环境变量 `NEXT_PUBLIC_HERO_PINNED_SLUGS` = 英文逗号分隔的 slug（与 Notion `slug` 字段一致），顺序即展示顺序，最多 12 个；配置后优先生效
+- **标签方式**：`themes/heo/config.js` 中 `HEO_HERO_RECOMMEND_POST_TAG` 填标签名，且 `HEO_HERO_RECOMMEND_POST_SORT_BY_UPDATE_TIME` 为 `false` 时按全站商品列表顺序筛标签（仍非完全自定义顺序）
+
 ## 依赖漏洞
 - GitHub 提示的 19 个漏洞**暂时可忽略**，此前已处理过一批，剩余的可不处理
 - 不要建议用户去修复这些漏洞，除非用户主动提出
@@ -68,6 +73,9 @@ alwaysApply: true
 - **Vercel Analytics**：默认开启（`ANALYTICS_VERCEL`），访问量统计
 - **Speed Insights**：已集成，加载速度（LCP、FID、CLS）在 Vercel 控制台查看
 - **商品详情页访问量**：已移除（真实统计需注册 Redis 服务，用户不想要）
+
+### SmartLink
+- **weixin://、mailto:、/wechat-qr.png 等**必须用原生 `<a>`，不能用 Next `Link`；否则客户端路由会误判为站内页面 → **404**（移动端三条杠里「微信联系」曾因此出错）
 
 ### 联系方式
 - **PC 侧栏**：电报 + 微信紧贴并排（TouchMeCard + WeChatCard），下方 ContactButtons 展示 WhatsApp、QQ、邮件
