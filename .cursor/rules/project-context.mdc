@@ -25,13 +25,17 @@ alwaysApply: true
 - 部署在 Vercel
 - 商品数据来自 Notion 数据库
 
+### 搜索页布局（`/search` 有搜索词时）
+- 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
+
 ### 「所有商品」列表排序
 - `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）
 - 排序字段为每条商品的 **`publishDate`**：优先取 Notion **日期（date）** 属性，没有则用页面 **创建时间**
 - 若 Notion 配置表里有 `POSTS_SORT_BY` 且改成非 `date`，会覆盖上述行为
 
 ### 首页 Hero 横滑商品
-- **推荐**：Notion 数字列 **「首页置顶」**（列名可 `NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN`）；`1` 最左、`2` 其次…；`0`/空=不参与
+- **手机端**：标题 **「热销款」** + 提示「左右滑动」（仅 `xl` 以下；桌面 Banner+网格不显示此行）
+- **置顶逻辑**：Notion 数字列 **「首页置顶」**（列名可 `NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN`）；`1` 最左、`2` 其次…；`0`/空=不参与
 - 优先级：① Notion 置顶 ② `NEXT_PUBLIC_HERO_PINNED_SLUGS` ③ 推荐标签 ④ 最近更新
 - **条数**：`themes/heo/config.js` 的 `HEO_HERO_TOP_MAX` 或 `NEXT_PUBLIC_HEO_HERO_TOP_MAX`，默认 **24**，最大 **80**
 - **生效时间**：全站 ISR 约 **30 天**；改 Notion 后要尽快看到 → **Vercel Redeploy** 重新部署
@@ -112,3 +116,10 @@ alwaysApply: true
 ### 不做
 - **CDN 加速**：用户选择不备案，国内 CDN 需备案，暂不接入
 - **备案**：Vercel + 国际域名（.com）无需备案，可长期正常使用
+
+---
+
+## 给之后对话的说明（勿删）
+- **持久记忆**：以本仓库 **`.cursor/rules/project-context.mdc`** 为准（`alwaysApply: true`），新会话会先加载；重要约定已写在上文。
+- **用户习惯**：回复用 **简体中文**；阿泰小店 = 私人商品站、Vercel、heo 主题、Notion 数据源。
+- **协作流程**：改代码后 **立即** `git add` → `commit` → `push`，再回复用户。
