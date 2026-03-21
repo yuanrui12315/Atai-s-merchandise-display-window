@@ -71,12 +71,13 @@ export default function TagFilterBar(props) {
           按标签筛选
         </div>
         <span className='md:hidden text-[11px] text-gray-500 dark:text-gray-400 shrink-0'>
-          横向滑动
+          两排 · 左右滑动
         </span>
       </div>
       <div className='p-3 md:p-5 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl hover:border-indigo-600 dark:hover:border-yellow-600 transition-colors duration-200 shadow-sm'>
-        {/* 手机：单行横向滑动，省纵向空间；桌面：自动换行 */}
-        <div className='flex flex-nowrap md:flex-wrap gap-2 md:gap-3 overflow-x-auto overflow-y-hidden pb-1 md:pb-0 -mx-0.5 px-0.5 md:mx-0 md:px-0 scroll-smooth overscroll-x-contain touch-pan-x [scrollbar-width:thin]'>
+        {/* 手机：固定 2 行，标签先竖向填满再向右延伸，可横滑；桌面：flex 换行 */}
+        <div
+          className='grid grid-flow-col grid-rows-2 auto-cols-max gap-x-2 gap-y-2 overflow-x-auto overflow-y-hidden pb-1 -mx-0.5 px-0.5 scroll-smooth overscroll-x-contain touch-pan-x [scrollbar-width:thin] md:flex md:flex-wrap md:gap-3 md:overflow-visible md:pb-0 md:mx-0 md:px-0'>
           {/* 全部 */}
           <SmartLink
             href='/'
