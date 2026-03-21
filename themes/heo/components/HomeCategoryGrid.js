@@ -27,8 +27,13 @@ export default function HomeCategoryGrid(props) {
 
   return (
     <div id='category-grid' className='wow fadeInUp mb-8'>
-      <div className='text-2xl font-bold dark:text-gray-200 mb-4'>
-        商品分类
+      <div className='flex items-baseline justify-between gap-2 mb-3 lg:mb-4'>
+        <div className='text-lg lg:text-2xl font-bold dark:text-gray-200'>
+          商品分类
+        </div>
+        <span className='lg:hidden text-[11px] text-gray-500 dark:text-gray-400 shrink-0'>
+          左右滑动
+        </span>
       </div>
       {/* 手机端：单行横向滑动；PC端：网格 */}
       <div className='flex lg:grid overflow-x-auto lg:overflow-visible gap-4 lg:gap-5 pb-2 lg:pb-0 scroll-hidden lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6'>
