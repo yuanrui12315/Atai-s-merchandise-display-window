@@ -228,10 +228,10 @@ const LayoutSearch = props => {
           <SearchNav {...props} />
         ) : (
           <>
-            {/* 手机端：商品优先；桌面端：保持「按标签筛选」在上（flex order） */}
+            {/* 搜索页：先「搜索结果」商品列表，再「按标签筛选」，最后分类/标签（PC 与手机一致） */}
             <div className='flex flex-col'>
-              <div className='order-1 lg:order-2 mb-6 lg:mb-0'>
-                <div className='text-xl font-bold dark:text-gray-200 mb-3 lg:hidden'>
+              <div className='mb-6 lg:mb-8'>
+                <div className='text-xl lg:text-2xl font-bold dark:text-gray-200 mb-3 lg:mb-4'>
                   搜索结果
                 </div>
                 <div id='posts-wrapper'>
@@ -242,12 +242,8 @@ const LayoutSearch = props => {
                   )}
                 </div>
               </div>
-              <div className='order-2 lg:order-1'>
-                <TagFilterBar {...props} />
-              </div>
-              <div className='order-3'>
-                <SearchTagsCategories {...props} />
-              </div>
+              <TagFilterBar {...props} />
+              <SearchTagsCategories {...props} />
             </div>
           </>
         )}
