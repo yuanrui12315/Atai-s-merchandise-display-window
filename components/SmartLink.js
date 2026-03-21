@@ -26,18 +26,41 @@ const SmartLink = ({ href, children, ...rest }) => {
     urlString = safeHref.pathname
   }
 
-  const isExternal = urlString.startsWith('http') && !urlString.startsWith(LINK)
+  /**
+   * 必须用原生 <a>，不能用 Next Link：
+   * - weixin:// / tencent:// 等 App 协议（Link 会当站内路由 → 404）
+   * - mailto: / tel: / sms:
+   * - /xxx.png 等 public 静态资源（Link 客户端跳转会当成页面 → 404）
+   * - 外链 http(s)
+   */
+  const lower = urlString.toLowerCase()
+  const isStaticAssetPath =
+    typeof urlString === 'string' &&
+    /\.(png|jpe?g|webp|gif|svg|ico|pdf|bmp|woff2?)(\?|#|$)/i.test(urlString)
+  const isAppOrSpecialScheme =
+    lower.startsWith('mailto:') ||
+    lower.startsWith('tel:') ||
+    lower.startsWith('sms:') ||
+    lower.startsWith('weixin://') ||
+    lower.startsWith('tencent://')
+  const isExternalHttp =
+    urlString.startsWith('http') && !urlString.startsWith(LINK)
 
-  if (isExternal) {
-    // 对于外部链接，必须是 string 类型
+  const useNativeAnchor =
+    isExternalHttp || isAppOrSpecialScheme || isStaticAssetPath
+
+  if (useNativeAnchor) {
     const externalUrl =
       typeof safeHref === 'string' ? safeHref : new URL(safeHref.pathname, LINK).toString()
 
+    const openInNewTab = isExternalHttp && !isAppOrSpecialScheme && !isStaticAssetPath
+    // 外链新开标签；App 协议、邮件、静态资源用当前窗口，避免异常空白页
     return (
       <a
         href={externalUrl}
-        target='_blank'
-        rel='noopener noreferrer'
+        {...(openInNewTab
+          ? { target: '_blank', rel: 'noopener noreferrer' }
+          : {})}
         {...filterDOMProps(rest)}>
         {children}
       </a>
