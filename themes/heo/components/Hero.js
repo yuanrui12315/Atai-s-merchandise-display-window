@@ -230,7 +230,12 @@ function TopGroup(props) {
   )
 }
 
-const HERO_TOP_MAX = 12
+/** 首页横滑条数量上限（themes/heo/config.js HEO_HERO_TOP_MAX，默认 24，最大 80） */
+function getHeroTopMax() {
+  const n = Number(siteConfig('HEO_HERO_TOP_MAX', 24, CONFIG))
+  if (!Number.isFinite(n) || n < 1) return 24
+  return Math.min(80, Math.floor(n))
+}
 
 /**
  * 获取推荐置顶文章
@@ -238,13 +243,14 @@ const HERO_TOP_MAX = 12
  */
 function getTopPosts({ latestPosts, allNavPages }) {
   const pages = allNavPages || []
+  const max = getHeroTopMax()
 
   // ① Notion 数字列 heroPinOrder：1 最前，2 其次…；仅展示填了正整数的商品
   const notionPinned = pages
     .filter(p => p?.heroPinOrder > 0)
     .sort((a, b) => (a.heroPinOrder || 999) - (b.heroPinOrder || 999))
   if (notionPinned.length > 0) {
-    return notionPinned.slice(0, HERO_TOP_MAX)
+    return notionPinned.slice(0, max)
   }
 
   // ② 环境变量 slug 列表（无 Notion 置顶时使用）
@@ -259,7 +265,7 @@ function getTopPosts({ latestPosts, allNavPages }) {
     for (const slug of slugs) {
       const post = bySlug.get(slug)
       if (post) pinned.push(post)
-      if (pinned.length >= HERO_TOP_MAX) break
+      if (pinned.length >= max) break
     }
     if (pinned.length > 0) {
       return pinned
@@ -267,9 +273,9 @@ function getTopPosts({ latestPosts, allNavPages }) {
   }
 
   const tagName = siteConfig('HEO_HERO_RECOMMEND_POST_TAG', null, CONFIG)
-  // 默认展示最近更新
+  // 默认展示最近更新（条数与横滑上限一致，受 getSiteData 的 latestPosts 原始长度限制）
   if (!tagName || tagName === '') {
-    return latestPosts
+    return (latestPosts || []).slice(0, max)
   }
 
   // ③ 显示包含指定标签的文章（最多 6 篇）
