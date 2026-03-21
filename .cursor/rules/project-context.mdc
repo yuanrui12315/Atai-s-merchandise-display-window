@@ -25,6 +25,11 @@ alwaysApply: true
 - 部署在 Vercel
 - 商品数据来自 Notion 数据库
 
+### 「所有商品」列表排序
+- `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）
+- 排序字段为每条商品的 **`publishDate`**：优先取 Notion **日期（date）** 属性，没有则用页面 **创建时间**
+- 若 Notion 配置表里有 `POSTS_SORT_BY` 且改成非 `date`，会覆盖上述行为
+
 ### 首页 Hero 横滑商品
 - **推荐**：Notion 数字列 **「首页置顶」**（列名可 `NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN`）；`1` 最左、`2` 其次…；`0`/空=不参与
 - 优先级：① Notion 置顶 ② `NEXT_PUBLIC_HERO_PINNED_SLUGS` ③ 推荐标签 ④ 最近更新

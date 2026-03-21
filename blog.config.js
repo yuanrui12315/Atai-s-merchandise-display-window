@@ -45,6 +45,8 @@ const BLOG = {
 
   ...require('./conf/post.config.js'),
   POSTS_PER_PAGE: 80, // 覆盖 post.config 默认12，每页80个商品
+  // post.config 默认 POSTS_SORT_BY 为 notion（随 Notion 返回顺序，常≠最新发布）；此处强制按发布时间新在前
+  POSTS_SORT_BY: 'date',
   ...require('./conf/analytics.config.js'),
   ...require('./conf/image.config.js'),
   ...require('./conf/font.config.js'),
