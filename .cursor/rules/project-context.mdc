@@ -40,6 +40,11 @@ alwaysApply: true
 - **条数**：`themes/heo/config.js` 的 `HEO_HERO_TOP_MAX` 或 `NEXT_PUBLIC_HEO_HERO_TOP_MAX`，默认 **24**，最大 **80**
 - **生效时间**：全站 ISR 约 **30 天**；改 Notion 后要尽快看到 → **Vercel Redeploy** 重新部署
 
+### Vercel 构建失败「429 Too Many Requests」
+- **成因**：`next build` 时多 worker 并行请求 Notion，易触发官方限流；日志里常见 `[API<<--异常]: HTTPError: 429`、`slug-props-article`，以及 `Jest worker ... child process exceptions`（多为子进程里 API 异常退出，不一定是业务代码写错）。
+- **工程缓解**：`lib/notion/getNotionAPI.js` 在 **`yarn build` / `CI=1`** 等构建场景启用全局请求队列（原先仅 `BUILD_MODE`/`EXPORT` 时 Vercel 默认未开，易打满接口）；`getPostBlocks` 对 429 重试前等待更长。
+- **临时**：短时间连续多次 Redeploy 仍可能 429，可隔几分钟再部署一次。
+
 ## 依赖漏洞
 - GitHub 提示的 19 个漏洞**暂时可忽略**，此前已处理过一批，剩余的可不处理
 - 不要建议用户去修复这些漏洞，除非用户主动提出
