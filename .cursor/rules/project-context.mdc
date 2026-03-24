@@ -42,7 +42,7 @@ alwaysApply: true
 
 ### Vercel 构建失败「429 Too Many Requests」
 - **成因**：`next build` 时多 worker 并行请求 Notion，易触发官方限流；日志里常见 `[API<<--异常]: HTTPError: 429`、`slug-props-article`，以及 `Jest worker ... child process exceptions`（多为子进程里 API 异常退出，不一定是业务代码写错）。
-- **工程缓解**：`package.json` 的 **`build`** 设 **`NOTION_BUILD_THROTTLE=1`**（`cross-env`）；`lib/notion/getNotionAPI.js` 包装 **`notion.fetch`**，对 **got** 注入 `hooks`（`notion-client@6` 已不用 ky），**串行**每个 Notion HTTP + 间隔（`NOTION_HTTP_GAP_MS`，默认约 650ms）。注意：**429 时 got 会先 `afterResponse` 再 `beforeError`**，两处不能各释放一次「槽位」，否则会队列错位、并发失控；实现上须 **幂等释放**（仅 `activeRelease` 一次）。另保留 **`callNotion` 文件锁** 与 **`getPostBlocks` 429 退避 / getBlocks 重试**。
+- **工程缓解**：`package.json` 的 **`build`** 设 **`NOTION_BUILD_THROTTLE=1`**（`cross-env`）；`lib/notion/getNotionAPI.js` 包装 **`notion.fetch`** + **`getPage` 强制 `concurrency: 1`**；对 **got** 注入 `hooks` 串行 HTTP + 间隔（`NOTION_HTTP_GAP_MS`）。**`lib/notion/RateLimiter.ts`** 跨进程文件锁：**勿**在构建场景用 30s「陈旧锁」删除——等待中的 worker 会误删仍在执行超长 `getPage` 的锁，导致多 worker 同时打 Notion → 429；构建/CI 下陈旧阈值改为 **1 小时**。另：**429 时 got 先 `afterResponse` 再 `beforeError`**，须 **幂等释放** HTTP 槽位。
 - **临时**：短时间连续多次 Redeploy 仍可能 429，可隔几分钟再部署一次。
 
 ## 依赖漏洞

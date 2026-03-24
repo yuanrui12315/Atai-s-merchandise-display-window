@@ -22,11 +22,21 @@ export class RateLimiter {
 
   private async acquireLock() {
     if (!this.lockFilePath) return
-    // 如果锁文件存在且创建时间过久（比如 >5分钟），认为是陈旧锁，直接删除
+    // 构建时单次 getPage 可能持续数分钟（大量串行 Notion 请求）。
+    // 若阈值过短，等待锁的其它 worker 会误删「仍在工作」的锁 → 多进程同时打 API → 429。
+    const isBuildThrottle =
+      process.env.NOTION_BUILD_THROTTLE ||
+      process.env.BUILD_MODE ||
+      process.env.EXPORT ||
+      process.env.CI === '1' ||
+      process.env.CI === 'true'
+    const staleLockMs = isBuildThrottle
+      ? 60 * 60 * 1000 // 1 小时
+      : 30 * 1000
     if (fs.existsSync(this.lockFilePath)) {
       const stats = fs.statSync(this.lockFilePath)
       const age = Date.now() - stats.ctimeMs
-      if (age > 30 * 1000) { // 30秒
+      if (age > staleLockMs) {
         try {
           fs.unlinkSync(this.lockFilePath)
           console.warn('[限流] 删除陈旧锁文件:', this.lockFilePath)
