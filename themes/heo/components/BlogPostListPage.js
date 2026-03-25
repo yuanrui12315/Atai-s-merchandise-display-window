@@ -13,7 +13,13 @@ import PaginationNumber from './PaginationNumber'
  * @returns {JSX.Element}
  * @constructor
  */
-const BlogPostListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
+const BlogPostListPage = ({
+  page = 1,
+  posts = [],
+  postCount,
+  siteInfo,
+  listCoverMaxWidth
+}) => {
   const { NOTION_CONFIG } = useGlobal()
   const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, NOTION_CONFIG)
   const totalPage = Math.ceil(postCount / POSTS_PER_PAGE)
@@ -37,6 +43,7 @@ const BlogPostListPage = ({ page = 1, posts = [], postCount, siteInfo }) => {
               key={post.id}
               post={post}
               siteInfo={siteInfo}
+              listCoverMaxWidth={listCoverMaxWidth}
             />
           ))}
         </div>

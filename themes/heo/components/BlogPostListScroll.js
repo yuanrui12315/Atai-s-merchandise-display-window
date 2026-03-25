@@ -17,7 +17,8 @@ const BlogPostListScroll = ({
   posts = [],
   currentSearch,
   showSummary = siteConfig('HEO_POST_LIST_SUMMARY', null, CONFIG),
-  siteInfo
+  siteInfo,
+  listCoverMaxWidth
 }) => {
   const { locale, NOTION_CONFIG } = useGlobal()
   const [page, updatePage] = useState(1)
@@ -73,12 +74,14 @@ const BlogPostListScroll = ({
         {/* 文章列表 */}
         <div className={gridCols}>
           {' '}
-          {postsToShow.map(post => (
+          {postsToShow.map((post, idx) => (
             <BlogPostCard
               key={post.id}
+              index={idx}
               post={post}
               showSummary={showSummary}
               siteInfo={siteInfo}
+              listCoverMaxWidth={listCoverMaxWidth}
             />
           ))}
         </div>

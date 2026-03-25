@@ -4,9 +4,17 @@ import LazyImage from '@/components/LazyImage'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import SmartLink from '@/components/SmartLink'
+import { applyWidthCapToImageSrc } from '@/lib/utils/homeImageUrl'
 import { useRouter } from 'next/router'
 import { useImperativeHandle, useRef, useState } from 'react'
 import CONFIG from '../config'
+
+const heroThumbCap = () =>
+  siteConfig('HOME_HERO_THUMB_MAX_WIDTH', 560, CONFIG)
+const heroIconCap = () =>
+  siteConfig('HOME_HERO_ICON_MAX_WIDTH', 300, CONFIG)
+const heroCardCap = () =>
+  siteConfig('HOME_HERO_CARD_MAX_WIDTH', 780, CONFIG)
 
 /**
  * 顶部英雄区
@@ -142,7 +150,8 @@ function TagsGroupBar() {
                   'tags-group-icon w-28 h-28 rounded-3xl flex items-center justify-center text-white text-lg font-bold shadow-md'
                 }>
                 <LazyImage
-                  priority={true}
+                  priority={false}
+                  compressMaxWidth={heroIconCap()}
                   src={g.img_1}
                   title={g.title_1}
                   className='w-2/3 hidden xl:block'
@@ -154,7 +163,8 @@ function TagsGroupBar() {
                   'tags-group-icon  mt-5 w-28 h-28 rounded-3xl flex items-center justify-center text-white text-lg font-bold shadow-md'
                 }>
                 <LazyImage
-                  priority={true}
+                  priority={false}
+                  compressMaxWidth={heroIconCap()}
                   src={g.img_2}
                   title={g.title_2}
                   className='w-2/3 hidden xl:block'
@@ -212,6 +222,7 @@ function TopGroup(props) {
               <div className='cursor-pointer h-[164px] group relative flex flex-col w-52 xl:w-full overflow-hidden shadow bg-white dark:bg-black dark:text-white rounded-xl'>
                 <LazyImage
                   priority={index === 0}
+                  compressMaxWidth={heroThumbCap()}
                   className='h-24 object-cover'
                   alt={p?.title}
                   src={p?.pageCoverThumbnail || siteInfo?.pageCover}
@@ -402,7 +413,10 @@ function TodayCard({ cRef, siteInfo }) {
         {/* 封面图 */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={siteInfo?.pageCover}
+          src={applyWidthCapToImageSrc(
+            siteInfo?.pageCover,
+            heroCardCap()
+          )}
           id='today-card-cover'
           className={`${
             isCoverUp ? '' : ' pointer-events-none'

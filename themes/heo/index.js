@@ -151,6 +151,11 @@ const LayoutBase = props => {
  * @returns
  */
 const LayoutIndex = props => {
+  const homeListCoverMax = siteConfig(
+    'HOME_LIST_COVER_MAX_WIDTH',
+    680,
+    CONFIG
+  )
   return (
     <div id='post-outer-wrapper' className='px-5 md:px-0'>
       {/* 文章分类条 */}
@@ -162,9 +167,15 @@ const LayoutIndex = props => {
       {/* 商品区域标题 */}
       <div className='text-2xl font-bold dark:text-gray-200 mb-4'>所有商品</div>
       {siteConfig('POST_LIST_STYLE') === 'page' ? (
-        <BlogPostListPage {...props} />
+        <BlogPostListPage
+          {...props}
+          listCoverMaxWidth={homeListCoverMax}
+        />
       ) : (
-        <BlogPostListScroll {...props} />
+        <BlogPostListScroll
+          {...props}
+          listCoverMaxWidth={homeListCoverMax}
+        />
       )}
     </div>
   )
@@ -179,6 +190,9 @@ const LayoutPostList = props => {
   const router = useRouter()
   // 纯分页页（/page/2、/page/3...）与首页一致：不显示商品分类网格，也不显示标签筛选条，保持视觉一致
   const isMainPagination = router.route === '/page/[page]'
+  const homeListCoverMax = isMainPagination
+    ? siteConfig('HOME_LIST_COVER_MAX_WIDTH', 680, CONFIG)
+    : undefined
   return (
     <div id='post-outer-wrapper' className='px-5  md:px-0'>
       {/* 文章分类条 */}
@@ -188,9 +202,15 @@ const LayoutPostList = props => {
       {/* 商品区域标题 */}
       <div className='text-2xl font-bold dark:text-gray-200 mb-4'>所有商品</div>
       {siteConfig('POST_LIST_STYLE') === 'page' ? (
-        <BlogPostListPage {...props} />
+        <BlogPostListPage
+          {...props}
+          listCoverMaxWidth={homeListCoverMax}
+        />
       ) : (
-        <BlogPostListScroll {...props} />
+        <BlogPostListScroll
+          {...props}
+          listCoverMaxWidth={homeListCoverMax}
+        />
       )}
     </div>
   )

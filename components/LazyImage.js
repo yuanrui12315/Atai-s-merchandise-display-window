@@ -1,4 +1,5 @@
 import { siteConfig } from '@/lib/config'
+import { applyWidthCapToImageSrc } from '@/lib/utils/homeImageUrl'
 import Head from 'next/head'
 import { useEffect, useRef, useState } from 'react'
 
@@ -19,7 +20,9 @@ export default function LazyImage({
   title,
   onLoad,
   onClick,
-  style
+  style,
+  /** 仅首页/列表卡等传入：限制请求宽度以加速；详情页勿传 */
+  compressMaxWidth
 }) {
   const maxWidth = siteConfig('IMAGE_COMPRESS_WIDTH')
   const defaultPlaceholderSrc = siteConfig('IMG_LAZY_LOAD_PLACEHOLDER')
@@ -66,7 +69,9 @@ export default function LazyImage({
 
   useEffect(() => {
     const adjustedImageSrc =
-      adjustImgSize(src, maxWidth) || defaultPlaceholderSrc
+      (compressMaxWidth != null && compressMaxWidth > 0
+        ? applyWidthCapToImageSrc(src, compressMaxWidth)
+        : adjustImgSize(src, maxWidth)) || defaultPlaceholderSrc
 
     // 如果是优先级图片，直接加载
     if (priority) {
@@ -129,7 +134,7 @@ export default function LazyImage({
         observer.unobserve(imageRef.current)
       }
     }
-  }, [src, maxWidth, priority])
+  }, [src, maxWidth, priority, compressMaxWidth])
 
   // 动态添加width、height和className属性，仅在它们为有效值时添加
   const imgProps = {
@@ -166,7 +171,15 @@ export default function LazyImage({
       {/* 预加载 */}
       {priority && (
         <Head>
-          <link rel='preload' as='image' href={adjustImgSize(src, maxWidth)} />
+          <link
+            rel='preload'
+            as='image'
+            href={
+              compressMaxWidth != null && compressMaxWidth > 0
+                ? applyWidthCapToImageSrc(src, compressMaxWidth)
+                : adjustImgSize(src, maxWidth)
+            }
+          />
         </Head>
       )}
     </>

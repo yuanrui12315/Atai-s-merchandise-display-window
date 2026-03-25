@@ -71,6 +71,7 @@ alwaysApply: true
 ### 页面 ISR 与图片缓存（分开理解）
 - **NEXT_REVALIDATE_SECOND**：默认 **43200（12 小时）**— 访客访问后超过该时间，后台用 Notion 数据重新生成该页（价格、标题等）。**无需**任何密钥或额外配置。仍要 **30 天** 可在 Vercel 设 **`NEXT_REVALIDATE_SECOND=2592000`**；若 Notion 站点配置表里有 **`NEXT_REVALIDATE_SECOND`** 也会覆盖 `blog.config.js` 默认值。
 - **LIST_REVALIDATE_SECOND**（可选，Vercel 环境变量）：**首页**与**商品列表分页**（`pages/index.js`、`pages/page/[page].js`）的 ISR 间隔为 **`min(NEXT_REVALIDATE_SECOND, LIST_REVALIDATE_SECOND)`**，默认 **900（15 分钟）**。新上架商品在间隔过后由**下一次访问触发再生成**即可出现在「所有商品」，一般不必整站 Redeploy。要更快可设 `300` 等；若设成 **≥** 当前全站 `NEXT_REVALIDATE_SECOND`，则列表页与全站一致（不再单独缩短）。
+- **首页列表图宽度（仅加速、不降详情清晰度）**：`themes/heo/config.js` 中 **`HOME_LIST_COVER_MAX_WIDTH`**（默认 680）、**`HOME_HERO_THUMB_MAX_WIDTH`** / **`HOME_HERO_ICON_MAX_WIDTH`** / **`HOME_HERO_CARD_MAX_WIDTH`** 仅作用于首页 Hero、首页与 `/page/N` 商品卡封面；**商品详情头图与正文图**仍走 **`IMAGE_COMPRESS_WIDTH`（默认 900）**，勿混用。
 - **proxy-image**：图片代理仍 **30 天**（`pages/api/proxy-image.js`），与页面 ISR **无关**，不因改 12 小时而缩短。
 - **BROWSER_CACHE_TTL / CDN_CACHE_TTL**：仍为 **2592000**（30 天）除非另改配置。
 

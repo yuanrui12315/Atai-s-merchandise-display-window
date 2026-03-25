@@ -54,10 +54,10 @@ export default function HomeCategoryGrid(props) {
                     <Image
                       src={imgSrc}
                       alt={category.name}
-                      width={160}
-                      height={160}
-                      sizes='(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw'
-                      loading={index < 12 ? 'eager' : 'lazy'}
+                      width={256}
+                      height={256}
+                      sizes='(max-width: 1024px) 140px, 192px'
+                      loading={index < 6 ? 'eager' : 'lazy'}
                       className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
                     />
                   ) : (
