@@ -38,7 +38,7 @@ alwaysApply: true
 - **置顶逻辑**：Notion 数字列 **「首页置顶」**（列名可 `NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN`）；`1` 最左、`2` 其次…；`0`/空=不参与
 - 优先级：① Notion 置顶 ② `NEXT_PUBLIC_HERO_PINNED_SLUGS` ③ 推荐标签 ④ 最近更新
 - **条数**：`themes/heo/config.js` 的 `HEO_HERO_TOP_MAX` 或 `NEXT_PUBLIC_HEO_HERO_TOP_MAX`，默认 **24**，最大 **80**
-- **生效时间**：页面 ISR 默认约 **12 小时**（`NEXT_REVALIDATE_SECOND`，可改 env）；改价后要**立刻**看到 → **`/api/revalidate`**（配 `REVALIDATE_SECRET`）或 **Vercel Redeploy**
+- **生效时间**：页面 ISR 默认约 **12 小时**（`NEXT_REVALIDATE_SECOND`，可改 env）；改价后一般**自动**跟上，无需配密码。若要**立刻**见可 **Vercel Redeploy**。
 
 ### Vercel 构建失败「429 Too Many Requests」
 - **成因**：`next build` 时多 worker 并行请求 Notion，易触发官方限流；日志里常见 `[API<<--异常]: HTTPError: 429`、`slug-props-article`，以及 `Jest worker ... child process exceptions`（多为子进程里 API 异常退出，不一定是业务代码写错）。
@@ -69,10 +69,7 @@ alwaysApply: true
 ## 性能与缓存（面向国内用户，客户无 VPN）
 
 ### 页面 ISR 与图片缓存（分开理解）
-- **NEXT_REVALIDATE_SECOND**：默认 **43200（12 小时）**— 访客访问后超过该时间，后台用 Notion 数据重新生成该页（价格、标题等比原 30 天更易更新）。仍要 **30 天** 可在 Vercel 设 **`NEXT_REVALIDATE_SECOND=2592000`**；若 Notion 站点配置表里有 **`NEXT_REVALIDATE_SECOND`** 也会覆盖 `blog.config.js` 默认值。
-- **按需刷新（不必整站 Redeploy）**：`pages/api/revalidate.js`。Vercel 设 **`REVALIDATE_SECRET`**（随机长串），浏览器访问：  
-  `https://你的域名/api/revalidate?secret=密钥&path=/`  
-  刷新单页：`path=/article/商品slug`；多条路径用英文逗号。改价后想立刻生效可刷首页 `path=/` 和对应商品路径。
+- **NEXT_REVALIDATE_SECOND**：默认 **43200（12 小时）**— 访客访问后超过该时间，后台用 Notion 数据重新生成该页（价格、标题等）。**无需**任何密钥或额外配置。仍要 **30 天** 可在 Vercel 设 **`NEXT_REVALIDATE_SECOND=2592000`**；若 Notion 站点配置表里有 **`NEXT_REVALIDATE_SECOND`** 也会覆盖 `blog.config.js` 默认值。
 - **proxy-image**：图片代理仍 **30 天**（`pages/api/proxy-image.js`），与页面 ISR **无关**，不因改 12 小时而缩短。
 - **BROWSER_CACHE_TTL / CDN_CACHE_TTL**：仍为 **2592000**（30 天）除非另改配置。
 

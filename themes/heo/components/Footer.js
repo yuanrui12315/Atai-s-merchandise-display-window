@@ -23,7 +23,7 @@ const Footer = () => {
       <div className='w-full pt-2'>
         <SocialButton />
         {/* 年龄限制警告 */}
-        <div className='mt-4 mx-4 lg:mx-8 max-w-2xl mx-auto'>
+        <div className='mt-4 px-4 lg:px-8 max-w-2xl mx-auto'>
           <p className='text-center text-sm lg:text-base font-semibold text-amber-700 dark:text-amber-400 bg-amber-50/90 dark:bg-amber-900/20 border border-amber-300 dark:border-amber-600/50 rounded-xl px-5 py-3 shadow-sm'>
             <span className='inline-block mr-1.5' aria-hidden>🔞</span>
             警告：本店所售产品不适合以下人群使用：未满18周岁的未成年人以及孕妇。订购产品的顾客必须年满18周岁。
