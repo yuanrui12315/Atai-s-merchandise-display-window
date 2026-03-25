@@ -2,6 +2,7 @@ import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { getGlobalData, getPostBlocks } from '@/lib/db/getSiteData'
 import { DynamicLayout } from '@/themes/theme'
+import { revalidateSecondsForProductList } from '@/lib/utils/revalidateListPages'
 
 /**
  * 文章列表分页
@@ -61,15 +62,16 @@ export async function getStaticProps({ params: { page }, locale }) {
   }
 
   delete props.allPages
+  const globalRev = siteConfig(
+    'NEXT_REVALIDATE_SECOND',
+    BLOG.NEXT_REVALIDATE_SECOND,
+    props.NOTION_CONFIG
+  )
   return {
     props,
     revalidate: process.env.EXPORT
       ? undefined
-      : siteConfig(
-          'NEXT_REVALIDATE_SECOND',
-          BLOG.NEXT_REVALIDATE_SECOND,
-          props.NOTION_CONFIG
-        )
+      : revalidateSecondsForProductList(globalRev)
   }
 }
 

@@ -7,6 +7,7 @@ import { generateSitemapXml } from '@/lib/sitemap.xml'
 import { DynamicLayout } from '@/themes/theme'
 import { generateRedirectJson } from '@/lib/redirect'
 import { checkDataFromAlgolia } from '@/lib/plugins/algolia'
+import { revalidateSecondsForProductList } from '@/lib/utils/revalidateListPages'
 
 /**
  * 首页布局
@@ -73,15 +74,17 @@ export async function getStaticProps(req) {
 
   delete props.allPages
 
+  const globalRev = siteConfig(
+    'NEXT_REVALIDATE_SECOND',
+    BLOG.NEXT_REVALIDATE_SECOND,
+    props.NOTION_CONFIG
+  )
+
   return {
     props,
     revalidate: process.env.EXPORT
       ? undefined
-      : siteConfig(
-          'NEXT_REVALIDATE_SECOND',
-          BLOG.NEXT_REVALIDATE_SECOND,
-          props.NOTION_CONFIG
-        )
+      : revalidateSecondsForProductList(globalRev)
   }
 }
 
