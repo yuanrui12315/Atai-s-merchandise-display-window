@@ -20,7 +20,11 @@ const BLOG = {
   LANG: process.env.NEXT_PUBLIC_LANG || 'zh-CN',
   SINCE: 2021,
   PSEUDO_STATIC: false,
-  NEXT_REVALIDATE_SECOND: 2592000, // 30天缓存，国内访问更快
+  NEXT_REVALIDATE_SECOND:
+    process.env.NEXT_REVALIDATE_SECOND != null &&
+    String(process.env.NEXT_REVALIDATE_SECOND).trim() !== ''
+      ? Number(process.env.NEXT_REVALIDATE_SECOND)
+      : 43200,
   APPEARANCE: 'light',
   APPEARANCE_DARK_TIME: [18, 6],
 

@@ -19,7 +19,12 @@ const BLOG = {
   LANG: process.env.NEXT_PUBLIC_LANG || 'zh-CN',
   SINCE: 2021,
   PSEUDO_STATIC: false,
-  NEXT_REVALIDATE_SECOND: 2592000, // 30天缓存，大幅减少 Notion 请求，国内访问更快
+  // 页面 ISR：有人访问且超过该秒数后后台从 Notion 拉新数据。默认 12 小时（价格等比 30 天易更新）；仍想 30 天可设环境变量 NEXT_REVALIDATE_SECOND=2592000 或 Notion 配置表覆盖
+  NEXT_REVALIDATE_SECOND:
+    process.env.NEXT_REVALIDATE_SECOND != null &&
+    String(process.env.NEXT_REVALIDATE_SECOND).trim() !== ''
+      ? Number(process.env.NEXT_REVALIDATE_SECOND)
+      : 43200,
   APPEARANCE: 'light',
   APPEARANCE_DARK_TIME: [18, 6],
 
