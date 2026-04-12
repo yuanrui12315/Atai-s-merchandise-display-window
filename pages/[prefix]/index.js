@@ -12,6 +12,7 @@ import md5 from 'js-md5'
 import { useRouter } from 'next/router'
 import { idToUuid } from 'notion-utils'
 import { useEffect, useState } from 'react'
+import { notionIdsEqual } from '@/lib/utils/pageId'
 
 /**
  * 根据notion的slug访问页面
@@ -74,8 +75,8 @@ const Slug = props => {
     }
     // 文章解锁后生成目录与内容
     if (post?.blockMap?.block) {
-      post.content = Object.keys(post.blockMap.block).filter(
-        key => post.blockMap.block[key]?.value?.parent_id === post.id
+      post.content = Object.keys(post.blockMap.block).filter(key =>
+        notionIdsEqual(post.blockMap.block[key]?.value?.parent_id, post.id)
       )
       post.toc = getPageTableOfContents(post, post.blockMap)
     }
