@@ -153,7 +153,7 @@ const LayoutBase = props => {
 const LayoutIndex = props => {
   const homeListCoverMax = siteConfig(
     'HOME_LIST_COVER_MAX_WIDTH',
-    680,
+    480,
     CONFIG
   )
   return (
@@ -191,7 +191,7 @@ const LayoutPostList = props => {
   // 纯分页页（/page/2、/page/3...）与首页一致：不显示商品分类网格，也不显示标签筛选条，保持视觉一致
   const isMainPagination = router.route === '/page/[page]'
   const homeListCoverMax = isMainPagination
-    ? siteConfig('HOME_LIST_COVER_MAX_WIDTH', 680, CONFIG)
+    ? siteConfig('HOME_LIST_COVER_MAX_WIDTH', 480, CONFIG)
     : undefined
   return (
     <div id='post-outer-wrapper' className='px-5  md:px-0'>

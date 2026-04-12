@@ -72,7 +72,8 @@ const CONFIG = {
   // 首页 Hero 横滑条最多展示条数（Notion「首页置顶」、环境变量 slug 列表）；1–80，默认 24
   HEO_HERO_TOP_MAX: Number(process.env.NEXT_PUBLIC_HEO_HERO_TOP_MAX) || 24,
   // 仅首页/主列表分页：限制封面请求宽度（快）；商品详情页正文与头图仍用全站 IMAGE_COMPRESS_WIDTH（默认 900）
-  HOME_LIST_COVER_MAX_WIDTH: 680,
+  // 480：五列卡片约 200px 宽×2 倍屏足够；较原 680 单张体积明显更小，弱网/国产浏览器更易加载
+  HOME_LIST_COVER_MAX_WIDTH: 480,
   HOME_HERO_THUMB_MAX_WIDTH: 560,
   HOME_HERO_ICON_MAX_WIDTH: 300,
   HOME_HERO_CARD_MAX_WIDTH: 780,
