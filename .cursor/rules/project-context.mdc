@@ -16,6 +16,31 @@ alwaysApply: true
 
 ---
 
+## ⚠️ 强制：修 Bug / 改业务代码前（用户明确要求）
+
+**用户约定：出现线上或本地异常时，助手在修订代码前，必须先向用户索要证据与日志，再动手；禁止一上来就凭猜测改一大片。**
+
+1. **先索要（至少择一，能多则多）**  
+   - **Vercel → Logs**：含 **`at ... (` 堆栈** 的几行，或 **`[NOTION_SITE_DATA]`** 整行 JSON；  
+   - **浏览器 F12**：Console 红色报错全文；Network 里失败请求的 **状态码 + Request URL**；  
+   - **复现步骤**：哪个 URL、必现还是偶发。  
+
+2. **再改代码**  
+   在拿到证据并**对齐堆栈/错误信息**后再修改；说明「改什么、对应日志里哪一条」。  
+
+3. **禁止**  
+   在**没有任何**运行时日志、堆栈或用户已贴出的明确报错行的情况下，**主动**连续多处「试探性」修改业务/Notion/缓存逻辑。  
+
+4. **例外（可不经由完整日志）**  
+   - 用户**明示**「不用日志、直接按我说的改」；  
+   - **单点**修改且用户已给出**完整**报错位置与期望行为；  
+   - 纯文案、注释、明显笔误。  
+
+5. **预期**  
+   无人能承诺「百分百一次修好」，但**证据优先**可最大限度避免瞎改；若证据不足，应先说明还缺什么，而不是先改代码。
+
+---
+
 ## 项目性质
 - **私人商品展示网站**，不对外公开推广
 - **禁止搜索引擎收录**：ROBOTS_ALLOW 必须保持 false，切勿改为 true
@@ -64,7 +89,7 @@ alwaysApply: true
 - **Redis 占位毒化**：构建期会 **`ENABLE_CACHE=true`** 并读 Redis；若曾把 **`slug=oops` 占位**写入 **`site_data_*`**，后续构建会一直命中缓存、**不再请求 Notion**。**`lib/cache/cache_manager.js`**：`site_data_*` **不把占位当有效缓存**（读写均跳过）；**`getDataFromCache`** 与 **`setDataToCache`** 一样在 **Vercel 生产运行时**不读写（避免「只读 Redis、运行期不写」长期吃脏数据）；搜索等路径可用 **`force`** 仍读缓存。
 - **工程侧**：`blog.config.js` **`trim`**；**`next build`** 无 `NOTION_PAGE_ID` 时抛错。
 - **可观测性（定位不靠猜）**：失败路径会打 **`[NOTION_SITE_DATA]`** + JSON（含 **`reason`**：`NOTION_PAGE_ID_EMPTY` / `NO_PAGE_RECORDMAP` / `NOT_DATABASE` / `EMPTY_ARTICLE_LIST` / `GET_GLOBAL_DATA_THROW` 等）。在 Vercel → Logs 搜该前缀。可选：环境变量 **`SITE_DIAG_SECRET`**（≥8 字符）后 **`GET /api/health-site`**，带 **`Authorization: Bearer <secret>`**，返回是否占位、列表条数、ID/Token 是否已配置（不泄露密钥）。
-- **排障顺序（助手侧）**：线上异常**优先**向用户索要 **Vercel → Logs** 中带 **`at ... (` 的文件与行** 的堆栈、或 **`[NOTION_SITE_DATA]`** 整行 JSON，**有证据再改代码**；无运行时日志时只可说明「可能原因」与「待验证」，**不得**把推测说成已定位根因。
+- **排障顺序（助手侧）**：与上文 **「修 Bug 前先索要证据」** 一致；线上异常**优先**向用户索要 **Vercel → Logs** 堆栈或 **`[NOTION_SITE_DATA]`** 整行，**有证据再改代码**；无运行时日志时只可说明「可能原因」与「待验证」，**不得**把推测说成已定位根因。
 - **`GET_GLOBAL_DATA_THROW` + `ids is not defined`**：曾由 **`lib/notion/getAllPageIds.js`** 的 `catch` 误引用 **`ids`**（该变量仅在内部 `if` 块内声明）导致 **`ReferenceError`**，全站 **`getGlobalData`** 失败。已改为 **`catch` 只打 `error`**，并对 **`collectionQuery[collectionId]`** 做存在性判断与 **`queryForCollection`** 回退。**无需 REDIS** 也会触发。
 
 ### Vercel 部署 `yarn install` 失败：`mirrors.cloud.tencent.com` 525
