@@ -53,8 +53,9 @@ alwaysApply: true
 
 ### 商品详情正文/图片整段空白（首页列表却有图）
 - **成因**：`react-notion-x` 的 `NotionBlockRenderer` 未传 **`blockId`** 时默认取 **`Object.keys(recordMap.block)[0]`**，而 Notion 返回的 block map **键顺序不保证**，第一个键往往不是当前页的 **`type===page`** 根块 → 子内容（含图片）不挂到正确树上。
-- **成因 2（6.x）**：`NotionBlockRenderer` 直接读 **`recordMap.block[id].value`**；若接口返回 **`value` 套一层**（与 `getSiteData` 里对数据库块的展开相同），外层无 **`properties`**，不展开则 **无 `.type` / `.content`**，整页空白。
-- **修复**：`components/NotionPage.js` 传 **`blockId` / `rootPageId`**；**`unwrapRecordMapBlockValueLayers`**（`getPostBlocks` 与渲染前各执行）；**`signed_urls`** 键互备 + **`mirrorSignedUrlsForBlockIds`**。
+- **成因 2（6.x）**：`NotionBlockRenderer` 直接读 **`recordMap.block[id].value`**；若接口返回 **`value` 套一层**，不展开则 **无 `.type` / `.content`**，整页空白。
+- **修复**：`unwrapRecordMapBlockValueLayers` 仅当 **外层无 `type`、内层 `value` 有 `type`** 时展开（**勿**用 `!properties` 判断：合法 `collection_view_page` 的 `properties` 可为 `undefined`，误展开会破坏根数据库块 → 全站 **`无法获取 Notion 数据`** 占位）。
+- **其它**：`NotionPage` 传 **`blockId` / `rootPageId`**；**`signed_urls`** 互备 + **`mirrorSignedUrlsForBlockIds`**。
 
 ## 依赖漏洞
 - GitHub 提示的 19 个漏洞**暂时可忽略**，此前已处理过一批，剩余的可不处理
