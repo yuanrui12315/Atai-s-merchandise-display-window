@@ -62,6 +62,10 @@ alwaysApply: true
 - **误判数据库**：占位文案里已显示 **当前 `xxxxxxxx…`（32 位 hex）** 时，说明 **ID 已传入**，多为 **`recordMap.block[id].value` 套娃**（外层无 `type`），`convertNotionToSiteData` 直接读 `.value` 得不到 **`collection_view_page` / `collection_view`** → 误判非数据库 → `EmptyData`。已在 **`getRecordMapEntryBlockValue`** 中按层展开后再判型。
 - **工程侧**：`blog.config.js` **`trim`**；站点数据缓存键 **`site_data_v3_`**；**`next build`** 无 `NOTION_PAGE_ID` 时抛错。
 
+### Vercel 部署 `yarn install` 失败：`mirrors.cloud.tencent.com` 525
+- **成因**：`yarn.lock` 里若 **`resolved` 锁成腾讯云 npm 镜像**，海外构建机访问常 **HTTP 525**。
+- **约定**：`.npmrc` 使用 **`registry=https://registry.npmjs.org/`**；勿把 **tencent 镜像 URL** 提交进 `yarn.lock`（本地若用国内源装依赖，装完应用官方源重写 lock 再提交）。
+
 ## 依赖漏洞
 - GitHub 提示的 19 个漏洞**暂时可忽略**，此前已处理过一批，剩余的可不处理
 - 不要建议用户去修复这些漏洞，除非用户主动提出
