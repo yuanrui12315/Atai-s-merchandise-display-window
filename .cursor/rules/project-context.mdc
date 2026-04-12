@@ -47,6 +47,10 @@ alwaysApply: true
 - **构建耗时**：限流生效后单次部署 **5～10+ 分钟** 属正常（307 页量级 + 每条 Notion HTTP 约 900ms 间隔 + 全局串行）；要速度需承担再次 429 风险，一般不建议动。
 - **构建黄条**：`engines` 已固定 **`20.x`** 与 Vercel 一致；`react-notion-x` 的 yarn peer 警告可忽略；`data for page ... exceeds 128 kB` 来自 Next 对 **getStaticProps 体积**提示，Notion 全站数据进 props 时常见，非部署失败，长期可做数据瘦身（另议）。
 
+### Vercel 构建失败 prerender：`Cannot read properties of undefined (reading 'replace')`
+- **成因**：`react-notion-x` 渲染块时用 `notion-utils` 的 `uuidToId(block.id)`；部分 block 的 **`value.id` 缺失**（如同步块展开后子块未带 id）会在 SSR 预渲染时崩溃；与「点了几次 Redeploy」无直接关系。
+- **缓解**：`lib/notion/ensureRecordMapBlockIds.js` 在 `getPostBlocks` 转换后及 `NotionPage` 渲染前用 **recordMap 的 key 补齐 `value.id`**；`mapPageUrl` 对空 id 做兜底。
+
 ## 依赖漏洞
 - GitHub 提示的 19 个漏洞**暂时可忽略**，此前已处理过一批，剩余的可不处理
 - 不要建议用户去修复这些漏洞，除非用户主动提出

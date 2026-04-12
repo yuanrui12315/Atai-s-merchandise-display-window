@@ -1,4 +1,5 @@
 import { siteConfig } from '@/lib/config'
+import { ensureRecordMapBlockIds } from '@/lib/notion/ensureRecordMapBlockIds'
 import { compressImage, mapImgUrl } from '@/lib/notion/mapImage'
 import { isBrowser, loadExternalResource } from '@/lib/utils'
 import mediumZoom from '@fisch0920/medium-zoom'
@@ -118,6 +119,8 @@ const NotionPage = ({ post, className }) => {
 
   // 占位页（如 /oops）无 blockMap，NotionRenderer 会 crash，需渲染兜底内容
   const recordMap = post?.blockMap
+    ? ensureRecordMapBlockIds(post.blockMap)
+    : post?.blockMap
   const blockObj = recordMap?.block ?? null
   const hasValidRecordMap = blockObj && typeof blockObj === 'object' && Object.keys(blockObj).length > 0
 
@@ -211,8 +214,8 @@ const autoScrollToHash = () => {
  * @returns
  */
 const mapPageUrl = id => {
-  // return 'https://www.notion.so/' + id.replace(/-/g, '')
-  return '/' + id.replace(/-/g, '')
+  if (id == null || id === '') return '/'
+  return '/' + String(id).replace(/-/g, '')
 }
 
 /**
