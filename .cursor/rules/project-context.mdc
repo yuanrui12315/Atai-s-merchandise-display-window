@@ -59,7 +59,8 @@ alwaysApply: true
 
 ### 全站只剩「无法获取 Notion 数据」占位商品（slug=oops）
 - **常见原因**：Vercel **Production** 未配置 **`NOTION_PAGE_ID`** / **`NOTION_ACCESS_TOKEN`**，或值含**首尾空格/换行**；或 **`site_data_*` 缓存**中仍为旧错误结果。
-- **工程侧**：`blog.config.js` 对 `NOTION_PAGE_ID` / `NOTION_ACCESS_TOKEN` 做 **`trim`**；站点数据缓存键含 **`site_data_v2_`** 以强制刷新；**`next build`** 且未配置 `NOTION_PAGE_ID` 时 **`getGlobalData` 抛错**避免带着占位数据部署。
+- **误判数据库**：占位文案里已显示 **当前 `xxxxxxxx…`（32 位 hex）** 时，说明 **ID 已传入**，多为 **`recordMap.block[id].value` 套娃**（外层无 `type`），`convertNotionToSiteData` 直接读 `.value` 得不到 **`collection_view_page` / `collection_view`** → 误判非数据库 → `EmptyData`。已在 **`getRecordMapEntryBlockValue`** 中按层展开后再判型。
+- **工程侧**：`blog.config.js` **`trim`**；站点数据缓存键 **`site_data_v3_`**；**`next build`** 无 `NOTION_PAGE_ID` 时抛错。
 
 ## 依赖漏洞
 - GitHub 提示的 19 个漏洞**暂时可忽略**，此前已处理过一批，剩余的可不处理
