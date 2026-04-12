@@ -2,9 +2,15 @@ const BLOG = {
   POST_LIST_STYLE: 'page',
   API_BASE_URL: process.env.API_BASE_URL || 'https://www.notion.so/api/v3',
 
-  // 从 Vercel 环境变量读取，不要在此处写密钥
-  NOTION_PAGE_ID: process.env.NOTION_PAGE_ID,
-  NOTION_ACCESS_TOKEN: process.env.NOTION_ACCESS_TOKEN,
+  // 从 Vercel 环境变量读取，不要在此处写密钥（trim 避免复制进换行/空格导致整站 EmptyData）
+  NOTION_PAGE_ID:
+    typeof process.env.NOTION_PAGE_ID === 'string'
+      ? process.env.NOTION_PAGE_ID.trim()
+      : process.env.NOTION_PAGE_ID,
+  NOTION_ACCESS_TOKEN:
+    typeof process.env.NOTION_ACCESS_TOKEN === 'string'
+      ? process.env.NOTION_ACCESS_TOKEN.trim()
+      : process.env.NOTION_ACCESS_TOKEN,
 
   THEME: 'heo', 
   SEARCH: true,  

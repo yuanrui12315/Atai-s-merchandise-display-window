@@ -57,6 +57,10 @@ alwaysApply: true
 - **修复**：`unwrapRecordMapBlockValueLayers` 仅当 **外层无 `type`、内层 `value` 有 `type`** 时展开（**勿**用 `!properties` 判断：合法 `collection_view_page` 的 `properties` 可为 `undefined`，误展开会破坏根数据库块 → 全站 **`无法获取 Notion 数据`** 占位）。
 - **其它**：`NotionPage` 传 **`blockId` / `rootPageId`**；**`signed_urls`** 互备 + **`mirrorSignedUrlsForBlockIds`**。
 
+### 全站只剩「无法获取 Notion 数据」占位商品（slug=oops）
+- **常见原因**：Vercel **Production** 未配置 **`NOTION_PAGE_ID`** / **`NOTION_ACCESS_TOKEN`**，或值含**首尾空格/换行**；或 **`site_data_*` 缓存**中仍为旧错误结果。
+- **工程侧**：`blog.config.js` 对 `NOTION_PAGE_ID` / `NOTION_ACCESS_TOKEN` 做 **`trim`**；站点数据缓存键含 **`site_data_v2_`** 以强制刷新；**`next build`** 且未配置 `NOTION_PAGE_ID` 时 **`getGlobalData` 抛错**避免带着占位数据部署。
+
 ## 依赖漏洞
 - GitHub 提示的 19 个漏洞**暂时可忽略**，此前已处理过一批，剩余的可不处理
 - 不要建议用户去修复这些漏洞，除非用户主动提出
