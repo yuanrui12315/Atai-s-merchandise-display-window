@@ -3,7 +3,9 @@ import { ensureRecordMapBlockIds } from '@/lib/notion/ensureRecordMapBlockIds'
 import { compressImage, mapImgUrl } from '@/lib/notion/mapImage'
 import {
   augmentSignedUrlsAlternateKeyForms,
-  resolveNotionRootBlockId
+  mirrorSignedUrlsForBlockIds,
+  resolveNotionRootBlockId,
+  unwrapRecordMapBlockValueLayers
 } from '@/lib/notion/recordMapRenderer'
 import { isBrowser, loadExternalResource } from '@/lib/utils'
 import mediumZoom from '@fisch0920/medium-zoom'
@@ -127,8 +129,10 @@ const NotionPage = ({ post, className }) => {
   const recordMap = useMemo(() => {
     if (!post?.blockMap) return null
     const cloned = deepClone(post.blockMap)
+    unwrapRecordMapBlockValueLayers(cloned)
     ensureRecordMapBlockIds(cloned)
     augmentSignedUrlsAlternateKeyForms(cloned)
+    mirrorSignedUrlsForBlockIds(cloned)
     return cloned
   }, [post?.blockMap, post?.id])
 
