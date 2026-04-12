@@ -60,6 +60,7 @@ alwaysApply: true
 ### 全站只剩「无法获取 Notion 数据」占位商品（slug=oops）
 - **常见原因**：Vercel **Production** 未配置 **`NOTION_PAGE_ID`** / **`NOTION_ACCESS_TOKEN`**，或值含**首尾空格/换行**；或 **`site_data_*` 缓存**中仍为旧错误结果。
 - **误判数据库**：占位文案里已显示 **当前 `xxxxxxxx…`（32 位 hex）** 时，说明 **ID 已传入**，多为 **`recordMap.block[id].value` 套娃**（外层无 `type`），`convertNotionToSiteData` 直接读 `.value` 得不到 **`collection_view_page` / `collection_view`** → 误判非数据库 → `EmptyData`。已在 **`getRecordMapEntryBlockValue`** 中按层展开后再判型。
+- **仍占位**：再补 **`findRecordMapBlockEntryForPageId`**（block key 与 pageId 横线/大小写不一致）；**只要有 `collection_id`** 即视为数据库；全表扫描任一块带 **`collection_id`** 的块作 metadata；子块兼容 **`collection_view_page`**。站点缓存键 **`site_data_v4_`**。
 - **工程侧**：`blog.config.js` **`trim`**；站点数据缓存键 **`site_data_v3_`**；**`next build`** 无 `NOTION_PAGE_ID` 时抛错。
 
 ### Vercel 部署 `yarn install` 失败：`mirrors.cloud.tencent.com` 525
