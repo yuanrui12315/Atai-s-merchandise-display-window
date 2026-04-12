@@ -82,6 +82,7 @@ alwaysApply: true
 ### 图片代理（必须开启）
 - **IMAGE_PROXY_ENABLE** 必须为 true，默认开启
 - 国内用户直连 Notion 慢/可能被墙，图片经本站 `/api/proxy-image` 中转，无需 VPN
+- **同步块展开**：`getPostBlocks` 里子块优先用 **`value.id` 作 recordMap 的 key**（与 `signed_urls` 一致）；`NotionPage` 对 **`blockMap` 先深拷贝再补 id**，避免就地改 props 引用导致异常。`mapImgUrl` 在缺 `block.id` 时不拼 `id=undefined`。
 
 ### 图片压缩
 - **IMAGE_COMPRESS_WIDTH: 900**、**IMG_COMPRESS_WIDTH: 900**

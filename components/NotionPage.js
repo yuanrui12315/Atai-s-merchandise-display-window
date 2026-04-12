@@ -5,7 +5,8 @@ import { isBrowser, loadExternalResource } from '@/lib/utils'
 import mediumZoom from '@fisch0920/medium-zoom'
 import 'katex/dist/katex.min.css'
 import dynamic from 'next/dynamic'
-import { useEffect, useRef } from 'react'
+import { deepClone } from '@/lib/utils'
+import { useEffect, useMemo, useRef } from 'react'
 import { NotionRenderer } from 'react-notion-x'
 
 /**
@@ -118,9 +119,12 @@ const NotionPage = ({ post, className }) => {
   }, [post])
 
   // 占位页（如 /oops）无 blockMap，NotionRenderer 会 crash，需渲染兜底内容
-  const recordMap = post?.blockMap
-    ? ensureRecordMapBlockIds(post.blockMap)
-    : post?.blockMap
+  // 深拷贝后再补 id，避免就地改 post.blockMap 与全站 props 引用共享导致异常（含图片 URL / 签名）
+  const recordMap = useMemo(() => {
+    if (!post?.blockMap) return null
+    const cloned = deepClone(post.blockMap)
+    return ensureRecordMapBlockIds(cloned)
+  }, [post?.blockMap, post?.id])
   const blockObj = recordMap?.block ?? null
   const hasValidRecordMap = blockObj && typeof blockObj === 'object' && Object.keys(blockObj).length > 0
 
