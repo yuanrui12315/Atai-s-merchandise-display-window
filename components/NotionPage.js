@@ -1,6 +1,10 @@
 import { siteConfig } from '@/lib/config'
 import { ensureRecordMapBlockIds } from '@/lib/notion/ensureRecordMapBlockIds'
 import { compressImage, mapImgUrl } from '@/lib/notion/mapImage'
+import {
+  augmentSignedUrlsAlternateKeyForms,
+  resolveNotionRootBlockId
+} from '@/lib/notion/recordMapRenderer'
 import { isBrowser, loadExternalResource } from '@/lib/utils'
 import mediumZoom from '@fisch0920/medium-zoom'
 import 'katex/dist/katex.min.css'
@@ -123,8 +127,16 @@ const NotionPage = ({ post, className }) => {
   const recordMap = useMemo(() => {
     if (!post?.blockMap) return null
     const cloned = deepClone(post.blockMap)
-    return ensureRecordMapBlockIds(cloned)
+    ensureRecordMapBlockIds(cloned)
+    augmentSignedUrlsAlternateKeyForms(cloned)
+    return cloned
   }, [post?.blockMap, post?.id])
+
+  const rootBlockId = useMemo(
+    () => resolveNotionRootBlockId(recordMap, post?.id),
+    [recordMap, post?.id]
+  )
+
   const blockObj = recordMap?.block ?? null
   const hasValidRecordMap = blockObj && typeof blockObj === 'object' && Object.keys(blockObj).length > 0
 
@@ -135,6 +147,8 @@ const NotionPage = ({ post, className }) => {
       {recordMap && hasValidRecordMap ? (
         <NotionRenderer
           recordMap={recordMap}
+          rootPageId={post?.id}
+          blockId={rootBlockId || undefined}
           mapPageUrl={mapPageUrl}
           mapImageUrl={mapImgUrl}
         components={{

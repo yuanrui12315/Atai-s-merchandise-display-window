@@ -51,6 +51,10 @@ alwaysApply: true
 - **成因**：`react-notion-x` 渲染块时用 `notion-utils` 的 `uuidToId(block.id)`；部分 block 的 **`value.id` 缺失**（如同步块展开后子块未带 id）会在 SSR 预渲染时崩溃；与「点了几次 Redeploy」无直接关系。
 - **缓解**：`lib/notion/ensureRecordMapBlockIds.js` 在 `getPostBlocks` 转换后及 `NotionPage` 渲染前用 **recordMap 的 key 补齐 `value.id`**；`mapPageUrl` 对空 id 做兜底。
 
+### 商品详情正文/图片整段空白（首页列表却有图）
+- **成因**：`react-notion-x` 的 `NotionBlockRenderer` 未传 **`blockId`** 时默认取 **`Object.keys(recordMap.block)[0]`**，而 Notion 返回的 block map **键顺序不保证**，第一个键往往不是当前页的 **`type===page`** 根块 → 子内容（含图片）不挂到正确树上。
+- **修复**：`components/NotionPage.js` 传 **`blockId={resolveNotionRootBlockId(recordMap, post.id)}`** 与 **`rootPageId={post.id}`**（见 `lib/notion/recordMapRenderer.js`）；并对 **`signed_urls`** 做带/不带横线的 **id 键互备**，避免 `asset` 里 `signed_urls[block.id]` 取不到签名图。
+
 ## 依赖漏洞
 - GitHub 提示的 19 个漏洞**暂时可忽略**，此前已处理过一批，剩余的可不处理
 - 不要建议用户去修复这些漏洞，除非用户主动提出
