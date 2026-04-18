@@ -55,6 +55,7 @@ alwaysApply: true
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
+- **`/search/关键词` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；正文数据来自与 `getPostBlocks.getPage` 相同的缓存键 **`page_content_${页面id}`**（`getPageContentText`）。勿与已废弃的 `page_block_` 混淆——曾误用会导致正文永不参与搜索。
 
 ### 「所有商品」列表排序
 - `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）

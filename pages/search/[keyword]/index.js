@@ -1,9 +1,8 @@
 import BLOG from '@/blog.config'
-import { getDataFromCache } from '@/lib/cache/cache_manager'
 import { siteConfig } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
+import { filterPostsByKeyword } from '@/lib/search/filterPostsByKeyword'
 import { DynamicLayout } from '@/themes/theme'
-import { getPageContentText } from '@/lib/notion/getPageContentText'
 
 const Index = props => {
   const theme = siteConfig('THEME', BLOG.THEME, props.NOTION_CONFIG)
@@ -24,7 +23,7 @@ export async function getStaticProps({ params: { keyword }, locale }) {
   const allPosts = allPages?.filter(
     page => page.type === 'Post' && page.status === 'Published'
   )
-  props.posts = await filterByMemCache(allPosts, keyword)
+  props.posts = await filterPostsByKeyword(allPosts, keyword)
   props.postCount = props.posts.length
   const POST_LIST_STYLE = siteConfig(
     'POST_LIST_STYLE',
@@ -57,40 +56,6 @@ export function getStaticPaths() {
     paths: [{ params: { keyword: 'NotionNext' } }],
     fallback: true
   }
-}
-
-/**
- * 在内存缓存中进行全文索引
- * @param {*} allPosts
- * @param keyword 关键词
- * @returns
- */
-async function filterByMemCache(allPosts, keyword) {
-  const filterPosts = []
-  keyword = (keyword || '').trim().toLowerCase()
-  if (!keyword) return allPosts
-  for (const post of allPosts) {
-    const cacheKey = 'page_block_' + post.id
-    const page = await getDataFromCache(cacheKey, true)
-    const tagContent =
-      post?.tags && Array.isArray(post?.tags) ? post?.tags.join(' ') : ''
-    const categoryContent =
-      post.category && Array.isArray(post.category)
-        ? post.category.join(' ')
-        : ''
-    const articleInfo = post.title + post.summary + tagContent + categoryContent
-    let hit = articleInfo.toLowerCase().indexOf(keyword) > -1
-    const contentText = getPageContentText(post, page)
-    post.results = []
-    if (typeof contentText === 'string' && contentText.toLowerCase().indexOf(keyword) > -1) {
-      hit = true
-      post.results.push(contentText.slice(0, 200))
-    }
-    if (hit) {
-      filterPosts.push(post)
-    }
-  }
-  return filterPosts
 }
 
 export default Index
