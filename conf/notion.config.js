@@ -27,8 +27,8 @@ module.exports = {
       process.env.NEXT_PUBLIC_NOTION_PROPERTY_STATUS_PUBLISH || 'Published', // 当status状态值与此相同时为发布，可以为中文
     status_invisible:
       process.env.NEXT_PUBLIC_NOTION_PROPERTY_STATUS_INVISIBLE || 'Invisible', // 当status状态值与此相同时为隐藏发布，可以为中文 ， 除此之外其他页面状态不会显示在博客上
-    // 摘要列：Notion 里可显示为「摘要」；仍兼容英文列名 summary（见 getPageProperties SCHEMA_NAME_ALTERNATIVES）
-    summary: process.env.NEXT_PUBLIC_NOTION_PROPERTY_SUMMARY || '摘要',
+    // 列表/卡片短文案：Notion 列名默认「商品描述」；仍兼容 summary、摘要、描述（见 getPageProperties）
+    summary: process.env.NEXT_PUBLIC_NOTION_PROPERTY_SUMMARY || '商品描述',
     slug: process.env.NEXT_PUBLIC_NOTION_PROPERTY_SLUG || 'slug',
     category: process.env.NEXT_PUBLIC_NOTION_PROPERTY_CATEGORY || 'category', // 支持中文列名如 分类
     date: process.env.NEXT_PUBLIC_NOTION_PROPERTY_DATE || 'date',
