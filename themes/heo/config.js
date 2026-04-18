@@ -61,7 +61,10 @@ const CONFIG = {
     '阿里山系列': '/images/categories/阿里山系列.jpg',
     '高端美免美税': '/images/categories/高端美免美税.jpg',
     '卡比龙系列': '/images/categories/卡比龙系列.jpg',
-    '日免日税系列': '/images/categories/日免日税系列.jpg'
+    '日免日税系列': '/images/categories/日免日税系列.jpg',
+    '散拼系列': '/images/categories/散拼系列.jpg',
+    '正品越南本土烟': '/images/categories/正品越南本土烟.jpg',
+    '好利时系列': '/images/categories/好利时系列.png'
   },
 
   // 英雄区右侧是否显示大卡片（分类浏览+商品目录），false 则直接显示 3 个推荐文章
