@@ -40,5 +40,13 @@ module.exports = {
     ext: process.env.NEXT_PUBLIC_NOTION_PROPERTY_EXT || 'ext' // 扩展字段，存放json-string，用于复杂业务
   },
   NOTION_ACTIVE_USER: process.env.NOTION_ACTIVE_USER || '',
-  NOTION_TOKEN_V2: process.env.NOTION_TOKEN_V2 || '' // Useful if you prefer not to make your database public
+  NOTION_TOKEN_V2: process.env.NOTION_TOKEN_V2 || '', // Useful if you prefer not to make your database public
+
+  /**
+   * 仅站内可见性：这些列名（与 Notion 数据库列名完全一致）在构建时从每条商品数据中删除，不进入页面 HTML/前端 props。
+   * 多个列用英文逗号分隔。默认「内部备注」；可在 Vercel 设 NOTION_PRIVATE_PROPERTY_NAMES 覆盖。
+   * 你仍在 Notion App 里照常填写、仅自己查看；网站访客不会看到（亦勿把机密写进会渲染的标题/正文/slug）。
+   */
+  NOTION_PRIVATE_PROPERTY_NAMES:
+    process.env.NOTION_PRIVATE_PROPERTY_NAMES || '内部备注'
 }
