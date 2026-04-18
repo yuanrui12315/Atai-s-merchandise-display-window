@@ -32,11 +32,11 @@ module.exports = {
     slug: process.env.NEXT_PUBLIC_NOTION_PROPERTY_SLUG || 'slug',
     category: process.env.NEXT_PUBLIC_NOTION_PROPERTY_CATEGORY || 'category', // 支持中文列名如 分类
     date: process.env.NEXT_PUBLIC_NOTION_PROPERTY_DATE || 'date',
-    tags: process.env.NEXT_PUBLIC_NOTION_PROPERTY_TAGS || 'tags', // 支持中文列名如 标签
+    tags: process.env.NEXT_PUBLIC_NOTION_PROPERTY_TAGS || '标签', // 仍兼容 tags
     // 首页 Hero 横滑置顶顺序：Notion「数字」类型列，填 1 最前、2 其次…；0 或留空=不参与置顶
     hero_pin:
       process.env.NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN || '首页置顶',
-    price: process.env.NEXT_PUBLIC_NOTION_PROPERTY_PRICE || 'price', 
+    price: process.env.NEXT_PUBLIC_NOTION_PROPERTY_PRICE || '价格', // 仍兼容 price 
     icon: process.env.NEXT_PUBLIC_NOTION_PROPERTY_ICON || 'icon',
     ext: process.env.NEXT_PUBLIC_NOTION_PROPERTY_EXT || 'ext' // 扩展字段，存放json-string，用于复杂业务
   },

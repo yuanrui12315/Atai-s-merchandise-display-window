@@ -51,6 +51,7 @@ alwaysApply: true
 - 商品数据来自 Notion 数据库
 - **Notion 仅自己看的备注**：在数据库增加列（默认列名 **`内部备注`**，与 `conf/notion.config.js` 的 **`NOTION_PRIVATE_PROPERTY_NAMES`** 一致）；构建时在 **`getPageProperties`** 末尾从 post 对象**删除**这些键，**不进入网站**。多列用英文逗号；可设环境变量 **`NOTION_PRIVATE_PROPERTY_NAMES`**。机密勿写标题/正文/slug；持有 **Notion Token** 的服务器仍会拉取 API，访客端不展示。
 - **商品描述（原 summary）列名**：`NOTION_PROPERTY_NAME.summary` 默认 **`商品描述`**（Notion 显示）；仍兼容 **`summary`** / **`摘要`** / **`描述`**，改名不丢内容。
+- **价格 / 标签列名**：默认 **`价格`**、**`标签`**（`NOTION_PROPERTY_NAME.price` / `.tags`）；仍兼容 **`price`**、**`tags`**。
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
