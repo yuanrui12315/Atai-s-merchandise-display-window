@@ -1,7 +1,11 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { getGlobalData, getPost } from '@/lib/db/getSiteData'
-import { checkSlugHasMorThanTwoSlash, processPostData } from '@/lib/utils/post'
+import {
+  checkSlugHasMorThanTwoSlash,
+  normalizeSlugForPath,
+  processPostData
+} from '@/lib/utils/post'
 import { idToUuid } from 'notion-utils'
 import Slug from '..'
 
@@ -31,13 +35,21 @@ export async function getStaticPaths() {
   const { allPages } = await getGlobalData({ from })
   const paths = allPages
     ?.filter(row => checkSlugHasMorThanTwoSlash(row))
-    .map(row => ({
-      params: {
-        prefix: row.slug.split('/')[0],
-        slug: row.slug.split('/')[1],
-        suffix: row.slug.split('/').slice(2)
+    .map(row => {
+      const norm = normalizeSlugForPath(row)
+      const segments = norm.split('/')
+      if (segments.length < 3) return null
+      const suffix = segments.slice(2)
+      if (!suffix.length) return null
+      return {
+        params: {
+          prefix: segments[0],
+          slug: segments[1],
+          suffix
+        }
       }
-    }))
+    })
+    .filter(Boolean)
   return {
     paths: paths,
     fallback: true

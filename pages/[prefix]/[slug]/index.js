@@ -1,7 +1,11 @@
 import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { getGlobalData, getPost } from '@/lib/db/getSiteData'
-import { checkSlugHasOneSlash, processPostData } from '@/lib/utils/post'
+import {
+  checkSlugHasOneSlash,
+  normalizeSlugForPath,
+  processPostData
+} from '@/lib/utils/post'
 import { idToUuid } from 'notion-utils'
 import Slug from '..'
 
@@ -30,9 +34,15 @@ export async function getStaticPaths() {
   // 最终用户可以通过  [domain]/[prefix]/[slug] 路径访问，即这里的 [domain]/article/test
   const paths = allPages
     ?.filter(row => checkSlugHasOneSlash(row))
-    .map(row => ({
-      params: { prefix: row.slug.split('/')[0], slug: row.slug.split('/')[1] }
-    }))
+    .map(row => {
+      const norm = normalizeSlugForPath(row)
+      const segments = norm.split('/')
+      if (segments.length !== 2) return null
+      return {
+        params: { prefix: segments[0], slug: segments[1] }
+      }
+    })
+    .filter(Boolean)
 
   // 增加一种访问路径 允许通过 [category]/[slug] 访问文章
   // 例如文章slug 是 test ，然后文章的分类category是 production

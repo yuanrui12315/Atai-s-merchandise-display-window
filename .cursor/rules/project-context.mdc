@@ -92,6 +92,10 @@ alwaysApply: true
 - **排障顺序（助手侧）**：与上文 **「修 Bug 前先索要证据」** 一致；线上异常**优先**向用户索要 **Vercel → Logs** 堆栈或 **`[NOTION_SITE_DATA]`** 整行，**有证据再改代码**；无运行时日志时只可说明「可能原因」与「待验证」，**不得**把推测说成已定位根因。
 - **`GET_GLOBAL_DATA_THROW` + `ids is not defined`**：曾由 **`lib/notion/getAllPageIds.js`** 的 `catch` 误引用 **`ids`**（该变量仅在内部 `if` 块内声明）导致 **`ReferenceError`**，全站 **`getGlobalData`** 失败。已改为 **`catch` 只打 `error`**，并对 **`collectionQuery[collectionId]`** 做存在性判断与 **`queryForCollection`** 回退。**无需 REDIS** 也会触发。
 
+### Vercel 构建：`Conflicting paths ... /[prefix]/[slug]` 与 `/[prefix]/[slug]/[...suffix]`
+- **成因**：Notion 里 slug 若以 **`/article/xxx`** 形式开头（前导 `/`），`getStaticPaths` 若直接 **`row.slug.split('/')`** 会得到空串段，与去掉 `/` 后的 **`article/xxx`** 生成**同一路径**，Next 报冲突。
+- **修复**：`lib/utils/post.js` **`normalizeSlugForPath`**；`pages/[prefix]/[slug]/index.js` 与 **`[...suffix].js`** 的 `getStaticPaths` 均用规范化后再分段；多级路由 **`suffix` 为空则不输出**。无缓存 Redeploy 会完整跑静态路径，更易触发；非「手动部署才坏」，是**无缓存时必现**类问题。
+
 ### Vercel 部署 `yarn install` 失败：`mirrors.cloud.tencent.com` 525
 - **成因**：`yarn.lock` 里若 **`resolved` 锁成腾讯云 npm 镜像**，海外构建机访问常 **HTTP 525**。
 - **约定**：`.npmrc` 使用 **`registry=https://registry.npmjs.org/`**；勿把 **tencent 镜像 URL** 提交进 `yarn.lock`（本地若用国内源装依赖，装完应用官方源重写 lock 再提交）。
