@@ -102,9 +102,9 @@ const BlogPostCard = ({
             </SmartLink>
           </header>
 
-          {/* 摘要 */}
+          {/* 摘要（商品描述）：略大字重、琥珀色更易扫读 */}
           {(!showPreview || showSummary) && (
-            <main className='line-clamp-2 replace text-gray-700  dark:text-gray-300 text-sm font-light leading-tight'>
+            <main className='line-clamp-2 replace text-[15px] sm:text-base font-semibold leading-snug tracking-wide text-amber-900 dark:text-amber-100 antialiased'>
               {post.summary}
             </main>
           )}

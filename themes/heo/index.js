@@ -376,7 +376,8 @@ const LayoutSlug = props => {
   </div>
 )}
 {post?.summary && (
-  <div className="px-5 py-3 mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+  <div
+    className='mx-5 mb-5 rounded-xl border border-amber-200/90 bg-gradient-to-br from-amber-50 via-orange-50/80 to-amber-100/50 px-4 py-3.5 text-base md:text-lg font-semibold leading-relaxed tracking-wide text-amber-950 shadow-sm ring-1 ring-amber-200/40 dark:border-amber-600/50 dark:from-amber-950/60 dark:via-stone-900/40 dark:to-amber-950/30 dark:text-amber-50 dark:ring-amber-500/20'>
     {post.summary}
   </div>
 )}
