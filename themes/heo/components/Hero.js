@@ -43,8 +43,8 @@ const Hero = props => {
         {/* 左侧banner组 */}
         <BannerGroup {...props} />
 
-        {/* 中间留白 */}
-        <div className='px-1.5 h-full'></div>
+        {/* 中间留白（仅桌面左右分栏时需要；手机端 Banner 已不占位） */}
+        <div className='hidden h-full px-1.5 xl:block' />
 
         {/* 右侧置顶文章组 */}
         <TopGroup {...props} />
@@ -62,7 +62,7 @@ function BannerGroup(props) {
     // 左侧英雄区
     <div
       id='bannerGroup'
-      className='flex flex-col justify-between flex-1 mr-2 max-w-[42rem]'>
+      className='hidden max-w-[42rem] flex-col justify-between xl:mr-2 xl:flex xl:flex-1'>
       {/* 动图 */}
       <Banner {...props} />
       {/* 导航分类 */}

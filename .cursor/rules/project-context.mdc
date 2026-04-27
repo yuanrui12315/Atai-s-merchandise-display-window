@@ -63,7 +63,7 @@ alwaysApply: true
 - 若 Notion 配置表里有 `POSTS_SORT_BY` 且改成非 `date`，会覆盖上述行为
 
 ### 首页 Hero 横滑商品
-- **手机端**：标题 **「热销款」** + 提示「两排显示 · 左右滑看更多」（仅 `xl` 以下）；热销款区为 **小图两排竖叠 × 多列横滑**。**桌面端（`xl+`）** 热销款仍为 **原三列大卡片网格**，与手机布局分离。
+- **手机端**：标题 **「热销款」** + 提示「两排显示 · 左右滑看更多」（仅 `xl` 以下）；热销款区为 **小图两排竖叠 × 多列横滑**。**桌面端（`xl+`）** 热销款仍为 **原三列大卡片网格**，与手机布局分离。**曾出现问题**：`BannerGroup` 在移动端子组件虽 `hidden` 但外层仍 `flex-1` 占宽 → 左侧大片空白、热销条挤到右侧；已改为 **`BannerGroup` 在 `xl` 以下整块 `hidden`**，且中间留白仅 `xl` 显示。
 - **置顶逻辑**：Notion 数字列 **「首页置顶」**（列名可 `NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN`）；`1` 最左、`2` 其次…；`0`/空=不参与
 - 优先级：① Notion 置顶 ② `NEXT_PUBLIC_HERO_PINNED_SLUGS` ③ 推荐标签 ④ 最近更新
 - **条数**：`themes/heo/config.js` 的 `HEO_HERO_TOP_MAX` 或 `NEXT_PUBLIC_HEO_HERO_TOP_MAX`，默认 **80**，最大 **80**
