@@ -55,7 +55,7 @@ alwaysApply: true
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
-- **`/search/关键词` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；优先读缓存 **`page_content_${页面id}`**；若未命中（常见于 Vercel 生产未配 Redis 或冷数据），则对「元数据未命中」的商品 **`getPageWithRetry` 拉取块图**，并对 recordMap 做 **`unwrapRecordMapBlockValueLayers` + `ensureRecordMapBlockIds`** 后再 `getPageContentText`。勿与已废弃的 `page_block_` 混淆。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。商品多时全文搜索会多次打 Notion，首搜可能较慢；配 **Redis** 并保证构建/访问能写入 `page_content_*` 可明显减轻。
+- **`/search/关键词` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；优先读缓存 **`page_content_${页面id}`**；若未命中则 **`getPageWithRetry`**（**`next build` 预渲染阶段禁止拉取**，仅走缓存，避免几百次 Notion 请求导致 **Jest worker 子进程崩溃**；线上访问再拉取）。recordMap 须 **`unwrapRecordMapBlockValueLayers` + `ensureRecordMapBlockIds`**。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
 
 ### 「所有商品」列表排序
 - `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）
