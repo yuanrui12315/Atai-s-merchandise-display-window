@@ -376,9 +376,17 @@ const LayoutSlug = props => {
   </div>
 )}
 {post?.summary && (
-  <div
-    className='mx-5 mb-5 rounded-xl border border-amber-200/90 bg-gradient-to-br from-amber-50 via-orange-50/80 to-amber-100/50 px-4 py-3.5 text-base md:text-lg font-semibold leading-relaxed tracking-wide text-amber-950 shadow-sm ring-1 ring-amber-200/40 dark:border-amber-600/50 dark:from-amber-950/60 dark:via-stone-900/40 dark:to-amber-950/30 dark:text-amber-50 dark:ring-amber-500/20'>
-    {post.summary}
+  <div className='mx-5 mb-6 overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50/95 to-white shadow-[0_1px_0_0_rgba(15,23,42,0.04)] dark:border-slate-600/50 dark:from-slate-900/40 dark:to-[#1a1a1e] dark:shadow-none'>
+    <div className='border-l-[3px] border-indigo-500 dark:border-indigo-400/90 pl-0'>
+      <div className='px-4 py-1 pt-2.5 pb-0'>
+        <span className='text-xs font-semibold tracking-widest text-indigo-600 dark:text-indigo-300/95'>
+          商品描述
+        </span>
+      </div>
+      <div className='px-4 pb-3.5 pt-1 text-[15px] md:text-base font-medium leading-[1.7] text-slate-700 antialiased dark:text-slate-100/95'>
+        {post.summary}
+      </div>
+    </div>
   </div>
 )}
 {(post?.allCategories || post?.tagItems?.length) && (
