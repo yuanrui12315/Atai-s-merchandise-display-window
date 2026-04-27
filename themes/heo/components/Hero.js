@@ -213,21 +213,17 @@ function TopGroup(props) {
     }
   }
 
+  const deskThumbW = 560
+
   return (
     <div
       id='hero-right-wrapper'
       onMouseLeave={handleMouseLeave}
       className='flex-1 relative w-full min-w-0'>
-      <div className='mb-1.5 hidden items-center justify-between gap-2 xl:flex'>
-        <div className='text-sm font-bold dark:text-gray-200'>热销款</div>
-        <span className='shrink-0 text-[10px] text-gray-500 dark:text-gray-400'>
-          两排显示 · 左右滑看更多
-        </span>
-      </div>
-      {/* 置顶推荐：两排竖叠 × 多列横滑，缩略图更小、同屏可见更多 */}
+      {/* 手机：两排小卡 + 横滑；PC（xl+）：恢复原三列大卡片网格（非触屏不必横滑小卡） */}
       <div
         id='top-group'
-        className='flex w-full min-w-0 flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch]'>
+        className='flex w-full min-w-0 flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] xl:hidden'>
         {pairColumns.map((pair, colIdx) => (
           <div
             key={pair[0]?.id || `col-${colIdx}`}
@@ -260,6 +256,30 @@ function TopGroup(props) {
             })}
           </div>
         ))}
+      </div>
+      <div
+        className='hidden w-full space-x-3 xl:grid xl:grid-cols-3 xl:gap-3 xl:space-x-0 xl:h-[342px]'>
+        {topPosts?.map((p, index) => {
+          return (
+            <SmartLink href={`${siteConfig('SUB_PATH', '')}/${p?.slug}`} key={p.id || index}>
+              <div className='group relative flex h-[164px] w-52 cursor-pointer flex-col overflow-hidden rounded-xl bg-white shadow dark:bg-black dark:text-white xl:w-full'>
+                <LazyImage
+                  priority={index === 0}
+                  compressMaxWidth={deskThumbW}
+                  className='h-24 object-cover'
+                  alt={p?.title}
+                  src={p?.pageCoverThumbnail || siteInfo?.pageCover}
+                />
+                <div className='m-2 line-clamp-2 overflow-hidden font-semibold group-hover:text-indigo-600 dark:group-hover:text-yellow-600'>
+                  {p?.title}
+                </div>
+                <div className='absolute -left-2 -top-2 overflow-hidden rounded-xl bg-indigo-600 py-1.5 pl-2.5 pr-1.5 pt-2 text-xs text-white opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 dark:bg-yellow-600 -translate-x-4'>
+                  {locale.COMMON.RECOMMEND_BADGES}
+                </div>
+              </div>
+            </SmartLink>
+          )
+        })}
       </div>
       {/* 一个大的跳转文章卡片，可通过 config 关闭 */}
       {siteConfig('HEO_HERO_TODAY_CARD_ENABLE', true, CONFIG) && (
