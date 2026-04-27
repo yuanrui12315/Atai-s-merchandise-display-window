@@ -6,7 +6,8 @@ import CONFIG from '../config'
 const heroThumbCap = () =>
   siteConfig('HOME_HERO_THUMB_MAX_WIDTH', 560, CONFIG)
 
-const deskCategoryCoverCap = 560
+/** 仅桌面版分类卡封面加宽，略大于显示区以保清晰 */
+const DESK_CATEGORY_COVER_MAX = 640
 
 /**
  * 首页全部分类 - 与 Hero「热销款」TopGroup 同款：
@@ -87,17 +88,17 @@ export default function HomeCategoryGrid(props) {
           const imgSrc = categoryImages[category.name]
           return (
             <SmartLink key={category.name} href={`/category/${category.name}`}>
-              <div className='group relative flex min-h-[164px] w-52 max-w-full cursor-pointer flex-col overflow-hidden rounded-xl bg-white shadow dark:bg-black dark:text-white xl:w-full'>
+              <div className='group relative flex min-h-[180px] w-52 max-w-full cursor-pointer flex-col overflow-hidden rounded-xl bg-white shadow dark:bg-black dark:text-white xl:w-full'>
                 {imgSrc ? (
                   <LazyImage
                     priority={index < 3}
-                    compressMaxWidth={deskCategoryCoverCap}
-                    className='h-24 w-full object-cover'
+                    compressMaxWidth={DESK_CATEGORY_COVER_MAX}
+                    className='h-28 w-full object-cover'
                     alt={category.name}
                     src={imgSrc}
                   />
                 ) : (
-                  <div className='flex h-24 w-full items-center justify-center bg-gray-100 dark:bg-gray-800'>
+                  <div className='flex h-28 w-full items-center justify-center bg-gray-100 dark:bg-gray-800'>
                     <i className='fas fa-folder text-4xl text-gray-400 dark:text-gray-500' />
                   </div>
                 )}
