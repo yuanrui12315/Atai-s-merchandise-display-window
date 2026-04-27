@@ -77,8 +77,8 @@ const CONFIG = {
   // 仅首页/主列表分页：限制封面请求宽度（快）；商品详情页正文与头图仍用全站 IMAGE_COMPRESS_WIDTH（默认 900）
   // 480：五列卡片约 200px 宽×2 倍屏足够；较原 680 单张体积明显更小，弱网/国产浏览器更易加载
   HOME_LIST_COVER_MAX_WIDTH: 480,
-  // 热销款小卡封面请求宽度（两排缩略图已缩小，再压低宽度减轻加载）
-  HOME_HERO_THUMB_MAX_WIDTH: 320,
+  // 热销款小卡封面请求宽度（两排小图，200 以减轻加载，可再调）
+  HOME_HERO_THUMB_MAX_WIDTH: 200,
   HOME_HERO_ICON_MAX_WIDTH: 300,
   HOME_HERO_CARD_MAX_WIDTH: 780,
   // 备选：无 Notion「首页置顶」数字列时，可用环境变量 slug 列表（见 .env.example）
