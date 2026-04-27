@@ -63,7 +63,7 @@ alwaysApply: true
 - 若 Notion 配置表里有 `POSTS_SORT_BY` 且改成非 `date`，会覆盖上述行为
 
 ### 首页 Hero 横滑商品
-- **手机端**：标题 **「热销款」** + 提示「左右滑动」（仅 `xl` 以下；桌面 Banner+网格不显示此行）
+- **手机端**：标题 **「热销款」** + 提示「两排显示 · 左右滑看更多」（仅 `xl` 以下；桌面在横条区另有小行说明；**两排=小图两列竖叠 × 多列横滑**，同屏可看更多置顶品）
 - **置顶逻辑**：Notion 数字列 **「首页置顶」**（列名可 `NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN`）；`1` 最左、`2` 其次…；`0`/空=不参与
 - 优先级：① Notion 置顶 ② `NEXT_PUBLIC_HERO_PINNED_SLUGS` ③ 推荐标签 ④ 最近更新
 - **条数**：`themes/heo/config.js` 的 `HEO_HERO_TOP_MAX` 或 `NEXT_PUBLIC_HEO_HERO_TOP_MAX`，默认 **80**，最大 **80**
@@ -128,7 +128,7 @@ alwaysApply: true
 ### 页面 ISR 与图片缓存（分开理解）
 - **NEXT_REVALIDATE_SECOND**：默认 **43200（12 小时）**— 访客访问后超过该时间，后台用 Notion 数据重新生成该页（价格、标题等）。**无需**任何密钥或额外配置。仍要 **30 天** 可在 Vercel 设 **`NEXT_REVALIDATE_SECOND=2592000`**；若 Notion 站点配置表里有 **`NEXT_REVALIDATE_SECOND`** 也会覆盖 `blog.config.js` 默认值。
 - **LIST_REVALIDATE_SECOND**（可选，Vercel 环境变量）：**首页**与**商品列表分页**（`pages/index.js`、`pages/page/[page].js`）的 ISR 间隔为 **`min(NEXT_REVALIDATE_SECOND, LIST_REVALIDATE_SECOND)`**，默认 **900（15 分钟）**。新上架商品在间隔过后由**下一次访问触发再生成**即可出现在「所有商品」，一般不必整站 Redeploy。要更快可设 `300` 等；若设成 **≥** 当前全站 `NEXT_REVALIDATE_SECOND`，则列表页与全站一致（不再单独缩短）。
-- **首页列表图宽度（仅加速、不降详情清晰度）**：`themes/heo/config.js` 中 **`HOME_LIST_COVER_MAX_WIDTH`**（默认 **480**，可改；曾 680）、**`HOME_HERO_THUMB_MAX_WIDTH`** / **`HOME_HERO_ICON_MAX_WIDTH`** / **`HOME_HERO_CARD_MAX_WIDTH`** 仅作用于首页 Hero、首页与 `/page/N` 商品卡封面；**商品详情头图与正文图**仍走 **`IMAGE_COMPRESS_WIDTH`（默认 900）**，勿混用。
+- **首页列表图宽度（仅加速、不降详情清晰度）**：`themes/heo/config.js` 中 **`HOME_LIST_COVER_MAX_WIDTH`**（默认 **480**，可改；曾 680）、**`HOME_HERO_THUMB_MAX_WIDTH`**（热销款小卡封面，默认 **320**；曾 560）、**`HOME_HERO_ICON_MAX_WIDTH`** / **`HOME_HERO_CARD_MAX_WIDTH`** 仅作用于首页 Hero、首页与 `/page/N` 商品卡封面；**商品详情头图与正文图**仍走 **`IMAGE_COMPRESS_WIDTH`（默认 900）**，勿混用。
 - **proxy-image**：图片代理仍 **30 天**（`pages/api/proxy-image.js`），与页面 ISR **无关**，不因改 12 小时而缩短。
 - **BROWSER_CACHE_TTL / CDN_CACHE_TTL**：仍为 **2592000**（30 天）除非另改配置。
 
@@ -173,7 +173,7 @@ alwaysApply: true
 
 ### 手机端专项
 - **按标签筛选**（TagFilterBar）：手机端固定 **2 行** + 横向滑动；桌面换行网格
-- 首页 **Hero 热销款横滑**、**商品分类**（手机）：标题旁「左右滑动」提示，与按标签筛选一致
+- 首页 **Hero 热销款**（两排小卡+横滑）、**商品分类**（手机）：热销款标题旁「两排显示 · 左右滑看更多」；分类为「左右滑动」提示
 - 首页分类：单行横向滑动（PC 端保持网格）
 - 回到顶部：手机端阈值 150px，增加 resize 监听和延迟检查
 - 搜索图标：手机端 48×48px、图标 text-xl

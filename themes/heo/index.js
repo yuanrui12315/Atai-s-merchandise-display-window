@@ -376,16 +376,14 @@ const LayoutSlug = props => {
   </div>
 )}
 {post?.summary && (
-  <div className='mx-5 mb-6 overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-b from-slate-50/95 to-white shadow-[0_1px_0_0_rgba(15,23,42,0.04)] dark:border-slate-600/50 dark:from-slate-900/40 dark:to-[#1a1a1e] dark:shadow-none'>
-    <div className='border-l-[3px] border-indigo-500 dark:border-indigo-400/90 pl-0'>
-      <div className='px-4 py-1 pt-2.5 pb-0'>
-        <span className='text-xs font-semibold tracking-widest text-indigo-600 dark:text-indigo-300/95'>
-          商品描述
-        </span>
+  <div className='relative mx-5 mb-6 overflow-hidden rounded-2xl border border-amber-400/25 bg-gradient-to-br from-amber-100/40 via-rose-50/50 to-violet-100/40 p-[1px] shadow-[0_4px_24px_-4px_rgba(245,158,11,0.25)] dark:border-amber-500/20 dark:from-amber-950/40 dark:via-rose-950/30 dark:to-violet-950/50 dark:shadow-[0_4px_28px_-6px_rgba(251,191,36,0.12)]'>
+    <div className='rounded-[0.9rem] bg-white/90 px-4 py-3.5 backdrop-blur-sm dark:bg-[#14121a]/85'>
+      <div className='mb-2 inline-block bg-gradient-to-r from-amber-600 via-rose-500 to-violet-600 bg-clip-text text-sm font-bold tracking-[0.35em] text-transparent dark:from-amber-200 dark:via-orange-200 dark:to-rose-200'>
+        商品描述
       </div>
-      <div className='px-4 pb-3.5 pt-1 text-[15px] md:text-base font-medium leading-[1.7] text-slate-700 antialiased dark:text-slate-100/95'>
+      <p className='bg-gradient-to-br from-amber-800 via-rose-800 to-violet-900 bg-clip-text text-[15px] font-semibold leading-[1.8] text-transparent [text-shadow:none] md:text-[17px] dark:from-amber-100 dark:via-orange-100 dark:to-rose-100'>
         {post.summary}
-      </div>
+      </p>
     </div>
   </div>
 )}

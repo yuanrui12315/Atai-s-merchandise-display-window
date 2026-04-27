@@ -102,9 +102,9 @@ const BlogPostCard = ({
             </SmartLink>
           </header>
 
-          {/* 商品描述：与详情页靛青点缀一致，略浅字色便于和标题区分 */}
+          {/* 商品描述：渐变字 + 轻光晕，与详情页同系配色 */}
           {(!showPreview || showSummary) && (
-            <main className='line-clamp-2 replace text-sm sm:text-[15px] font-medium leading-relaxed text-slate-600 antialiased dark:text-slate-300/95'>
+            <main className='line-clamp-2 replace bg-gradient-to-r from-amber-800 via-rose-700 to-violet-800 bg-clip-text text-sm font-semibold leading-snug text-transparent [filter:drop-shadow(0_1px_1px_rgba(255,255,255,0.35))] sm:text-[15px] dark:from-amber-200 dark:via-orange-200 dark:to-rose-200 dark:[filter:drop-shadow(0_0_8px_rgba(251,191,36,0.25))]'>
               {post.summary}
             </main>
           )}

@@ -31,8 +31,8 @@ const Hero = props => {
       className='recent-top-post-group w-full overflow-hidden select-none px-5 mb-4'>
       <div className='flex items-baseline justify-between gap-2 mb-2 xl:hidden'>
         <div className='text-lg font-bold dark:text-gray-200'>热销款</div>
-        <span className='text-[11px] text-gray-500 dark:text-gray-400 shrink-0'>
-          左右滑动
+        <span className='text-[10px] text-gray-500 dark:text-gray-400 shrink-0 text-right leading-tight max-w-[9rem]'>
+          两排显示 · 左右滑看更多
         </span>
       </div>
       <div
@@ -206,38 +206,60 @@ function TopGroup(props) {
 
   // 获取置顶推荐文章
   const topPosts = getTopPosts({ latestPosts, allNavPages })
+  const pairColumns = []
+  if (topPosts?.length) {
+    for (let i = 0; i < topPosts.length; i += 2) {
+      pairColumns.push(topPosts.slice(i, i + 2))
+    }
+  }
 
   return (
     <div
       id='hero-right-wrapper'
       onMouseLeave={handleMouseLeave}
-      className='flex-1 relative w-full'>
-      {/* 置顶推荐文章 */}
+      className='flex-1 relative w-full min-w-0'>
+      <div className='mb-1.5 hidden items-center justify-between gap-2 xl:flex'>
+        <div className='text-sm font-bold dark:text-gray-200'>热销款</div>
+        <span className='shrink-0 text-[10px] text-gray-500 dark:text-gray-400'>
+          两排显示 · 左右滑看更多
+        </span>
+      </div>
+      {/* 置顶推荐：两排竖叠 × 多列横滑，缩略图更小、同屏可见更多 */}
       <div
         id='top-group'
-        className='w-full flex space-x-3 xl:space-x-0 xl:grid xl:grid-cols-3 xl:gap-3 xl:h-[342px]'>
-        {topPosts?.map((p, index) => {
-          return (
-            <SmartLink href={`${siteConfig('SUB_PATH', '')}/${p?.slug}`} key={index}>
-              <div className='cursor-pointer h-[164px] group relative flex flex-col w-52 xl:w-full overflow-hidden shadow bg-white dark:bg-black dark:text-white rounded-xl'>
-                <LazyImage
-                  priority={index === 0}
-                  compressMaxWidth={heroThumbCap()}
-                  className='h-24 object-cover'
-                  alt={p?.title}
-                  src={p?.pageCoverThumbnail || siteInfo?.pageCover}
-                />
-                <div className='group-hover:text-indigo-600 dark:group-hover:text-yellow-600 line-clamp-2 overflow-hidden m-2 font-semibold'>
-                  {p?.title}
-                </div>
-                {/* hover 悬浮的 ‘荐’ 字 */}
-                <div className='opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 duration-200 transition-all absolute -top-2 -left-2 bg-indigo-600 dark:bg-yellow-600  text-white rounded-xl overflow-hidden pr-2 pb-2 pl-4 pt-4 text-xs'>
-                  {locale.COMMON.RECOMMEND_BADGES}
-                </div>
-              </div>
-            </SmartLink>
-          )
-        })}
+        className='flex w-full min-w-0 flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch]'>
+        {pairColumns.map((pair, colIdx) => (
+          <div
+            key={pair[0]?.id || `col-${colIdx}`}
+            className='flex w-[5.75rem] shrink-0 flex-col gap-1.5 snap-start sm:w-24'>
+            {pair.map((p, rowIdx) => {
+              if (!p) {
+                return null
+              }
+              return (
+                <SmartLink
+                  href={`${siteConfig('SUB_PATH', '')}/${p?.slug}`}
+                  key={p.id || `${colIdx}-${rowIdx}`}>
+                  <div className='group relative flex h-[6.4rem] w-full cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-100/90 bg-white shadow-sm dark:border-gray-600 dark:bg-[#1e1e1e] dark:text-white'>
+                    <LazyImage
+                      priority={colIdx === 0 && rowIdx === 0}
+                      compressMaxWidth={heroThumbCap()}
+                      className='h-12 w-full shrink-0 object-cover'
+                      alt={p?.title}
+                      src={p?.pageCoverThumbnail || siteInfo?.pageCover}
+                    />
+                    <div className='line-clamp-2 min-h-0 flex-1 overflow-hidden px-1.5 py-0.5 text-[10px] font-semibold leading-tight text-gray-800 group-hover:text-indigo-600 dark:text-gray-100 dark:group-hover:text-yellow-500'>
+                      {p?.title}
+                    </div>
+                    <div className='pointer-events-none absolute -left-1 -top-1 overflow-hidden rounded-lg bg-indigo-600 py-1.5 pl-2.5 pr-1.5 pt-2 text-[10px] text-white opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 dark:bg-yellow-600 -translate-x-2'>
+                      {locale.COMMON.RECOMMEND_BADGES}
+                    </div>
+                  </div>
+                </SmartLink>
+              )
+            })}
+          </div>
+        ))}
       </div>
       {/* 一个大的跳转文章卡片，可通过 config 关闭 */}
       {siteConfig('HEO_HERO_TODAY_CARD_ENABLE', true, CONFIG) && (
