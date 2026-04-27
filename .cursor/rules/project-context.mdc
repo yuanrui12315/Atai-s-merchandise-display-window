@@ -66,7 +66,7 @@ alwaysApply: true
 - **手机端**：标题 **「热销款」** + 提示「左右滑动」（仅 `xl` 以下；桌面 Banner+网格不显示此行）
 - **置顶逻辑**：Notion 数字列 **「首页置顶」**（列名可 `NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN`）；`1` 最左、`2` 其次…；`0`/空=不参与
 - 优先级：① Notion 置顶 ② `NEXT_PUBLIC_HERO_PINNED_SLUGS` ③ 推荐标签 ④ 最近更新
-- **条数**：`themes/heo/config.js` 的 `HEO_HERO_TOP_MAX` 或 `NEXT_PUBLIC_HEO_HERO_TOP_MAX`，默认 **24**，最大 **80**
+- **条数**：`themes/heo/config.js` 的 `HEO_HERO_TOP_MAX` 或 `NEXT_PUBLIC_HEO_HERO_TOP_MAX`，默认 **80**，最大 **80**
 - **生效时间**：页面 ISR 默认约 **12 小时**（`NEXT_REVALIDATE_SECOND`，可改 env）；改价后一般**自动**跟上，无需配密码。若要**立刻**见可 **Vercel Redeploy**。
 
 ### Vercel 构建失败「429 Too Many Requests」

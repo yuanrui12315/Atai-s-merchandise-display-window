@@ -72,8 +72,8 @@ const CONFIG = {
   // 英雄区右侧推荐文章标签, 例如 [推荐] , 最多六篇文章; 若留空白''，则推荐最近更新文章
   HEO_HERO_RECOMMEND_POST_TAG: '',
   HEO_HERO_RECOMMEND_POST_SORT_BY_UPDATE_TIME: false, // 推荐文章排序，为`true`时将强制按最后修改时间倒序
-  // 首页 Hero 横滑条最多展示条数（Notion「首页置顶」、环境变量 slug 列表）；1–80，默认 24
-  HEO_HERO_TOP_MAX: Number(process.env.NEXT_PUBLIC_HEO_HERO_TOP_MAX) || 24,
+  // 首页 Hero 横滑条最多展示条数（Notion「首页置顶」、环境变量 slug 列表）；1–80，默认 80
+  HEO_HERO_TOP_MAX: Number(process.env.NEXT_PUBLIC_HEO_HERO_TOP_MAX) || 80,
   // 仅首页/主列表分页：限制封面请求宽度（快）；商品详情页正文与头图仍用全站 IMAGE_COMPRESS_WIDTH（默认 900）
   // 480：五列卡片约 200px 宽×2 倍屏足够；较原 680 单张体积明显更小，弱网/国产浏览器更易加载
   HOME_LIST_COVER_MAX_WIDTH: 480,

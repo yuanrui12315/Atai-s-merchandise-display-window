@@ -247,10 +247,10 @@ function TopGroup(props) {
   )
 }
 
-/** 首页横滑条数量上限（themes/heo/config.js HEO_HERO_TOP_MAX，默认 24，最大 80） */
+/** 首页横滑条数量上限（themes/heo/config.js HEO_HERO_TOP_MAX，默认 80，最大 80） */
 function getHeroTopMax() {
-  const n = Number(siteConfig('HEO_HERO_TOP_MAX', 24, CONFIG))
-  if (!Number.isFinite(n) || n < 1) return 24
+  const n = Number(siteConfig('HEO_HERO_TOP_MAX', 80, CONFIG))
+  if (!Number.isFinite(n) || n < 1) return 80
   return Math.min(80, Math.floor(n))
 }
 
