@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "node -e \"try{require('fs').unlinkSync('public/sitemap.xml')}catch(e){}\" && cross-env NOTION_BUILD_THROTTLE=1 NOTION_HTTP_GAP_MS=900 next build && next-sitemap",
+    "build": "node -e \"try{require('fs').unlinkSync('public/sitemap.xml')}catch(e){}\" && cross-env NOTION_BUILD_THROTTLE=1 NOTION_HTTP_GAP_MS=900 NEXT_SEARCH_NO_REMOTE=1 next build && next-sitemap",
     "start": "next start"
   },
   "dependencies": {
