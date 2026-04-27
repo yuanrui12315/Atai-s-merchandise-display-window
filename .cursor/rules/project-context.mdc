@@ -55,7 +55,7 @@ alwaysApply: true
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
-- **`/search/关键词` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；优先读缓存 **`page_content_${页面id}`**；未命中则 **`getPageWithRetry`**。**构建期**：`package.json` 的 **`build`** 设 **`NEXT_SEARCH_NO_REMOTE=1`**（与 `NOTION_BUILD_THROTTLE` 同列），子进程必继承；此时代码**完全跳过**正文远程拉取与批量匹配，避免 **Jest worker 崩溃**（勿在 Vercel 环境变量里长期设 `NEXT_SEARCH_NO_REMOTE=1`，否则线上搜索也搜不到正文）。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
+- **`/search/关键词` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；优先读缓存 **`page_content_${页面id}`**；未命中则 **`getPageWithRetry`**。**构建期**：`package.json` 的 **`build`** 设 **`NEXT_SEARCH_NO_REMOTE=1`**；**`next.config.js`** 在检测到「Next CLI + `build`」时也会设同一变量，防止 Vercel 把**构建命令**误配成裸 `next build` 时丢变量；`shouldSkipSearchBodyRemote` 中两者任一成立即**完全跳过**正文远程拉取与批量匹配，避免 **Jest worker 崩溃**（勿在 Vercel 环境变量里长期设 `NEXT_SEARCH_NO_REMOTE=1`，否则线上搜索也搜不到正文；若需本机构建期搜正文可临时设 `NEXT_SEARCH_NO_REMOTE=0`）。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
 
 ### 「所有商品」列表排序
 - `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）
