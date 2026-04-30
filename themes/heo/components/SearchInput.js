@@ -21,18 +21,23 @@ const SearchInput = props => {
   const handleSearch = () => {
     const raw = searchInputRef.current?.value ?? ''
     const key = raw.trim()
+    const themeQ = router.query.theme
+    const themeStr = Array.isArray(themeQ) ? themeQ[0] : themeQ
+
     if (key !== '') {
       setLoadingState(true)
-      // 路径一节须编码：中文/空格等直接拼进 pathname 时，部分环境下客户端跳转会失败或进错路由
-      const path = `/search/${encodeURIComponent(key)}`
-      router
-        .push(path)
-        .catch(() => {})
-        .finally(() => {
-          setLoadingState(false)
-        })
+      let path = `/search/${encodeURIComponent(key)}`
+      if (themeStr) {
+        path += `?theme=${encodeURIComponent(themeStr)}`
+      }
+      // 整页打开：避免客户端路由长时间等数据时全屏加载条卡死、搜索图标一直转圈
+      window.location.assign(path)
     } else {
-      void router.push('/')
+      if (themeStr) {
+        window.location.assign(`/?theme=${encodeURIComponent(themeStr)}`)
+      } else {
+        window.location.assign('/')
+      }
     }
   }
   const handleKeyUp = e => {
