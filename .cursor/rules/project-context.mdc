@@ -56,13 +56,13 @@ alwaysApply: true
 ### 搜索与全屏加载
 - **入口**：**`themes/heo/components/SearchInput.js`** 使用 **`router.push` → `/search/关键词`**；关键词须 **`encodeURIComponent`** 后再拼路径，避免中文等在部分环境下跳转失败。
 - **`pages/search/index.js`**：**`getStaticProps`**；无关键词时展示搜索导航；有 **`?s=`** 时仅在浏览器对 **标题、商品描述 summary、标签、分类** 做过滤（**不读 Notion 正文**）。
-- **`pages/search/[keyword]`** 与 **`pages/search/[keyword]/page/[page]`**：**`getStaticProps`** + **`filterPostsByKeyword`**（标题、summary、标签、分类 + **正文**；构建期仍受 **`NEXT_SEARCH_NO_REMOTE=1`** 等约定，不远程拉正文）。
+- **`pages/search/[keyword]`** 与 **`pages/search/[keyword]/page/[page]`**：**`getStaticProps`** + **`filterPostsByKeyword`**；**仅**匹配 **标题、商品描述 summary、标签、分类**（**不**检索 Notion 正文，避免搜索卡死/超时）。**`next build`** 的 **`NEXT_SEARCH_NO_REMOTE=1`** 等仍保留用于历史兼容与其它路径，与搜索正文无关。
 - **`lib/global.js`**：全屏 Loading 在路由切换时打开，**25s** 兜底 **`setOnLoading(false)`**；**勿**把 **`onLoading`** 放进 **`routeChangeComplete` 监听**的 effect 依赖，以免闭包卡死。
 - **`LayoutSearch`（heo）**：`currentSearch` 须含 **`router.query.keyword`**（`/search/[keyword]` 动态段），不能只用 **`props.keyword`**；否则在 **`fallback: true`** 首屏 props 未就绪时会误判「无关键词」→ 只见空白的分类/标签导航。与 **`router.query.s` / `q`**（`/search` 页）一并兼容。**`/search/[keyword]`** 建议使用 **`fallback: 'blocking'`**，首访等数据就绪再出页。
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
-- **正文检索**（`lib/search/filterPostsByKeyword.js`，仅 **`/search/[keyword]`** 动态路由）：优先缓存 **`page_content_${页面id}`**；未命中则 **`getPageWithRetry`**；生产访问会拉 Notion 补足；**`next build`** 子进程须 **`NEXT_SEARCH_NO_REMOTE=1`** 等跳过正文，防 429/Jest worker 崩溃。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
+- **`filterPostsByKeyword`**（`lib/search/filterPostsByKeyword.js`）：**仅元数据**子串匹配，**已不做正文检索**。重要词请写在 **标题或商品描述** 等可在列表里拿到的字段。另：全站 `post` 会 **`delete post.content`**，详情页正文渲染须从 **blockMap 根块** 回退子块 id（与搜索无关）。
 
 ### 「所有商品」列表排序
 - `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）
