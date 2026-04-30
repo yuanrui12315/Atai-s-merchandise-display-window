@@ -1,6 +1,7 @@
 /**
  * 图片代理 API - 解决 Notion 图片在国内加载慢的问题
  * 通过 Vercel 服务器中转，利用 Cloudflare CDN 加速
+ * 可选 q=1–100：列表等场景用 sharp 转 WebP 降体积（手机端 <picture> 单独请求）
  */
 const ALLOWED_HOSTS = [
   'www.notion.so',
@@ -17,6 +18,14 @@ function isAllowedUrl(url) {
     return ALLOWED_HOSTS.some(h => parsed.hostname === h || parsed.hostname.endsWith('.' + h))
   } catch {
     return false
+  }
+}
+
+function loadSharp() {
+  try {
+    return require('sharp')
+  } catch {
+    return null
   }
 }
 
@@ -41,11 +50,20 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: 'URL not allowed' })
   }
 
+  const qRaw = req.query.q
+  let targetQuality = null
+  if (qRaw != null && qRaw !== '') {
+    const n = parseInt(Array.isArray(qRaw) ? qRaw[0] : qRaw, 10)
+    if (Number.isFinite(n)) {
+      targetQuality = Math.min(100, Math.max(1, n))
+    }
+  }
+
   try {
     const response = await fetch(decodedUrl, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; NotionNext-Image-Proxy/1.0)',
-        'Accept': 'image/*,*/*'
+        Accept: 'image/*,*/*'
       },
       signal: AbortSignal.timeout(15000)
     })
@@ -55,14 +73,37 @@ export default async function handler(req, res) {
     }
 
     const contentType = response.headers.get('content-type') || 'image/jpeg'
-    const cacheControl = 'public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=2592000' // 30天缓存，国内二次访问更快
+    const cacheControl =
+      'public, max-age=2592000, s-maxage=2592000, stale-while-revalidate=2592000' // 30天
 
-    res.setHeader('Content-Type', contentType)
+    const origBuffer = Buffer.from(await response.arrayBuffer())
+    let buffer = origBuffer
+    let outType = contentType
+
+    if (
+      targetQuality != null &&
+      !contentType.includes('svg') &&
+      !contentType.includes('gif')
+    ) {
+      const sharp = loadSharp()
+      if (sharp) {
+        try {
+          buffer = await sharp(origBuffer)
+            .webp({ quality: targetQuality, effort: 4 })
+            .toBuffer()
+          outType = 'image/webp'
+        } catch (e) {
+          console.warn('[proxy-image] sharp recompress skipped:', e.message)
+          buffer = origBuffer
+          outType = contentType
+        }
+      }
+    }
+
+    res.setHeader('Content-Type', outType)
     res.setHeader('Cache-Control', cacheControl)
     res.setHeader('Access-Control-Allow-Origin', '*')
-
-    const buffer = await response.arrayBuffer()
-    res.send(Buffer.from(buffer))
+    res.send(buffer)
   } catch (error) {
     console.error('[proxy-image]', error.message)
     res.status(500).json({ error: 'Image proxy failed' })

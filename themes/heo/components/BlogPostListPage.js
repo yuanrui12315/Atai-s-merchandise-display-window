@@ -26,7 +26,7 @@ const BlogPostListPage = ({
   const showPagination = postCount >= POSTS_PER_PAGE
   const POST_COLS = siteConfig('HEO_HOME_POST_COLS', 5, CONFIG)
   const gridCols = POST_COLS === 5
-    ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'
+    ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-4'
     : siteConfig('HEO_HOME_POST_TWO_COLS', true, CONFIG)
       ? 'grid grid-cols-1 2xl:grid 2xl:grid-cols-2 gap-5'
       : 'grid grid-cols-1 gap-5'
