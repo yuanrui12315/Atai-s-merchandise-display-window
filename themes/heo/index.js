@@ -224,7 +224,16 @@ const LayoutPostList = props => {
 const LayoutSearch = props => {
   const { keyword } = props
   const router = useRouter()
-  const currentSearch = keyword || router?.query?.s
+  const rawKw = router.query?.keyword
+  const keywordFromPath = Array.isArray(rawKw) ? rawKw[0] : rawKw
+  const rawS = router.query?.s
+  const fromQueryS = Array.isArray(rawS) ? rawS[0] : rawS
+  const rawQ = router.query?.q
+  const fromQueryQ = Array.isArray(rawQ) ? rawQ[0] : rawQ
+  const currentSearch =
+    [keyword, keywordFromPath, fromQueryS, fromQueryQ].find(
+      v => v != null && String(v).trim() !== ''
+    ) ?? ''
 
   useEffect(() => {
     // 高亮搜索结果
@@ -240,7 +249,7 @@ const LayoutSearch = props => {
         })
       }, 100)
     }
-  }, [])
+  }, [currentSearch])
   return (
     <div currentSearch={currentSearch}>
       <div id='post-outer-wrapper' className='px-5  md:px-0'>
@@ -258,7 +267,7 @@ const LayoutSearch = props => {
                   {siteConfig('POST_LIST_STYLE') === 'page' ? (
                     <BlogPostListPage {...props} />
                   ) : (
-                    <BlogPostListScroll {...props} />
+                    <BlogPostListScroll {...props} currentSearch={currentSearch} />
                   )}
                 </div>
               </div>

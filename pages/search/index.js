@@ -19,11 +19,22 @@ const Search = props => {
   // 静态过滤
   if (keyword) {
     filteredPosts = posts.filter(post => {
-      const tagContent = post?.tags ? post?.tags.join(' ') : ''
-      const categoryContent = post.category ? post.category.join(' ') : ''
+      const tagContent = post?.tags
+        ? Array.isArray(post.tags)
+          ? post.tags.join(' ')
+          : String(post.tags)
+        : ''
+      const categoryContent = post?.category
+        ? Array.isArray(post.category)
+          ? post.category.join(' ')
+          : String(post.category)
+        : ''
       const searchContent =
-        post.title + post.summary + tagContent + categoryContent
-      return searchContent.toLowerCase().includes(keyword.toLowerCase())
+        (post.title ?? '') +
+        (post.summary ?? '') +
+        tagContent +
+        categoryContent
+      return searchContent.toLowerCase().includes(String(keyword).toLowerCase())
     })
   } else {
     filteredPosts = []

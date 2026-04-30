@@ -58,7 +58,7 @@ alwaysApply: true
 - **`pages/search/index.js`**：**`getStaticProps`**；无关键词时展示搜索导航；有 **`?s=`** 时仅在浏览器对 **标题、商品描述 summary、标签、分类** 做过滤（**不读 Notion 正文**）。
 - **`pages/search/[keyword]`** 与 **`pages/search/[keyword]/page/[page]`**：**`getStaticProps`** + **`filterPostsByKeyword`**（标题、summary、标签、分类 + **正文**；构建期仍受 **`NEXT_SEARCH_NO_REMOTE=1`** 等约定，不远程拉正文）。
 - **`lib/global.js`**：全屏 Loading 在路由切换时打开，**25s** 兜底 **`setOnLoading(false)`**；**勿**把 **`onLoading`** 放进 **`routeChangeComplete` 监听**的 effect 依赖，以免闭包卡死。
-- **`middleware.js`**：**仅**站点密码保护；**不**改写搜索路径。
+- **`LayoutSearch`（heo）**：`currentSearch` 须含 **`router.query.keyword`**（`/search/[keyword]` 动态段），不能只用 **`props.keyword`**；否则在 **`fallback: true`** 首屏 props 未就绪时会误判「无关键词」→ 只见空白的分类/标签导航。与 **`router.query.s` / `q`**（`/search` 页）一并兼容。**`/search/[keyword]`** 建议使用 **`fallback: 'blocking'`**，首访等数据就绪再出页。
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
