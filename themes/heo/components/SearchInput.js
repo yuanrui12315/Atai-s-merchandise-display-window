@@ -19,20 +19,18 @@ const SearchInput = props => {
   })
 
   const handleSearch = () => {
-    const key = searchInputRef.current.value
-    if (key && key !== '') {
+    const raw = searchInputRef.current?.value ?? ''
+    const key = raw.trim()
+    const themeQ = router.query.theme
+    const themeStr = Array.isArray(themeQ) ? themeQ[0] : themeQ
+    const q = themeStr ? `?theme=${encodeURIComponent(themeStr)}` : ''
+
+    // 整页跳转：避免客户端 router.push 长时间等待 getStaticProps（搜索全文检索）而不触发 routeChangeComplete → LoadingCover 永久卡在 95%
+    if (key !== '') {
       setLoadingState(true)
-      const themeQ = router.query.theme
-      const themeStr = Array.isArray(themeQ) ? themeQ[0] : themeQ
-      const query = themeStr ? { theme: themeStr } : {}
-      void router
-        .push({ pathname: '/search/' + key, query })
-        .finally(() => setLoadingState(false))
+      window.location.assign(`/search/${encodeURIComponent(key)}${q}`)
     } else {
-      const themeQ = router.query.theme
-      const themeStr = Array.isArray(themeQ) ? themeQ[0] : themeQ
-      const query = themeStr ? { theme: themeStr } : {}
-      void router.push({ pathname: '/', query })
+      window.location.assign(`/${q}`)
     }
   }
   const handleKeyUp = e => {

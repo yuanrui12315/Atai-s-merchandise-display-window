@@ -53,6 +53,10 @@ alwaysApply: true
 - **商品描述（原 summary）列名**：`NOTION_PROPERTY_NAME.summary` 默认 **`商品描述`**（Notion 显示）；仍兼容 **`summary`** / **`摘要`** / **`描述`**，改名不丢内容。
 - **价格 / 标签 / 分类 / 链接列名**：默认 **`价格`**、**`标签`**、**`分类`**、**`自定义链接`**（网址路径，对应程序字段 `slug`）；仍兼容 **`price`**、**`tags`**、**`category`**、**`slug`**、**`链接别名`**。
 
+### 搜索与全屏加载
+- **heo 顶栏搜索**：使用 **`window.location.assign`** 进入 `/search/关键词`，避免客户端 **`router.push` 长时间等待 `getStaticProps`（全文检索）** 期间 **不触发 `routeChangeComplete`** → **LoadingCover 卡在 95%**。`lib/global.js` 对 **`/search`、`/search/*`** 的 **`routeChangeStart` 也不会再打开全屏 LoadingCover**；其它路由保留 **25s** 超时自动收起。
+- **其它主题**仍可能用 `router.push` 进搜索；若遇同类卡顿可同样改为整页跳转或依赖上述 global 对 `/search` 的跳过逻辑。
+
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
 - **`/search/关键词` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；优先读缓存 **`page_content_${页面id}`**；未命中则 **`getPageWithRetry`**。**构建期**：`package.json` 的 **`build`** 设 **`NEXT_SEARCH_NO_REMOTE=1`**；**`next.config.js`** 在检测到「Next CLI + `build`」时也会设同一变量，防止 Vercel 把**构建命令**误配成裸 `next build` 时丢变量；`shouldSkipSearchBodyRemote` 中两者任一成立即**完全跳过**正文远程拉取与批量匹配，避免 **Jest worker 崩溃**（勿在 Vercel 环境变量里长期设 `NEXT_SEARCH_NO_REMOTE=1`，否则线上搜索也搜不到正文；若需本机构建期搜正文可临时设 `NEXT_SEARCH_NO_REMOTE=0`）。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
