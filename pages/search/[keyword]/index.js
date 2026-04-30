@@ -54,8 +54,7 @@ export async function getStaticProps({ params: { keyword }, locale }) {
 export function getStaticPaths() {
   return {
     paths: [{ params: { keyword: 'NotionNext' } }],
-    // blocking：首访（含 location.assign）在服务端跑完 getStaticProps 再返回 HTML，避免 fallback:true 时空 props 误判成「无关键词」导致空白 SearchNav
-    fallback: 'blocking'
+    fallback: true
   }
 }
 

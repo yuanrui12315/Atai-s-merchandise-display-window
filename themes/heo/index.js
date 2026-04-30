@@ -224,11 +224,7 @@ const LayoutPostList = props => {
 const LayoutSearch = props => {
   const { keyword } = props
   const router = useRouter()
-  const qKw = router.query?.keyword
-  const keywordFromPath = Array.isArray(qKw) ? qKw[0] : qKw
-  // /search/[keyword] 的参数在 query.keyword；query.s 仅用于旧版 /search?s=
-  const currentSearch =
-    keyword ?? keywordFromPath ?? router?.query?.s ?? router?.query?.q
+  const currentSearch = keyword || router?.query?.s
 
   useEffect(() => {
     // 高亮搜索结果
@@ -260,9 +256,9 @@ const LayoutSearch = props => {
                 </div>
                 <div id='posts-wrapper'>
                   {siteConfig('POST_LIST_STYLE') === 'page' ? (
-                    <BlogPostListPage {...props} currentSearch={currentSearch} />
+                    <BlogPostListPage {...props} />
                   ) : (
-                    <BlogPostListScroll {...props} currentSearch={currentSearch} />
+                    <BlogPostListScroll {...props} />
                   )}
                 </div>
               </div>

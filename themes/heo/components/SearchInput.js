@@ -19,22 +19,15 @@ const SearchInput = props => {
   })
 
   const handleSearch = () => {
-    const raw = searchInputRef.current?.value ?? ''
-    const key = raw.trim()
-    const themeQ = router.query.theme
-    const themeStr = Array.isArray(themeQ) ? themeQ[0] : themeQ
-
-    // /search?s= 关键词放查询串，避免路径含中文在 Cloudflare 下出现连接失败
-    if (key !== '') {
+    const key = searchInputRef.current.value
+    if (key && key !== '') {
       setLoadingState(true)
-      const p = new URLSearchParams()
-      p.set('s', key)
-      if (themeStr) p.set('theme', themeStr)
-      window.location.assign(`/search?${p.toString()}`)
+      router.push({ pathname: '/search/' + key }).then(r => {
+        setLoadingState(false)
+      })
+      // location.href = '/search/' + key
     } else {
-      const p = new URLSearchParams()
-      if (themeStr) p.set('theme', themeStr)
-      window.location.assign(p.toString() ? `/?${p}` : '/')
+      router.push({ pathname: '/' }).then(r => {})
     }
   }
   const handleKeyUp = e => {

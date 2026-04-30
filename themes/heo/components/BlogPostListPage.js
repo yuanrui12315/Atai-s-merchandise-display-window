@@ -18,8 +18,7 @@ const BlogPostListPage = ({
   posts = [],
   postCount,
   siteInfo,
-  listCoverMaxWidth,
-  currentSearch
+  listCoverMaxWidth
 }) => {
   const { NOTION_CONFIG } = useGlobal()
   const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, NOTION_CONFIG)
@@ -32,7 +31,7 @@ const BlogPostListPage = ({
       ? 'grid grid-cols-1 2xl:grid 2xl:grid-cols-2 gap-5'
       : 'grid grid-cols-1 gap-5'
   if (!posts || posts.length === 0 || page > totalPage) {
-    return <BlogPostListEmpty currentSearch={currentSearch} />
+    return <BlogPostListEmpty />
   } else {
     return (
       <div id='container' className='w-full'>

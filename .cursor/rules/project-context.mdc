@@ -54,16 +54,15 @@ alwaysApply: true
 - **价格 / 标签 / 分类 / 链接列名**：默认 **`价格`**、**`标签`**、**`分类`**、**`自定义链接`**（网址路径，对应程序字段 `slug`）；仍兼容 **`price`**、**`tags`**、**`category`**、**`slug`**、**`链接别名`**。
 
 ### 搜索与全屏加载
-- **正式搜索 URL**：**`/search?s=关键词`**（`s` 也可兼容 `q`）。关键词放在 **查询参数**，**不要**再使用 **`/search/中文路径`**，以减少 Cloudflare/代理对路径 UTF-8 的兼容问题（曾出现 `ERR_SSL_PROTOCOL_ERROR`）。**`middleware.js`** 将 **`/search/旧路径`** 与 **`/search/词/page/N`** **308** 重定向到 **`/search?s=`**（并带上 **`page`** 与其它 query）。
-- **实现**：**`pages/search/index.js`** 使用 **`getServerSideProps`** + **`filterPostsByKeyword`**，与旧 **`[keyword]`** 页能力一致；旧动态路由文件可保留，由中间件跳转。
-- **heo 顶栏**：**`SearchInput`** 使用 **`/search?s=`** 整页打开；**`lib/global.js`** 对 **`/search`** 路径不挂全屏 LoadingCover；其它路由 **25s** 超时。
-- **分页**：**`themes/heo/components/PaginationNumber.js`** 在 **`pathname === '/search'`** 且带 **`s`** 时用 **`query.page`**，禁止生成无效的 **`/search/page/N`**。
-- **其它主题**仍可能用 `router.push` 进搜索；若遇同类卡顿可同样改为整页跳转或依赖上述 global 对 `/search` 的跳过逻辑。
-- **LayoutSearch（heo）**：`currentSearch` 取 **`props.keyword`**、**`router.query.keyword`**（旧路径，中间件会跳走）或 **`router.query.s` / `router.query.q`**（正式 **`/search?s=`**）。
+- **入口**：**`themes/heo/components/SearchInput.js`** 使用 **`router.push` → `/search/关键词`**（关键词在路径里，与 NotionNext 默认一致）。
+- **`pages/search/index.js`**：**`getStaticProps`**；无关键词时展示搜索导航；有 **`?s=`** 时仅在浏览器对 **标题、商品描述 summary、标签、分类** 做过滤（**不读 Notion 正文**）。
+- **`pages/search/[keyword]`** 与 **`pages/search/[keyword]/page/[page]`**：**`getStaticProps`** + **`filterPostsByKeyword`**（标题、summary、标签、分类 + **正文**；构建期仍受 **`NEXT_SEARCH_NO_REMOTE=1`** 等约定，不远程拉正文）。
+- **`lib/global.js`**：全屏 Loading 在路由切换时打开，**25s** 兜底 **`setOnLoading(false)`**；**勿**把 **`onLoading`** 放进 **`routeChangeComplete` 监听**的 effect 依赖，以免闭包卡死。
+- **`middleware.js`**：**仅**站点密码保护；**不**改写搜索路径。
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
-- **`/search?s=` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；元数据与正文比对为 **trim + 小写** 子串匹配。优先读缓存 **`page_content_${页面id}`**；未命中则 **`getPageWithRetry`**。**正文阶段**：默认 **约 55s** 时间预算（**`SEARCH_BODY_BUDGET_MS`** 可改）；**不设** **`SEARCH_BODY_MAX_POSTS`** 时不会在条数上截断「仅正文可能命中」的队列，避免词只在正文里却排得靠后时永远搜不到；若遇 **Cloudflare 524** / 函数超时，再在 Vercel 设 **`SEARCH_BODY_MAX_POSTS` 为正整数** 做上限。**搜索页 `getGlobalData`** 同 Node 实例内约 **120s** 复用（**`SEARCH_GLOBAL_CACHE_MS`**）。**构建期**：`NEXT_SEARCH_NO_REMOTE=1` 等仍按原约定跳过正文拉取；勿在生产长期设 **`NEXT_SEARCH_NO_REMOTE=1`**。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
+- **正文检索**（`lib/search/filterPostsByKeyword.js`，仅 **`/search/[keyword]`** 动态路由）：优先缓存 **`page_content_${页面id}`**；未命中则 **`getPageWithRetry`**；生产访问会拉 Notion 补足；**`next build`** 子进程须 **`NEXT_SEARCH_NO_REMOTE=1`** 等跳过正文，防 429/Jest worker 崩溃。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
 
 ### 「所有商品」列表排序
 - `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）
