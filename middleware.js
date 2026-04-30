@@ -15,13 +15,30 @@ async function getAccessToken(password) {
 }
 
 export async function middleware(request) {
+  const { pathname } = request.nextUrl
+
+  // 路径里带中文/编码的 /search/关键词 在 Cloudflare 等环境下易触发连接异常 → 统一改为 /search?s=
+  const legacy = pathname.match(/^\/search\/([^/]+)(?:\/page\/(\d+))?$/)
+  if (legacy) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/search'
+    const nextSearch = new URLSearchParams()
+    nextSearch.set('s', legacy[1])
+    if (legacy[2]) nextSearch.set('page', legacy[2])
+    request.nextUrl.searchParams.forEach((value, key) => {
+      if (key !== 's' && key !== 'page') {
+        nextSearch.append(key, value)
+      }
+    })
+    url.search = nextSearch.toString()
+    return NextResponse.redirect(url, 308)
+  }
+
   // 未设置密码则不启用保护
   const sitePassword = process.env.SITE_PASSWORD
   if (!sitePassword) {
     return NextResponse.next()
   }
-
-  const { pathname } = request.nextUrl
 
   // 放行：密码页、验证 API、Next 静态资源、favicon
   if (

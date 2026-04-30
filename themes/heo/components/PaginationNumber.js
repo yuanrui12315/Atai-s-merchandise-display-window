@@ -5,6 +5,17 @@ import SmartLink from '@/components/SmartLink'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+/** /search?s= 分页：用 query.page，避免生成 /search/page/N 无效路径 */
+function searchQueryHref(router, targetPage) {
+  const q = { ...router.query }
+  if (targetPage <= 1) {
+    delete q.page
+  } else {
+    q.page = String(targetPage)
+  }
+  return { pathname: '/search', query: q }
+}
+
 /**
  * 数字翻页插件
  * @param page 当前页码
@@ -19,6 +30,8 @@ const PaginationNumber = ({
   currentPageCount = 0
 }) => {
   const router = useRouter()
+  const isQuerySearch =
+    router.pathname === '/search' && !!(router.query?.s || router.query?.q)
   const { locale, NOTION_CONFIG } = useGlobal()
   const currentPage = +page
   const showNext = page < totalPage
@@ -37,7 +50,14 @@ const PaginationNumber = ({
     .replace(/\/page\/[1-9]\d*/, '')
     .replace(/\/$/, '')
     .replace('.html', '')
-  const pages = generatePages(pagePrefix, page, currentPage, totalPage)
+  const pages = generatePages(
+    pagePrefix,
+    page,
+    currentPage,
+    totalPage,
+    router,
+    isQuerySearch
+  )
 
   const [value, setValue] = useState('')
 
@@ -51,9 +71,14 @@ const PaginationNumber = ({
    */
   const jumpToPage = () => {
     if (value) {
-      router.push(
-        value === 1 ? `${pagePrefix}/` : `${pagePrefix}/page/${value}`
-      )
+      const n = parseInt(value, 10)
+      if (isQuerySearch) {
+        void router.push(searchQueryHref(router, n))
+      } else {
+        router.push(
+          n === 1 ? `${pagePrefix}/` : `${pagePrefix}/page/${n}`
+        )
+      }
     }
   }
 
@@ -100,10 +125,14 @@ const PaginationNumber = ({
         <div className='flex items-center gap-2'>
           {/* 首页 */}
           <SmartLink
-            href={{
-              pathname: `${pagePrefix}/`,
-              query: router.query.s ? { s: router.query.s } : {}
-            }}
+            href={
+              isQuerySearch
+                ? searchQueryHref(router, 1)
+                : {
+                    pathname: `${pagePrefix}/`,
+                    query: router.query.s ? { s: router.query.s } : {}
+                  }
+            }
             className={currentPage === 1 ? 'invisible' : 'block'}>
             <div className={navBtnClass}>
               <i className='fas fa-angle-double-left text-xs' />
@@ -112,13 +141,17 @@ const PaginationNumber = ({
           </SmartLink>
           {/* 上一页 */}
           <SmartLink
-            href={{
-              pathname:
-                currentPage === 2
-                  ? `${pagePrefix}/`
-                  : `${pagePrefix}/page/${currentPage - 1}`,
-              query: router.query.s ? { s: router.query.s } : {}
-            }}
+            href={
+              isQuerySearch
+                ? searchQueryHref(router, currentPage - 1)
+                : {
+                    pathname:
+                      currentPage === 2
+                        ? `${pagePrefix}/`
+                        : `${pagePrefix}/page/${currentPage - 1}`,
+                    query: router.query.s ? { s: router.query.s } : {}
+                  }
+            }
             rel='prev'
             className={currentPage === 1 ? 'invisible' : 'block'}>
             <div className={navBtnClass}>
@@ -151,10 +184,14 @@ const PaginationNumber = ({
         <div className='flex items-center gap-2'>
           {/* 下一页 */}
           <SmartLink
-            href={{
-              pathname: `${pagePrefix}/page/${currentPage + 1}`,
-              query: router.query.s ? { s: router.query.s } : {}
-            }}
+            href={
+              isQuerySearch
+                ? searchQueryHref(router, currentPage + 1)
+                : {
+                    pathname: `${pagePrefix}/page/${currentPage + 1}`,
+                    query: router.query.s ? { s: router.query.s } : {}
+                  }
+            }
             rel='next'
             className={showNext ? 'block' : 'invisible'}>
             <div className={navBtnClass}>
@@ -164,13 +201,17 @@ const PaginationNumber = ({
           </SmartLink>
           {/* 尾页 */}
           <SmartLink
-            href={{
-              pathname:
-                totalPage === 1
-                  ? `${pagePrefix}/`
-                  : `${pagePrefix}/page/${totalPage}`,
-              query: router.query.s ? { s: router.query.s } : {}
-            }}
+            href={
+              isQuerySearch
+                ? searchQueryHref(router, totalPage)
+                : {
+                    pathname:
+                      totalPage === 1
+                        ? `${pagePrefix}/`
+                        : `${pagePrefix}/page/${totalPage}`,
+                    query: router.query.s ? { s: router.query.s } : {}
+                  }
+            }
             className={currentPage === totalPage ? 'invisible' : 'block'}>
             <div className={navBtnClass}>
               <span>{locale.PAGINATION?.LAST || '尾页'}</span>
@@ -195,22 +236,30 @@ const PaginationNumber = ({
         {showPrev && (
           <>
             <SmartLink
-              href={{
-                pathname: `${pagePrefix}/`,
-                query: router.query.s ? { s: router.query.s } : {}
-              }}
+              href={
+                isQuerySearch
+                  ? searchQueryHref(router, 1)
+                  : {
+                      pathname: `${pagePrefix}/`,
+                      query: router.query.s ? { s: router.query.s } : {}
+                    }
+              }
               className='flex flex-1 min-w-[4.5rem] items-center justify-center gap-1 h-11 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl active:scale-[0.98]'>
               <i className='fas fa-angle-double-left' />
               {locale.PAGINATION?.FIRST || '首页'}
             </SmartLink>
             <SmartLink
-              href={{
-                pathname:
-                  currentPage === 2
-                    ? `${pagePrefix}/`
-                    : `${pagePrefix}/page/${currentPage - 1}`,
-                query: router.query.s ? { s: router.query.s } : {}
-              }}
+              href={
+                isQuerySearch
+                  ? searchQueryHref(router, currentPage - 1)
+                  : {
+                      pathname:
+                        currentPage === 2
+                          ? `${pagePrefix}/`
+                          : `${pagePrefix}/page/${currentPage - 1}`,
+                      query: router.query.s ? { s: router.query.s } : {}
+                    }
+              }
               rel='prev'
               className='flex flex-1 min-w-[4.5rem] items-center justify-center gap-1 h-11 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl active:scale-[0.98]'>
               <i className='fas fa-chevron-left' />
@@ -221,23 +270,31 @@ const PaginationNumber = ({
         {showNext && (
           <>
             <SmartLink
-              href={{
-                pathname: `${pagePrefix}/page/${currentPage + 1}`,
-                query: router.query.s ? { s: router.query.s } : {}
-              }}
+              href={
+                isQuerySearch
+                  ? searchQueryHref(router, currentPage + 1)
+                  : {
+                      pathname: `${pagePrefix}/page/${currentPage + 1}`,
+                      query: router.query.s ? { s: router.query.s } : {}
+                    }
+              }
               rel='next'
               className='flex flex-1 min-w-[4.5rem] items-center justify-center gap-1 h-11 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl active:scale-[0.98]'>
               {locale.PAGINATION.NEXT}
               <i className='fas fa-chevron-right' />
             </SmartLink>
             <SmartLink
-              href={{
-                pathname:
-                  totalPage === 1
-                    ? `${pagePrefix}/`
-                    : `${pagePrefix}/page/${totalPage}`,
-                query: router.query.s ? { s: router.query.s } : {}
-              }}
+              href={
+                isQuerySearch
+                  ? searchQueryHref(router, totalPage)
+                  : {
+                      pathname:
+                        totalPage === 1
+                          ? `${pagePrefix}/`
+                          : `${pagePrefix}/page/${totalPage}`,
+                      query: router.query.s ? { s: router.query.s } : {}
+                    }
+              }
               className='flex flex-1 min-w-[4.5rem] items-center justify-center gap-1 h-11 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#1e1e1e] border dark:border-gray-600 rounded-xl active:scale-[0.98]'>
               {locale.PAGINATION?.LAST || '尾页'}
               <i className='fas fa-angle-double-right' />
@@ -257,14 +314,19 @@ const PaginationNumber = ({
  * @param {*} pagePrefix
  * @returns
  */
-function getPageElement(page, currentPage, pagePrefix) {
+function getPageElement(page, currentPage, pagePrefix, router, isQuerySearch) {
   const selected = page + '' === currentPage + ''
   if (!page) {
     return <></>
   }
+  const href = isQuerySearch
+    ? searchQueryHref(router, page)
+    : page === 1
+      ? `${pagePrefix}/`
+      : `${pagePrefix}/page/${page}`
   return (
     <SmartLink
-      href={page === 1 ? `${pagePrefix}/` : `${pagePrefix}/page/${page}`}
+      href={href}
       key={page}
       passHref
       className={
@@ -286,15 +348,15 @@ function getPageElement(page, currentPage, pagePrefix) {
  * @param {*} totalPage
  * @returns
  */
-function generatePages(pagePrefix, page, currentPage, totalPage) {
+function generatePages(pagePrefix, page, currentPage, totalPage, router, isQuerySearch) {
   const pages = []
   const groupCount = 7 // 最多显示页签数
   if (totalPage <= groupCount) {
     for (let i = 1; i <= totalPage; i++) {
-      pages.push(getPageElement(i, page, pagePrefix))
+      pages.push(getPageElement(i, page, pagePrefix, router, isQuerySearch))
     }
   } else {
-    pages.push(getPageElement(1, page, pagePrefix))
+    pages.push(getPageElement(1, page, pagePrefix, router, isQuerySearch))
     const dynamicGroupCount = groupCount - 2
     let startPage = currentPage - 2
     if (startPage <= 1) {
@@ -313,7 +375,7 @@ function generatePages(pagePrefix, page, currentPage, totalPage) {
 
     for (let i = 0; i < dynamicGroupCount; i++) {
       if (startPage + i < totalPage) {
-        pages.push(getPageElement(startPage + i, page, pagePrefix))
+        pages.push(getPageElement(startPage + i, page, pagePrefix, router, isQuerySearch))
       }
     }
 
@@ -325,7 +387,7 @@ function generatePages(pagePrefix, page, currentPage, totalPage) {
       )
     }
 
-    pages.push(getPageElement(totalPage, page, pagePrefix))
+    pages.push(getPageElement(totalPage, page, pagePrefix, router, isQuerySearch))
   }
   return pages
 }

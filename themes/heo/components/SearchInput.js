@@ -23,14 +23,18 @@ const SearchInput = props => {
     const key = raw.trim()
     const themeQ = router.query.theme
     const themeStr = Array.isArray(themeQ) ? themeQ[0] : themeQ
-    const q = themeStr ? `?theme=${encodeURIComponent(themeStr)}` : ''
 
-    // 整页跳转：避免客户端 router.push 长时间等待 getStaticProps（搜索全文检索）而不触发 routeChangeComplete → LoadingCover 永久卡在 95%
+    // /search?s= 关键词放查询串，避免路径含中文在 Cloudflare 下出现连接失败
     if (key !== '') {
       setLoadingState(true)
-      window.location.assign(`/search/${encodeURIComponent(key)}${q}`)
+      const p = new URLSearchParams()
+      p.set('s', key)
+      if (themeStr) p.set('theme', themeStr)
+      window.location.assign(`/search?${p.toString()}`)
     } else {
-      window.location.assign(`/${q}`)
+      const p = new URLSearchParams()
+      if (themeStr) p.set('theme', themeStr)
+      window.location.assign(p.toString() ? `/?${p}` : '/')
     }
   }
   const handleKeyUp = e => {
