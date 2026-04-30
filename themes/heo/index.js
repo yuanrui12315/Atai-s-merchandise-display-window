@@ -260,9 +260,9 @@ const LayoutSearch = props => {
                 </div>
                 <div id='posts-wrapper'>
                   {siteConfig('POST_LIST_STYLE') === 'page' ? (
-                    <BlogPostListPage {...props} />
+                    <BlogPostListPage {...props} currentSearch={currentSearch} />
                   ) : (
-                    <BlogPostListScroll {...props} />
+                    <BlogPostListScroll {...props} currentSearch={currentSearch} />
                   )}
                 </div>
               </div>
