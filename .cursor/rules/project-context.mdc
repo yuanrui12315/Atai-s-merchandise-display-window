@@ -154,6 +154,7 @@ alwaysApply: true
 
 ### 监控
 - **Vercel Analytics**：默认开启（`ANALYTICS_VERCEL`），访问量统计
+- **不蒜子（ANALYTICS_BUSUANZI）**：**已全局关闭**（`lib/config.js` 对 `ANALYTICS_BUSUANZI_ENABLE` 固定 `false`），不再请求外网统计脚本，避免国内超时拖慢；heo 侧栏统计卡仅保留 **商品数量 / 建站天数**。
 - **Speed Insights**：已集成，加载速度（LCP、FID、CLS）在 Vercel 控制台查看
 - **商品详情页访问量**：已移除（真实统计需注册 Redis 服务，用户不想要）
 
