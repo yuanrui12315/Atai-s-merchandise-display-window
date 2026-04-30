@@ -22,6 +22,7 @@ export async function getServerSideProps(context) {
 
   const props = await getGlobalData({
     from: 'search-props',
+    pageType: ['Post'],
     locale
   })
   const { allPages } = props

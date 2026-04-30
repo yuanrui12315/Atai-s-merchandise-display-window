@@ -63,7 +63,7 @@ alwaysApply: true
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
-- **`/search?s=` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；优先读缓存 **`page_content_${页面id}`**；未命中则 **`getPageWithRetry`**。**构建期**：`package.json` 的 **`build`** 设 **`NEXT_SEARCH_NO_REMOTE=1`**；**`next.config.js`** 在检测到「Next CLI + `build`」时也会设同一变量；`shouldSkipSearchBodyRemote` 中两者任一成立即**完全跳过**正文远程拉取与批量匹配，避免 **Jest worker 崩溃**（勿在 Vercel 环境变量里长期设 `NEXT_SEARCH_NO_REMOTE=1`，否则线上搜索也搜不到正文）。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
+- **`/search?s=` 全文检索**（`lib/search/filterPostsByKeyword.js`）：匹配 **标题、`summary`（商品描述）、标签、分类** + Notion **正文块纯文本**；优先读缓存 **`page_content_${页面id}`**；未命中则 **`getPageWithRetry`**。为防止 **Cloudflare 524**（源站过久无响应），正文阶段默认 **最多约 35s**、**最多扫 48 条「仅正文可能命中」** 商品；可在 Vercel 设 **`SEARCH_BODY_BUDGET_MS`**、**`SEARCH_BODY_MAX_POSTS`** 调整（或适度加大；过大仍可能 524 / Vercel 套餐超时）。**构建期**：`NEXT_SEARCH_NO_REMOTE=1` 等仍按原约定跳过正文拉取；勿在生产长期设 **`NEXT_SEARCH_NO_REMOTE=1`**。另：全站 `post` 会 **`delete post.content`**，须从 **blockMap 根块** 回退子块 id。
 
 ### 「所有商品」列表排序
 - `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）
