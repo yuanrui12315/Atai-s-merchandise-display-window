@@ -56,6 +56,8 @@ alwaysApply: true
 ### 搜索与全屏加载
 - **heo 顶栏搜索**：使用 **`window.location.assign`** 进入 `/search/关键词`，避免客户端 **`router.push` 长时间等待 `getStaticProps`（全文检索）** 期间 **不触发 `routeChangeComplete`** → **LoadingCover 卡在 95%**。`lib/global.js` 对 **`/search`、`/search/*`** 的 **`routeChangeStart` 也不会再打开全屏 LoadingCover**；其它路由保留 **25s** 超时自动收起。
 - **其它主题**仍可能用 `router.push` 进搜索；若遇同类卡顿可同样改为整页跳转或依赖上述 global 对 `/search` 的跳过逻辑。
+- **LayoutSearch（heo）**：`currentSearch` 须用 **`props.keyword` 或 `router.query.keyword`**（`/search/[keyword]`）；**不能**只回退到 **`router.query.s`**（那是 `/search?s=` 旧式），否则 fallback 瞬间会误判为「无关键词」→ 只渲染空壳 SearchNav。
+- **`pages/search/[keyword]`**：`getStaticPaths` 使用 **`fallback: 'blocking'`**，避免整页打开搜索时先下发空 props。
 
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
