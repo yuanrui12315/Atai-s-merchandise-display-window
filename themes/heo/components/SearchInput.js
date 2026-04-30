@@ -22,12 +22,17 @@ const SearchInput = props => {
     const key = searchInputRef.current.value
     if (key && key !== '') {
       setLoadingState(true)
-      router.push({ pathname: '/search/' + key }).then(r => {
-        setLoadingState(false)
-      })
-      // location.href = '/search/' + key
+      const themeQ = router.query.theme
+      const themeStr = Array.isArray(themeQ) ? themeQ[0] : themeQ
+      const query = themeStr ? { theme: themeStr } : {}
+      void router
+        .push({ pathname: '/search/' + key, query })
+        .finally(() => setLoadingState(false))
     } else {
-      router.push({ pathname: '/' }).then(r => {})
+      const themeQ = router.query.theme
+      const themeStr = Array.isArray(themeQ) ? themeQ[0] : themeQ
+      const query = themeStr ? { theme: themeStr } : {}
+      void router.push({ pathname: '/', query })
     }
   }
   const handleKeyUp = e => {
