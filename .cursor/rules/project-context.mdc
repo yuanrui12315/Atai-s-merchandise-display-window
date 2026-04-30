@@ -54,7 +54,7 @@ alwaysApply: true
 - **价格 / 标签 / 分类 / 链接列名**：默认 **`价格`**、**`标签`**、**`分类`**、**`自定义链接`**（网址路径，对应程序字段 `slug`）；仍兼容 **`price`**、**`tags`**、**`category`**、**`slug`**、**`链接别名`**。
 
 ### 搜索与全屏加载
-- **入口**：**`themes/heo/components/SearchInput.js`** 使用 **`router.push` → `/search/关键词`**（关键词在路径里，与 NotionNext 默认一致）。
+- **入口**：**`themes/heo/components/SearchInput.js`** 使用 **`router.push` → `/search/关键词`**；关键词须 **`encodeURIComponent`** 后再拼路径，避免中文等在部分环境下跳转失败。
 - **`pages/search/index.js`**：**`getStaticProps`**；无关键词时展示搜索导航；有 **`?s=`** 时仅在浏览器对 **标题、商品描述 summary、标签、分类** 做过滤（**不读 Notion 正文**）。
 - **`pages/search/[keyword]`** 与 **`pages/search/[keyword]/page/[page]`**：**`getStaticProps`** + **`filterPostsByKeyword`**（标题、summary、标签、分类 + **正文**；构建期仍受 **`NEXT_SEARCH_NO_REMOTE=1`** 等约定，不远程拉正文）。
 - **`lib/global.js`**：全屏 Loading 在路由切换时打开，**25s** 兜底 **`setOnLoading(false)`**；**勿**把 **`onLoading`** 放进 **`routeChangeComplete` 监听**的 effect 依赖，以免闭包卡死。

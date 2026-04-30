@@ -19,15 +19,20 @@ const SearchInput = props => {
   })
 
   const handleSearch = () => {
-    const key = searchInputRef.current.value
-    if (key && key !== '') {
+    const raw = searchInputRef.current?.value ?? ''
+    const key = raw.trim()
+    if (key !== '') {
       setLoadingState(true)
-      router.push({ pathname: '/search/' + key }).then(r => {
-        setLoadingState(false)
-      })
-      // location.href = '/search/' + key
+      // 路径一节须编码：中文/空格等直接拼进 pathname 时，部分环境下客户端跳转会失败或进错路由
+      const path = `/search/${encodeURIComponent(key)}`
+      router
+        .push(path)
+        .catch(() => {})
+        .finally(() => {
+          setLoadingState(false)
+        })
     } else {
-      router.push({ pathname: '/' }).then(r => {})
+      void router.push('/')
     }
   }
   const handleKeyUp = e => {
