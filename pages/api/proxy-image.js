@@ -97,6 +97,7 @@ export default async function handler(req, res) {
             .webp({ quality: targetQuality, effort: 4 })
             .toBuffer()
           outType = 'image/webp'
+          res.setHeader('X-Proxy-Format', 'webp')
         } catch (e) {
           console.error(
             '[proxy-image] sharp WebP failed, passthrough:',

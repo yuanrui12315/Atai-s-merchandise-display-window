@@ -21,6 +21,13 @@ module.exports = {
     unoptimized: false,
     formats: ['image/avif', 'image/webp'], // 优先 AVIF/WebP，体积更小加载更快
   },
+  // pages/api 不走 serverComponentsExternalPackages；不把 sharp 标成 external 时可能被 webpack打成残包，运行时回退原图 PNG
+  webpack: (config, { isServer, nextRuntime }) => {
+    if (isServer && nextRuntime !== 'edge') {
+      config.externals.push({ sharp: 'commonjs sharp' })
+    }
+    return config
+  },
   experimental: {
     extensionAlias: {
       '.js': ['.js']
