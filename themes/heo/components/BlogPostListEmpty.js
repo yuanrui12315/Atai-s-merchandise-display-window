@@ -7,8 +7,19 @@ import { useGlobal } from '@/lib/global'
  */
 const BlogPostListEmpty = ({ currentSearch }) => {
   const { locale } = useGlobal()
-  return <div className='flex w-full items-center justify-center min-h-screen mx-auto md:-mt-20'>
-        <div className='text-gray-500 dark:text-gray-300'>{locale.COMMON.NO_MORE} {(currentSearch && <div>{currentSearch}</div>)}</div>
-  </div>
+  const main =
+    currentSearch != null && currentSearch !== ''
+      ? locale.COMMON.SEARCH_LIST_EMPTY ?? locale.COMMON.SEARCH_NO_RESULTS
+      : locale.COMMON.NO_MORE
+  return (
+    <div className='flex min-h-screen w-full items-center justify-center mx-auto md:-mt-20'>
+      <div className='max-w-md px-4 text-center text-sm leading-relaxed text-gray-500 dark:text-gray-300'>
+        {main}
+        {currentSearch ? (
+          <div className='mt-2 text-xs opacity-90'>{currentSearch}</div>
+        ) : null}
+      </div>
+    </div>
+  )
 }
 export default BlogPostListEmpty
