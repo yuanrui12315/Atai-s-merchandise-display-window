@@ -16,7 +16,6 @@
     "@headlessui/react": "^1.7.19",
     "@img/sharp-libvips-linux-x64": "1.0.4",
     "@img/sharp-linux-x64": "0.33.5",
-    "@img/sharp-wasm32": "0.33.5",
     "@vercel/analytics": "1.2.2",
     "@vercel/speed-insights": "^1.0.0",
     "@waline/client": "^3.0.0",
