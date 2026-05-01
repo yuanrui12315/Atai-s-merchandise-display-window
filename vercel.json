@@ -1,5 +1,10 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "headers": []
+  "headers": [],
+  "functions": {
+    "pages/api/proxy-image.js": {
+      "includeFiles": "{node_modules/sharp/**,node_modules/@img/**}"
+    }
+  }
 }

@@ -14,8 +14,11 @@ if (process.env.NEXT_SEARCH_NO_REMOTE !== '0') {
   }
 }
 
+// Vercel 上勿用 standalone：其 serverless 打包对 sharp 等原生依赖追踪易不完整，运行时 require 失败则永远回退 PNG
+const onVercel = process.env.VERCEL === '1'
+
 module.exports = {
-  output: 'standalone',
+  ...(onVercel ? {} : { output: 'standalone' }),
   poweredByHeader: false, // 移除 X-Powered-By 减少响应头
   images: {
     unoptimized: false,

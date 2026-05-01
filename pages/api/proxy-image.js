@@ -89,8 +89,9 @@ export default async function handler(req, res) {
       const sharp = loadSharp()
       if (!sharp) {
         console.error(
-          '[proxy-image] skip WebP: sharp unavailable (check standalone trace / Vercel logs)'
+          '[proxy-image] skip WebP: sharp unavailable (check Vercel logs / includeFiles)'
         )
+        res.setHeader('X-Proxy-Format', 'skip-no-sharp')
       } else {
         try {
           buffer = await sharp(origBuffer, { failOn: 'none' })
@@ -105,6 +106,7 @@ export default async function handler(req, res) {
           )
           buffer = origBuffer
           outType = contentType
+          res.setHeader('X-Proxy-Format', 'skip-sharp-error')
         }
       }
     }
