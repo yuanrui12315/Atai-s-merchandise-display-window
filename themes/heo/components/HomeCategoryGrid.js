@@ -1,7 +1,11 @@
 import LazyImage from '@/components/LazyImage'
 import { siteConfig } from '@/lib/config'
 import SmartLink from '@/components/SmartLink'
+import { useLayoutEffect, useState } from 'react'
 import CONFIG from '../config'
+
+/** 与 tailwind.config.js 中 xl 一致，仅挂载当前断点对应的一套 DOM，避免同一分类图请求两次 */
+const XL_MIN_MEDIA = '(min-width: 1140px)'
 
 const heroThumbCap = () =>
   siteConfig('HOME_HERO_THUMB_MAX_WIDTH', 560, CONFIG)
@@ -16,6 +20,15 @@ const DESK_CATEGORY_COVER_MAX = 640
 export default function HomeCategoryGrid(props) {
   const { categoryOptions } = props
   const categoryImages = siteConfig('HEO_CATEGORY_IMAGES', {}, CONFIG) || {}
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useLayoutEffect(() => {
+    const mq = window.matchMedia(XL_MIN_MEDIA)
+    const apply = () => setIsDesktop(mq.matches)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [])
 
   if (!categoryOptions || categoryOptions.length === 0) {
     return null
@@ -39,7 +52,8 @@ export default function HomeCategoryGrid(props) {
         商品分类
       </div>
 
-      {/* 手机：同 TopGroup #top-group */}
+      {/* 手机：同 TopGroup #top-group（仅窄屏挂载，避免与桌面大卡片重复请求同一图源） */}
+      {!isDesktop ? (
       <div
         className='flex w-full min-w-0 flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 [-webkit-overflow-scrolling:touch] snap-x snap-mandatory xl:hidden'>
         {pairColumns.map((pair, colIdx) => (
@@ -81,9 +95,11 @@ export default function HomeCategoryGrid(props) {
           </div>
         ))}
       </div>
+      ) : null}
 
-      {/* 桌面：同 TopGroup 三列大卡片，分类较多时多行 */}
-      <div className='hidden w-full space-x-0 xl:grid xl:grid-cols-3 xl:gap-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6'>
+      {/* 桌面：同 TopGroup 三列大卡片（仅 xl 及以上挂载） */}
+      {isDesktop ? (
+      <div className='grid w-full grid-cols-3 gap-3 2xl:grid-cols-4 3xl:grid-cols-5 4xl:grid-cols-6'>
         {categoryOptions.map((category, index) => {
           const imgSrc = categoryImages[category.name]
           return (
@@ -113,6 +129,7 @@ export default function HomeCategoryGrid(props) {
           )
         })}
       </div>
+      ) : null}
     </div>
   )
 }

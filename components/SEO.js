@@ -1,9 +1,7 @@
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
-import { loadExternalResource } from '@/lib/utils'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 
 /**
  * 页面的Head头，有用于SEO
@@ -20,25 +18,11 @@ const SEO = props => {
   const router = useRouter()
   const meta = getSEOMeta(props, router, useGlobal()?.locale)
   const webFontUrl = siteConfig('FONT_URL')
-
-  useEffect(() => {
-    // 使用WebFontLoader字体加载
-    loadExternalResource(
-      'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js',
-      'js'
-    ).then(url => {
-      const WebFont = window?.WebFont
-      if (WebFont) {
-        // console.log('LoadWebFont', webFontUrl)
-        WebFont.load({
-          custom: {
-            // families: ['"LXGW WenKai"'],
-            urls: webFontUrl
-          }
-        })
-      }
-    })
-  }, [])
+  const fontStylesheetUrls = Array.isArray(webFontUrl)
+    ? webFontUrl
+    : webFontUrl
+      ? [webFontUrl]
+      : []
 
   // SEO关键词
   const KEYWORDS = siteConfig('KEYWORDS')
@@ -208,8 +192,9 @@ const SEO = props => {
       <link rel='dns-prefetch' href='//www.googletagmanager.com' />
       <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
 
-      {/* 预加载关键资源 */}
-      <link rel='preload' href='/fonts/inter-var.woff2' as='font' type='font/woff2' crossOrigin='anonymous' />
+      {fontStylesheetUrls.map(href => (
+          <link key={href} rel='stylesheet' href={href} />
+        ))}
 
       {children}
     </Head>
