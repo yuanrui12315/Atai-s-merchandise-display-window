@@ -15,7 +15,7 @@ const DESK_CATEGORY_COVER_MAX = 640
 
 /**
  * 首页全部分类 - 与 Hero「热销款」TopGroup 同款：
- * 手机两列一屏、小卡、横滑 + 顶栏「左右滑动查看更多」；桌面大卡片多列网格。
+ * 手机两列一屏、小卡、横滑；桌面大卡片多列网格。
  */
 export default function HomeCategoryGrid(props) {
   const { categoryOptions } = props
@@ -41,12 +41,9 @@ export default function HomeCategoryGrid(props) {
 
   return (
     <div id='category-grid' className='wow fadeInUp mb-8'>
-      {/* 与 Hero 热销款：仅手机显示标题+提示（xl 与 Hero 断点一致） */}
-      <div className='mb-2 flex items-baseline justify-between gap-2 xl:hidden'>
+      {/* 与 Hero 热销款：仅手机显示标题（xl 与 Hero 断点一致） */}
+      <div className='mb-2 xl:hidden'>
         <div className='text-lg font-bold dark:text-gray-200'>商品分类</div>
-        <span className='max-w-[9rem] shrink-0 text-right text-[10px] leading-tight text-gray-500 dark:text-gray-400'>
-          左右滑动查看更多
-        </span>
       </div>
       <div className='mb-3 hidden text-2xl font-bold text-gray-900 dark:text-gray-200 xl:block'>
         商品分类

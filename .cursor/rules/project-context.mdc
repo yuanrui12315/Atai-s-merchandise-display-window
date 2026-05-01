@@ -70,7 +70,7 @@ alwaysApply: true
 - 若 Notion 配置表里有 `POSTS_SORT_BY` 且改成非 `date`，会覆盖上述行为
 
 ### 首页 Hero 横滑商品
-- **手机端**：标题 **「热销款」** + 提示「左右滑动查看更多」（仅 `xl` 以下）；热销款区为 **小图两排竖叠 × 多列横滑**。**桌面端（`xl+`）** 热销款仍为 **原三列大卡片网格**，与手机布局分离。**曾出现问题**：`BannerGroup` 在移动端子组件虽 `hidden` 但外层仍 `flex-1` 占宽 → 左侧大片空白、热销条挤到右侧；已改为 **`BannerGroup` 在 `xl` 以下整块 `hidden`**，且中间留白仅 `xl` 显示。
+- **手机端**：标题 **「热销款」**（仅 `xl` 以下，无额外提示文案）；热销款区为 **小图两排竖叠 × 多列横滑**。**桌面端（`xl+`）** 热销款为三列竖向滚轮网格等（见 `Hero.js`）。**曾出现问题**：`BannerGroup` 在移动端子组件虽 `hidden` 但外层仍 `flex-1` 占宽 → 左侧大片空白、热销条挤到右侧；已改为 **`BannerGroup` 在 `xl` 以下整块 `hidden`**，且中间留白仅 `xl` 显示。
 - **置顶逻辑**：Notion 数字列 **「首页置顶」**（列名可 `NEXT_PUBLIC_NOTION_PROPERTY_HERO_PIN`）；`1` 最左、`2` 其次…；`0`/空=不参与
 - 优先级：① Notion 置顶 ② `NEXT_PUBLIC_HERO_PINNED_SLUGS` ③ 推荐标签 ④ 最近更新
 - **条数**：`themes/heo/config.js` 的 `HEO_HERO_TOP_MAX` 或 `NEXT_PUBLIC_HEO_HERO_TOP_MAX`，默认 **80**，最大 **80**
@@ -181,7 +181,7 @@ alwaysApply: true
 
 ### 手机端专项
 - **按标签筛选**（TagFilterBar）：手机端固定 **2 行** + 横向滑动；桌面换行网格
-- 首页 **Hero 热销款** 与主内容区 **商品分类**（`HomeCategoryGrid`）版式对齐：手机**同一断点**（`xl`）下均为「标题 + 右栏『左右滑动查看更多』」+ **两排小卡、列宽同 TopGroup、横滑**；`xl+` 均为**多列大卡片**（商品分类为更多列的网格、桌面卡上显示件数；顶栏 `CategoryBar` 仍为纯文字+箭头快速跳转，不是图片小卡）
+- 首页 **Hero 热销款** 与主内容区 **商品分类**（`HomeCategoryGrid`）版式对齐：手机**同一断点**（`xl`）下均为 **仅区块标题** + **两排小卡、列宽同 TopGroup、横滑**；`xl+` 均为**多列大卡片**（商品分类为更多列的网格、桌面卡上显示件数；顶栏 `CategoryBar` 仍为纯文字+箭头快速跳转，不是图片小卡）。顶栏手机端用 **grid `minmax(0,1fr)_auto`** 分Logo与图标，**勿**对 Logo 父级整体 `overflow-hidden`（易把标题裁到不可见）。
 - 回到顶部：手机端阈值 150px，增加 resize 监听和延迟检查
 - 搜索图标：手机端 48×48px、图标 text-xl
 - **三条杠菜单**（SlideOver）：「关于」上方显示网站名称（`siteConfig('TITLE')`），与首页顶部 Logo 一致，不再显示「博客」

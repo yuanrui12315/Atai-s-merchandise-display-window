@@ -18,9 +18,9 @@ const Logo = props => {
           width={24}
           height={24}
           alt={siteConfig('AUTHOR')}
-          className='mr-2 lg:mr-4 hidden md:block'
+          className='mr-1.5 h-6 w-6 shrink-0 rounded object-cover lg:mr-4'
         />
-        <div id='logo-text' className='group relative z-10 min-w-0 max-w-[120px] flex-none rounded-2xl lg:max-w-none'>
+        <div id='logo-text' className='group relative z-10 min-w-0 max-w-[9rem] flex-none rounded-2xl lg:max-w-none'>
           <div className='logo group-hover:opacity-0 opacity-100 visible group-hover:invisible text-base lg:text-lg my-auto truncate rounded dark:border-white duration-200'>
             {siteConfig('TITLE')}
           </div>

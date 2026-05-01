@@ -29,11 +29,8 @@ const Hero = props => {
     <div
       id='hero-wrapper'
       className='recent-top-post-group w-full overflow-hidden select-none px-5 mb-4'>
-      <div className='flex items-baseline justify-between gap-2 mb-2 xl:hidden'>
+      <div className='mb-2 xl:hidden'>
         <div className='text-lg font-bold dark:text-gray-200'>热销款</div>
-        <span className='text-[10px] text-gray-500 dark:text-gray-400 shrink-0 text-right leading-tight max-w-[9rem]'>
-          左右滑动查看更多
-        </span>
       </div>
       <div
         id='hero'

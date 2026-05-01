@@ -145,14 +145,14 @@ const Header = props => {
             ${fixedNav ? 'fixed' : 'relative bg-transparent'} 
             ${textWhite ? 'text-white ' : 'text-black dark:text-white'}  
             ${navBgWhite ? 'bg-white dark:bg-[#18171d] shadow' : 'bg-transparent'}`}>
-        <div className='flex h-full mx-auto justify-between items-center max-w-[86rem] px-4 lg:px-6 gap-2 lg:gap-4'>
-          {/* 左侧 logo：min-w-0 + overflow-hidden 防止标题溢出到右侧图标上 */}
-          <div className='min-w-0 flex-1 overflow-hidden lg:flex-initial lg:overflow-visible'>
+        {/* 手机：两列 grid 明确分出标题区与图标区，避免 flex+overflow-hidden 把整列 Logo 裁没；PC：横向 flex */}
+        <div className='mx-auto grid h-full w-full max-w-[86rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 px-4 lg:flex lg:items-center lg:justify-between lg:gap-4 lg:px-6'>
+          <div className='min-w-0'>
             <Logo {...props} />
           </div>
 
           {/* 中间：大搜索框 + 菜单（PC端，vapingcountry 风格） */}
-          <div className='hidden lg:flex flex-1 min-w-0 items-center gap-6'>
+          <div className='hidden min-w-0 flex-1 items-center gap-6 lg:flex'>
             <div className='flex-1 min-w-0 max-w-2xl'>
               <div className='w-full flex items-center bg-white dark:bg-gray-600 rounded-lg shadow-sm border border-gray-200 dark:border-gray-500 pl-4 pr-2 py-1.5'>
                 <SearchInput {...props} className='border-0 shadow-none' />
@@ -163,8 +163,7 @@ const Header = props => {
             </div>
           </div>
 
-          {/* 右侧固定 - 不参与压缩，避免与左侧抢宽导致重叠 */}
-          <div className='relative z-20 flex flex-shrink-0 justify-end items-center gap-1 lg:gap-2 w-auto lg:w-48'>
+          <div className='flex w-max shrink-0 items-center justify-end justify-self-end gap-1 lg:w-48 lg:justify-self-auto lg:gap-2'>
             <RandomPostButton {...props} />
             {/* 移动端显示搜索图标，PC端已用大搜索框替代 */}
             <div className='lg:hidden'>
