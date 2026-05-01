@@ -216,6 +216,31 @@ function TopGroup(props) {
 
   const deskThumbW = 560
 
+  function renderTopProductCard(p, priority) {
+    if (!p) {
+      return null
+    }
+    return (
+      <SmartLink href={`${siteConfig('SUB_PATH', '')}/${p?.slug}`} key={p.id}>
+        <div className='group relative flex h-[6.4rem] w-full cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-100/90 bg-white shadow-sm dark:border-gray-600 dark:bg-[#1e1e1e] dark:text-white xl:h-[164px] xl:rounded-xl xl:border-0 xl:bg-white xl:shadow-sm dark:xl:border-0 xl:dark:bg-black'>
+          <LazyImage
+            priority={priority}
+            compressMaxWidth={deskThumbW}
+            className='h-12 w-full shrink-0 object-cover xl:h-24'
+            alt={p?.title}
+            src={p?.pageCoverThumbnail || siteInfo?.pageCover}
+          />
+          <div className='line-clamp-2 min-h-0 flex-1 overflow-hidden px-1.5 py-0.5 text-[10px] font-semibold leading-tight text-gray-800 group-hover:text-indigo-600 dark:text-gray-100 dark:group-hover:text-yellow-500 xl:m-2 xl:flex-none xl:px-0 xl:py-0 xl:text-base'>
+            {p?.title}
+          </div>
+          <div className='pointer-events-none absolute -left-1 -top-1 overflow-hidden rounded-lg bg-indigo-600 py-1.5 pl-2.5 pr-1.5 pt-2 text-[10px] text-white opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 dark:bg-yellow-600 -translate-x-2 xl:-left-2 xl:-top-2 xl:rounded-xl xl:text-xs xl:-translate-x-4'>
+            {locale.COMMON.RECOMMEND_BADGES}
+          </div>
+        </div>
+      </SmartLink>
+    )
+  }
+
   return (
     <div
       id='hero-right-wrapper'
@@ -227,42 +252,25 @@ function TopGroup(props) {
           热销款
         </div>
       </div>
-      {/* 手机：横滑；xl：多列换行 + 固定高度内竖向滚轮浏览 */}
-      <div
-        id='top-group'
-        className='flex min-w-0 w-full flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] xl:w-0 xl:flex-1 xl:flex-wrap xl:content-start xl:gap-3 xl:overflow-x-hidden xl:overflow-y-auto xl:pb-2 xl:max-h-[min(380px,46vh)] xl:snap-none xl:min-h-0'>
-        {pairColumns.map((pair, colIdx) => (
-          <div
-            key={pair[0]?.id || `col-${colIdx}`}
-            className='flex w-[5.75rem] shrink-0 snap-start flex-col gap-1.5 sm:w-24 xl:w-52 xl:shrink-0 xl:gap-3'>
-            {pair.map((p, rowIdx) => {
-              if (!p) {
-                return null
-              }
-              return (
-                <SmartLink
-                  href={`${siteConfig('SUB_PATH', '')}/${p?.slug}`}
-                  key={p.id || `${colIdx}-${rowIdx}`}>
-                  <div className='group relative flex h-[6.4rem] w-full cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-100/90 bg-white shadow-sm dark:border-gray-600 dark:bg-[#1e1e1e] dark:text-white xl:h-[164px] xl:rounded-xl xl:border-0 xl:bg-white xl:shadow-sm dark:xl:border-0 xl:dark:bg-black'>
-                    <LazyImage
-                      priority={colIdx === 0 && rowIdx === 0}
-                      compressMaxWidth={deskThumbW}
-                      className='h-12 w-full shrink-0 object-cover xl:h-24'
-                      alt={p?.title}
-                      src={p?.pageCoverThumbnail || siteInfo?.pageCover}
-                    />
-                    <div className='line-clamp-2 min-h-0 flex-1 overflow-hidden px-1.5 py-0.5 text-[10px] font-semibold leading-tight text-gray-800 group-hover:text-indigo-600 dark:text-gray-100 dark:group-hover:text-yellow-500 xl:m-2 xl:flex-none xl:px-0 xl:py-0 xl:text-base'>
-                      {p?.title}
-                    </div>
-                    <div className='pointer-events-none absolute -left-1 -top-1 overflow-hidden rounded-lg bg-indigo-600 py-1.5 pl-2.5 pr-1.5 pt-2 text-[10px] text-white opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 dark:bg-yellow-600 -translate-x-2 xl:-left-2 xl:-top-2 xl:rounded-xl xl:text-xs xl:-translate-x-4'>
-                      {locale.COMMON.RECOMMEND_BADGES}
-                    </div>
-                  </div>
-                </SmartLink>
-              )
-            })}
-          </div>
-        ))}
+      <div className='flex min-w-0 w-full flex-1 flex-col xl:w-0 xl:min-h-0 xl:flex-1'>
+        {/* 手机：两枚一列横滑（pairColumns） */}
+        <div
+          id='top-group'
+          className='flex w-full flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] xl:hidden'>
+          {pairColumns.map((pair, colIdx) => (
+            <div
+              key={pair[0]?.id || `col-${colIdx}`}
+              className='flex w-[5.75rem] shrink-0 snap-start flex-col gap-1.5 sm:w-24'>
+              {pair.map((p, rowIdx) =>
+                renderTopProductCard(p, colIdx === 0 && rowIdx === 0)
+              )}
+            </div>
+          ))}
+        </div>
+        {/* PC：每排 3 个单卡 + 竖向滚轮 */}
+        <div className='hidden min-h-0 w-full xl:grid xl:max-h-[min(380px,46vh)] xl:grid-cols-3 xl:gap-3 xl:overflow-x-hidden xl:overflow-y-auto xl:pb-2 xl:content-start'>
+          {topPosts?.map((p, idx) => renderTopProductCard(p, idx === 0))}
+        </div>
       </div>
       {/* 一个大的跳转文章卡片，可通过 config 关闭 */}
       {siteConfig('HEO_HERO_TODAY_CARD_ENABLE', true, CONFIG) && (
