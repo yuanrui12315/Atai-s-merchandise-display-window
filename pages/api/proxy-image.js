@@ -1,7 +1,7 @@
 /**
  * 图片代理 API - 解决 Notion 图片在国内加载慢的问题
  * 通过 Vercel 服务器中转，利用 Cloudflare CDN 加速
- * 可选 q=1–100：列表等场景用 sharp 转 WebP 降体积（手机端 <picture> 单独请求）
+ * 可选 q=1–100：列表等场景用 sharp 转 WebP 降体积（手机列表 URL 带 q）
  */
 const ALLOWED_HOSTS = [
   'www.notion.so',
@@ -24,7 +24,8 @@ function isAllowedUrl(url) {
 function loadSharp() {
   try {
     return require('sharp')
-  } catch {
+  } catch (e) {
+    console.error('[proxy-image] sharp require failed:', e?.message || e)
     return null
   }
 }
@@ -86,14 +87,21 @@ export default async function handler(req, res) {
       !contentType.includes('gif')
     ) {
       const sharp = loadSharp()
-      if (sharp) {
+      if (!sharp) {
+        console.error(
+          '[proxy-image] skip WebP: sharp unavailable (check standalone trace / Vercel logs)'
+        )
+      } else {
         try {
-          buffer = await sharp(origBuffer)
+          buffer = await sharp(origBuffer, { failOn: 'none' })
             .webp({ quality: targetQuality, effort: 4 })
             .toBuffer()
           outType = 'image/webp'
         } catch (e) {
-          console.warn('[proxy-image] sharp recompress skipped:', e.message)
+          console.error(
+            '[proxy-image] sharp WebP failed, passthrough:',
+            e?.message || e
+          )
           buffer = origBuffer
           outType = contentType
         }
