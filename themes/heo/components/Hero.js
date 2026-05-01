@@ -258,7 +258,7 @@ function TopGroup(props) {
         ))}
       </div>
       <div
-        className='hidden w-full space-x-3 xl:grid xl:grid-cols-3 xl:gap-3 xl:space-x-0 xl:h-[342px]'>
+        className='hidden w-full space-x-3 xl:grid xl:grid-cols-3 xl:gap-3 xl:space-x-0 xl:items-start'>
         {topPosts?.map((p, index) => {
           return (
             <SmartLink href={`${siteConfig('SUB_PATH', '')}/${p?.slug}`} key={p.id || index}>
@@ -266,7 +266,7 @@ function TopGroup(props) {
                 <LazyImage
                   priority={index === 0}
                   compressMaxWidth={deskThumbW}
-                  className='h-24 object-cover'
+                  className='h-24 w-full shrink-0 object-cover'
                   alt={p?.title}
                   src={p?.pageCoverThumbnail || siteInfo?.pageCover}
                 />
