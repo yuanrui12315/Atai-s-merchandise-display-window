@@ -219,15 +219,22 @@ function TopGroup(props) {
     <div
       id='hero-right-wrapper'
       onMouseLeave={handleMouseLeave}
-      className='flex-1 relative w-full min-w-0'>
-      {/* 手机：两排小卡 + 横滑；PC（xl+）：恢复原三列大卡片网格（非触屏不必横滑小卡） */}
+      className='relative flex min-w-0 w-full flex-1'>
+      {/* PC：热销款标题 + 滑动提示（与手机一致，整块横滑查看更多） */}
+      <div className='mb-2 hidden items-baseline justify-between gap-2 xl:flex'>
+        <div className='text-lg font-bold dark:text-gray-200'>热销款</div>
+        <span className='max-w-[9rem] shrink-0 text-right text-[10px] leading-tight text-gray-500 dark:text-gray-400'>
+          左右滑动查看更多
+        </span>
+      </div>
+      {/* 手机 + PC 均为横滑；xl 使用大卡尺寸，避免以前静态网格占满右侧 */}
       <div
         id='top-group'
-        className='flex w-full min-w-0 flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] xl:hidden'>
+        className='flex w-full min-w-0 flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] xl:gap-3 xl:pb-2'>
         {pairColumns.map((pair, colIdx) => (
           <div
             key={pair[0]?.id || `col-${colIdx}`}
-            className='flex w-[5.75rem] shrink-0 flex-col gap-1.5 snap-start sm:w-24'>
+            className='flex w-[5.75rem] shrink-0 snap-start flex-col gap-1.5 sm:w-24 xl:w-52 xl:gap-3'>
             {pair.map((p, rowIdx) => {
               if (!p) {
                 return null
@@ -236,18 +243,18 @@ function TopGroup(props) {
                 <SmartLink
                   href={`${siteConfig('SUB_PATH', '')}/${p?.slug}`}
                   key={p.id || `${colIdx}-${rowIdx}`}>
-                  <div className='group relative flex h-[6.4rem] w-full cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-100/90 bg-white shadow-sm dark:border-gray-600 dark:bg-[#1e1e1e] dark:text-white'>
+                  <div className='group relative flex h-[6.4rem] w-full cursor-pointer flex-col overflow-hidden rounded-lg border border-gray-100/90 bg-white shadow-sm dark:border-gray-600 dark:bg-[#1e1e1e] dark:text-white xl:h-[164px] xl:rounded-xl xl:border-0 xl:bg-white xl:shadow-sm dark:xl:border-0 xl:dark:bg-black'>
                     <LazyImage
                       priority={colIdx === 0 && rowIdx === 0}
-                      compressMaxWidth={heroThumbCap()}
-                      className='h-12 w-full shrink-0 object-cover'
+                      compressMaxWidth={deskThumbW}
+                      className='h-12 w-full shrink-0 object-cover xl:h-24'
                       alt={p?.title}
                       src={p?.pageCoverThumbnail || siteInfo?.pageCover}
                     />
-                    <div className='line-clamp-2 min-h-0 flex-1 overflow-hidden px-1.5 py-0.5 text-[10px] font-semibold leading-tight text-gray-800 group-hover:text-indigo-600 dark:text-gray-100 dark:group-hover:text-yellow-500'>
+                    <div className='line-clamp-2 min-h-0 flex-1 overflow-hidden px-1.5 py-0.5 text-[10px] font-semibold leading-tight text-gray-800 group-hover:text-indigo-600 dark:text-gray-100 dark:group-hover:text-yellow-500 xl:m-2 xl:flex-none xl:px-0 xl:py-0 xl:text-base'>
                       {p?.title}
                     </div>
-                    <div className='pointer-events-none absolute -left-1 -top-1 overflow-hidden rounded-lg bg-indigo-600 py-1.5 pl-2.5 pr-1.5 pt-2 text-[10px] text-white opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 dark:bg-yellow-600 -translate-x-2'>
+                    <div className='pointer-events-none absolute -left-1 -top-1 overflow-hidden rounded-lg bg-indigo-600 py-1.5 pl-2.5 pr-1.5 pt-2 text-[10px] text-white opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 dark:bg-yellow-600 -translate-x-2 xl:-left-2 xl:-top-2 xl:rounded-xl xl:text-xs xl:-translate-x-4'>
                       {locale.COMMON.RECOMMEND_BADGES}
                     </div>
                   </div>
@@ -256,30 +263,6 @@ function TopGroup(props) {
             })}
           </div>
         ))}
-      </div>
-      <div
-        className='hidden w-full space-x-3 xl:grid xl:grid-cols-3 xl:gap-3 xl:space-x-0 xl:items-start'>
-        {topPosts?.map((p, index) => {
-          return (
-            <SmartLink href={`${siteConfig('SUB_PATH', '')}/${p?.slug}`} key={p.id || index}>
-              <div className='group relative flex h-[164px] w-52 cursor-pointer flex-col overflow-hidden rounded-xl bg-white shadow dark:bg-black dark:text-white xl:w-full'>
-                <LazyImage
-                  priority={index === 0}
-                  compressMaxWidth={deskThumbW}
-                  className='h-24 w-full shrink-0 object-cover'
-                  alt={p?.title}
-                  src={p?.pageCoverThumbnail || siteInfo?.pageCover}
-                />
-                <div className='m-2 line-clamp-2 overflow-hidden font-semibold group-hover:text-indigo-600 dark:group-hover:text-yellow-600'>
-                  {p?.title}
-                </div>
-                <div className='absolute -left-2 -top-2 overflow-hidden rounded-xl bg-indigo-600 py-1.5 pl-2.5 pr-1.5 pt-2 text-xs text-white opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100 dark:bg-yellow-600 -translate-x-4'>
-                  {locale.COMMON.RECOMMEND_BADGES}
-                </div>
-              </div>
-            </SmartLink>
-          )
-        })}
       </div>
       {/* 一个大的跳转文章卡片，可通过 config 关闭 */}
       {siteConfig('HEO_HERO_TODAY_CARD_ENABLE', true, CONFIG) && (
