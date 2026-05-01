@@ -147,11 +147,13 @@ const Header = props => {
             ${navBgWhite ? 'bg-white dark:bg-[#18171d] shadow' : 'bg-transparent'}`}>
         {/* 手机：单独一行 flex（flex-1 min-w-0 overflow-hidden），避免 grid/clip 在部分机型上不生效导致压住图标 */}
         <div className='mx-auto flex h-full w-full max-w-[86rem] items-center justify-between gap-2 px-4 lg:hidden'>
-          <div className='min-h-0 min-w-0 flex-1 basis-0 overflow-hidden'>
+          <div className='min-h-0 min-w-0 max-w-[calc(100%-10rem)] flex-1 basis-0'>
             <Logo {...props} />
           </div>
-          <div className='flex shrink-0 items-center gap-0.5'>
-            <RandomPostButton {...props} />
+          <div className='flex shrink-0 items-center gap-1.5'>
+            <div className='shrink-0'>
+              <RandomPostButton {...props} />
+            </div>
             {!JSON.parse(siteConfig('THEME_SWITCH')) && (
               <div className='hidden shrink-0 md:block'>
                 <DarkModeButton {...props} />
@@ -160,10 +162,12 @@ const Header = props => {
             <div className='flex shrink-0 items-center'>
               <SearchButton {...props} />
             </div>
-            <ReadingProgress />
+            <div className='shrink-0'>
+              <ReadingProgress />
+            </div>
             <div
               onClick={toggleMenuOpen}
-              className='flex h-8 w-8 cursor-pointer items-center justify-center'>
+              className='flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center'>
               <i className='fas fa-bars' />
             </div>
           </div>

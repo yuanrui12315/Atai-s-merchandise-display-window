@@ -12,7 +12,7 @@ const Logo = props => {
     <SmartLink
       href='/'
       title={backHomeTitle}
-      className='flex h-full w-full min-w-0 max-w-full cursor-pointer flex-nowrap items-center overflow-hidden font-extrabold no-underline text-inherit lg:w-auto lg:overflow-visible'>
+      className='flex h-full w-full min-w-0 max-w-full cursor-pointer flex-nowrap items-center font-extrabold no-underline text-inherit lg:w-auto'>
         <LazyImage
           src={siteInfo?.icon}
           width={24}
@@ -22,15 +22,15 @@ const Logo = props => {
         />
         <div
           id='logo-text'
-          className='group relative z-0 min-w-0 max-w-[7rem] flex-1 sm:max-w-[9rem] rounded-2xl lg:z-10 lg:max-w-none lg:flex-none'>
-          <div className='logo group-hover:opacity-0 opacity-100 visible group-hover:invisible text-sm sm:text-base lg:text-lg my-auto truncate rounded dark:border-white duration-200'>
+          className='group relative z-0 min-w-0 flex-1 lg:z-10 lg:flex-none lg:max-w-none'>
+          <div className='logo visible opacity-100 duration-200 group-hover:invisible group-hover:opacity-0 my-auto truncate rounded text-sm sm:text-base lg:text-lg dark:border-white'>
             {siteConfig('TITLE')}
           </div>
-          <div className='flex justify-center rounded-2xl group-hover:bg-indigo-600 w-full group-hover:opacity-100 opacity-0 invisible group-hover:visible absolute top-0 py-1 duration-200'>
-            <Home className={'w-6 h-6 stroke-white stroke-2 '} />
+          <div className='invisible absolute top-0 flex w-full justify-center rounded-2xl py-1 opacity-0 duration-200 group-hover:visible group-hover:bg-indigo-600 group-hover:opacity-100'>
+            <Home className={'h-6 w-6 stroke-2 stroke-white'} />
           </div>
         </div>
-        <span className='ml-1 hidden shrink-0 rounded-lg border border-current border-opacity-40 px-1.5 py-0.5 text-[10px] font-medium hover:border-opacity-80 hover:bg-indigo-500 hover:bg-opacity-10 dark:hover:bg-yellow-500 dark:hover:bg-opacity-10 min-[380px]:inline-flex sm:ml-2 sm:px-2 sm:text-xs lg:ml-3 lg:px-3 lg:text-sm transition-all duration-200'>
+        <span className='ml-1 inline-flex shrink-0 rounded-lg border border-current border-opacity-40 px-1.5 py-0.5 text-[10px] font-medium transition-all duration-200 hover:border-opacity-80 hover:bg-indigo-500 hover:bg-opacity-10 sm:ml-2 sm:px-2 sm:text-xs lg:ml-3 lg:px-3 lg:text-sm dark:hover:bg-yellow-500 dark:hover:bg-opacity-10'>
           首页
         </span>
     </SmartLink>
