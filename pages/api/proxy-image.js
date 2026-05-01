@@ -23,9 +23,10 @@ function isAllowedUrl(url) {
 
 function loadSharp() {
   try {
-    return require('sharp')
+    const mod = require('sharp')
+    return { mod, via: 'native' }
   } catch (e) {
-    console.error('[proxy-image] sharp require failed:', e?.message || e)
+    console.error('[proxy-image] require("sharp") failed:', e?.message || e)
     return null
   }
 }
@@ -86,19 +87,21 @@ export default async function handler(req, res) {
       !contentType.includes('svg') &&
       !contentType.includes('gif')
     ) {
-      const sharp = loadSharp()
-      if (!sharp) {
+      const loaded = loadSharp()
+      if (!loaded) {
         console.error(
-          '[proxy-image] skip WebP: sharp unavailable (check Vercel logs / includeFiles)'
+          '[proxy-image] skip WebP: no sharp (native+wasm failed, check deps / includeFiles)'
         )
         res.setHeader('X-Proxy-Format', 'skip-no-sharp')
       } else {
+        const sharp = loaded.mod
         try {
           buffer = await sharp(origBuffer, { failOn: 'none' })
             .webp({ quality: targetQuality, effort: 4 })
             .toBuffer()
           outType = 'image/webp'
           res.setHeader('X-Proxy-Format', 'webp')
+          res.setHeader('X-Proxy-Sharp', loaded.via)
         } catch (e) {
           console.error(
             '[proxy-image] sharp WebP failed, passthrough:',
