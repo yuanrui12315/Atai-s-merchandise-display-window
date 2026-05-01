@@ -24,18 +24,19 @@ module.exports = {
     unoptimized: false,
     formats: ['image/avif', 'image/webp'], // 优先 AVIF/WebP，体积更小加载更快
   },
-  // pages/api 不走 serverComponentsExternalPackages；不把 sharp 标成 external 时可能被 webpack打成残包，运行时回退原图 PNG
-  webpack: (config, { isServer, nextRuntime }) => {
-    if (isServer && nextRuntime !== 'edge') {
-      config.externals.push({ sharp: 'commonjs sharp' })
-    }
-    return config
-  },
   experimental: {
     extensionAlias: {
       '.js': ['.js']
     },
-    // 勿用 outputFileTracingIncludes 强行打包 sharp：会复制不完整，Vercel 构建 lstat 缺 install/check.js 报错 ENOENT
+    // pages/api/proxy-image 专用：让 sharp 的 linux-x64 与 libvips 打进 serverless，勿用 /* 以免踩 install/check.js
+    outputFileTracingIncludes: {
+      '/api/proxy-image': [
+        './node_modules/sharp/lib/**/*',
+        './node_modules/sharp/package.json',
+        './node_modules/@img/sharp-linux-x64/**/*',
+        './node_modules/@img/sharp-libvips-linux-x64/**/*'
+      ]
+    },
     serverComponentsExternalPackages: ['sharp']
   }
 }
