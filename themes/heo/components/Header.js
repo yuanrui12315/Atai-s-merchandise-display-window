@@ -145,7 +145,7 @@ const Header = props => {
             ${fixedNav ? 'fixed' : 'relative bg-transparent'} 
             ${textWhite ? 'text-white ' : 'text-black dark:text-white'}  
             ${navBgWhite ? 'bg-white dark:bg-[#18171d] shadow' : 'bg-transparent'}`}>
-        {/* 手机：单独一行 flex（flex-1 min-w-0 overflow-hidden），避免 grid/clip 在部分机型上不生效导致压住图标 */}
+        {/* 手机：左区 Logo 与右侧图标分两坨；左区 max-w 为右侧留位 */}
         <div className='mx-auto flex h-full w-full max-w-[86rem] items-center justify-between gap-2 px-4 lg:hidden'>
           <div className='min-h-0 min-w-0 max-w-[calc(100%-10rem)] flex-1 basis-0'>
             <Logo {...props} />

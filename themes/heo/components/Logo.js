@@ -12,25 +12,26 @@ const Logo = props => {
     <SmartLink
       href='/'
       title={backHomeTitle}
-      className='flex h-full w-full min-w-0 max-w-full cursor-pointer flex-nowrap items-center font-extrabold no-underline text-inherit lg:w-auto'>
+      className='flex h-full w-full min-w-0 max-w-full cursor-pointer flex-nowrap items-center gap-1 font-extrabold no-underline text-inherit sm:gap-1.5 lg:w-auto lg:gap-2'>
+        {/* 站点名固定在最左；勿用 flex-1+min-w-0 撑中间格，窄屏会被压成 0 宽整段消失 */}
+        <div
+          id='logo-text'
+          className='group relative z-0 order-1 max-w-[11rem] shrink-0 overflow-hidden sm:max-w-[13rem] lg:order-2 lg:z-10 lg:max-w-none'>
+          <div className='logo truncate text-sm sm:text-base lg:text-lg opacity-100 duration-200 group-hover:invisible group-hover:opacity-0 dark:border-white'>
+            {siteConfig('TITLE')}
+          </div>
+          <div className='invisible absolute top-0 left-0 right-0 flex justify-center rounded-2xl py-1 opacity-0 duration-200 group-hover:visible group-hover:bg-indigo-600 group-hover:opacity-100'>
+            <Home className='h-6 w-6 stroke-2 stroke-white' />
+          </div>
+        </div>
         <LazyImage
           src={siteInfo?.icon}
           width={24}
           height={24}
           alt={siteConfig('AUTHOR')}
-          className='mr-1.5 h-6 w-6 shrink-0 rounded object-cover lg:mr-4'
+          className='order-2 h-6 w-6 shrink-0 rounded object-cover lg:order-1 lg:mr-4 lg:h-7 lg:w-7'
         />
-        <div
-          id='logo-text'
-          className='group relative z-0 min-w-0 flex-1 lg:z-10 lg:flex-none lg:max-w-none'>
-          <div className='logo visible opacity-100 duration-200 group-hover:invisible group-hover:opacity-0 my-auto truncate rounded text-sm sm:text-base lg:text-lg dark:border-white'>
-            {siteConfig('TITLE')}
-          </div>
-          <div className='invisible absolute top-0 flex w-full justify-center rounded-2xl py-1 opacity-0 duration-200 group-hover:visible group-hover:bg-indigo-600 group-hover:opacity-100'>
-            <Home className={'h-6 w-6 stroke-2 stroke-white'} />
-          </div>
-        </div>
-        <span className='ml-1 inline-flex shrink-0 rounded-lg border border-current border-opacity-40 px-1.5 py-0.5 text-[10px] font-medium transition-all duration-200 hover:border-opacity-80 hover:bg-indigo-500 hover:bg-opacity-10 sm:ml-2 sm:px-2 sm:text-xs lg:ml-3 lg:px-3 lg:text-sm dark:hover:bg-yellow-500 dark:hover:bg-opacity-10'>
+        <span className='order-3 inline-flex shrink-0 rounded-lg border border-current border-opacity-40 px-1.5 py-0.5 text-[10px] font-medium transition-all duration-200 hover:border-opacity-80 hover:bg-indigo-500 hover:bg-opacity-10 sm:px-2 sm:text-xs lg:ml-1 lg:px-3 lg:text-sm dark:hover:bg-yellow-500 dark:hover:bg-opacity-10'>
           首页
         </span>
     </SmartLink>
