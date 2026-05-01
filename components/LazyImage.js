@@ -218,6 +218,12 @@ export default function LazyImage({
     return null
   }
 
+  // 外层勿盲目 h-full：在 flex 定高卡片（热销款/分类小卡）里会占满整卡，挤没下方标题；仅当传入 class 含 h-full（如列表封面铺满）时再跟高
+  const imgWantsFullHeight = /\bh-full\b/.test(String(className || ''))
+  const wrapClassName = imgWantsFullHeight
+    ? 'w-full h-full min-h-0'
+    : 'w-full shrink-0 min-h-0'
+
   const deskPreload =
     (compressMaxWidth != null && compressMaxWidth > 0
       ? applyWidthCapToImageSrc(src, compressMaxWidth)
@@ -234,7 +240,7 @@ export default function LazyImage({
 
   return (
     <>
-      <div ref={observerTargetRef} className='w-full h-full min-h-0'>
+      <div ref={observerTargetRef} className={wrapClassName}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img {...imgProps} />
       </div>
