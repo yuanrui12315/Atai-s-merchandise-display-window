@@ -4,7 +4,19 @@ import {
   appendProxyImageQuality
 } from '@/lib/utils/homeImageUrl'
 import Head from 'next/head'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+
+function subscribeNarrow767(callback) {
+  if (typeof window === 'undefined') return () => {}
+  const mq = window.matchMedia('(max-width: 767px)')
+  mq.addEventListener('change', callback)
+  return () => mq.removeEventListener('change', callback)
+}
+
+function getNarrow767() {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(max-width: 767px)').matches
+}
 
 /**
  * 图片懒加载
@@ -26,20 +38,28 @@ export default function LazyImage({
   style,
   /** 仅首页/列表卡等传入：限制请求宽度以加速；详情页勿传 */
   compressMaxWidth,
-  /** 与 compressMaxWidth 同用：手机端 <picture> 请求带 q= 的代理 WebP（略糊、更小） */
+  /** 与 compressMaxWidth 同用：窄屏直接请求带 q= 的代理 WebP */
   compressMobileProxyQuality
 }) {
   const maxWidth = siteConfig('IMAGE_COMPRESS_WIDTH')
   const defaultPlaceholderSrc = siteConfig('IMG_LAZY_LOAD_PLACEHOLDER')
   const imageRef = useRef(null)
   const observerTargetRef = useRef(null)
-  /** null = 未解析，占位图；{ d, m? } = 桌面用 d，若 m 存在则手机走 <picture> */
+  /** null = 未解析，占位图；{ d,
+   * m? } = 桌面用 d，m 为带 q 的代理（仅当需要手机降质时存在） */
   const [resolved, setResolved] = useState(null)
+
+  const narrowViewport = useSyncExternalStore(
+    subscribeNarrow767,
+    getNarrow767,
+    () => false
+  )
 
   const placeholder = placeholderSrc || defaultPlaceholderSrc
   const desktopSrc = resolved?.d ?? placeholder
   const mobileSrc = resolved?.m
-  const wrapPicture = Boolean(mobileSrc)
+  const chosenSrc =
+    mobileSrc && narrowViewport ? mobileSrc : desktopSrc
 
   function resolveDeskAndMob() {
     const desk =
@@ -61,18 +81,15 @@ export default function LazyImage({
     return { d: desk, m: undefined }
   }
 
-  /**
-   * 占位图加载成功
-   */
   const handleThumbnailLoaded = () => {
     if (typeof onLoad === 'function') {
-      // onLoad() // 触发传递的onLoad回调函数
+      // onLoad()
     }
   }
-  // 原图加载完成
+
   const handleImageLoaded = () => {
     if (typeof onLoad === 'function') {
-      onLoad() // 触发传递的onLoad回调函数
+      onLoad()
     }
     if (imageRef.current) {
       imageRef.current.classList.remove('lazy-image-placeholder')
@@ -92,14 +109,26 @@ export default function LazyImage({
     }
   }
 
+  function pickLoadUrl(adjustedDesk, mobileCand) {
+    if (
+      mobileCand &&
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 767px)').matches
+    ) {
+      return mobileCand
+    }
+    return adjustedDesk
+  }
+
   useEffect(() => {
     setResolved(null)
 
     const { d: adjustedImageSrc, m: mobileCand } = resolveDeskAndMob()
 
     if (priority) {
+      const loadUrl = pickLoadUrl(adjustedImageSrc, mobileCand)
       const img = new Image()
-      img.src = adjustedImageSrc
+      img.src = loadUrl
       img.onload = () => {
         setResolved({ d: adjustedImageSrc, m: mobileCand })
         handleImageLoaded()
@@ -109,8 +138,9 @@ export default function LazyImage({
     }
 
     if (!window.IntersectionObserver) {
+      const loadUrl = pickLoadUrl(adjustedImageSrc, mobileCand)
       const img = new Image()
-      img.src = adjustedImageSrc
+      img.src = loadUrl
       img.onload = () => {
         setResolved({ d: adjustedImageSrc, m: mobileCand })
         handleImageLoaded()
@@ -123,11 +153,12 @@ export default function LazyImage({
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
+            const loadUrl = pickLoadUrl(adjustedImageSrc, mobileCand)
             const img = new Image()
             if ('decoding' in img) {
               img.decoding = 'async'
             }
-            img.src = adjustedImageSrc
+            img.src = loadUrl
             img.onload = () => {
               setResolved({ d: adjustedImageSrc, m: mobileCand })
               handleImageLoaded()
@@ -164,7 +195,7 @@ export default function LazyImage({
 
   const imgProps = {
     ref: imageRef,
-    src: desktopSrc,
+    src: chosenSrc,
     'data-src': src,
     alt: alt || 'Lazy loaded image',
     onLoad: handleThumbnailLoaded,
@@ -187,31 +218,46 @@ export default function LazyImage({
     return null
   }
 
-  const preloadHref = (() => {
-    const desk =
-      (compressMaxWidth != null && compressMaxWidth > 0
-        ? applyWidthCapToImageSrc(src, compressMaxWidth)
-        : adjustImgSize(src, maxWidth)) || defaultPlaceholderSrc
-    return desk
-  })()
+  const deskPreload =
+    (compressMaxWidth != null && compressMaxWidth > 0
+      ? applyWidthCapToImageSrc(src, compressMaxWidth)
+      : adjustImgSize(src, maxWidth)) || defaultPlaceholderSrc
+  const preloadMq = Number(compressMobileProxyQuality)
+  const mobPreload =
+    compressMaxWidth != null &&
+    compressMaxWidth > 0 &&
+    Number.isFinite(preloadMq) &&
+    preloadMq > 0 &&
+    deskPreload.includes('/api/proxy-image')
+      ? appendProxyImageQuality(deskPreload, preloadMq)
+      : null
 
   return (
     <>
       <div ref={observerTargetRef} className='w-full h-full min-h-0'>
-        {wrapPicture ? (
-          <picture className='block h-full w-full'>
-            <source media='(max-width: 767px)' srcSet={mobileSrc} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img {...imgProps} />
-          </picture>
-        ) : (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img {...imgProps} />
-        )}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img {...imgProps} />
       </div>
       {priority && (
         <Head>
-          <link rel='preload' as='image' href={preloadHref} />
+          {mobPreload ? (
+            <>
+              <link
+                rel='preload'
+                as='image'
+                href={deskPreload}
+                media='(min-width: 768px)'
+              />
+              <link
+                rel='preload'
+                as='image'
+                href={mobPreload}
+                media='(max-width: 767px)'
+              />
+            </>
+          ) : (
+            <link rel='preload' as='image' href={deskPreload} />
+          )}
         </Head>
       )}
     </>
