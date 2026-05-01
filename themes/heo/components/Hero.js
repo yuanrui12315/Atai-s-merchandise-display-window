@@ -6,7 +6,7 @@ import { useGlobal } from '@/lib/global'
 import SmartLink from '@/components/SmartLink'
 import { applyWidthCapToImageSrc } from '@/lib/utils/homeImageUrl'
 import { useRouter } from 'next/router'
-import { useImperativeHandle, useRef, useState } from 'react'
+import { useEffect, useImperativeHandle, useRef, useState } from 'react'
 import CONFIG from '../config'
 
 const heroThumbCap = () =>
@@ -200,6 +200,34 @@ function TopGroup(props) {
   const { latestPosts, allNavPages, siteInfo } = props
   const { locale } = useGlobal()
   const todayCardRef = useRef()
+  const topGroupRef = useRef(null)
+
+  /** PC（xl）：竖向滚轮 / 横向触控板增量转为热销条 scrollLeft，与此前使用习惯一致 */
+  useEffect(() => {
+    const el = topGroupRef.current
+    if (!el) return
+
+    const mq = window.matchMedia('(min-width: 1280px)')
+    const onWheel = e => {
+      if (!mq.matches) return
+      if (el.scrollWidth <= el.clientWidth) return
+
+      const max = el.scrollWidth - el.clientWidth
+      const delta =
+        Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+      if (!delta) return
+
+      if (delta > 0 && el.scrollLeft >= max - 0.5) return
+      if (delta < 0 && el.scrollLeft <= 0.5) return
+
+      e.preventDefault()
+      el.scrollLeft += delta
+    }
+
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [])
+
   function handleMouseLeave() {
     todayCardRef.current?.coverUp?.()
   }
@@ -223,12 +251,13 @@ function TopGroup(props) {
       {/* PC：热销款标题 + 滑动提示（与手机一致，整块横滑查看更多） */}
       <div className='mb-2 hidden items-baseline justify-between gap-2 xl:flex'>
         <div className='text-lg font-bold dark:text-gray-200'>热销款</div>
-        <span className='max-w-[9rem] shrink-0 text-right text-[10px] leading-tight text-gray-500 dark:text-gray-400'>
-          左右滑动查看更多
+        <span className='max-w-[10rem] shrink-0 text-right text-[10px] leading-tight text-gray-500 dark:text-gray-400'>
+          鼠标滚轮可横向浏览
         </span>
       </div>
       {/* 手机 + PC 均为横滑；xl 使用大卡尺寸，避免以前静态网格占满右侧 */}
       <div
+        ref={topGroupRef}
         id='top-group'
         className='flex w-full min-w-0 flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] xl:gap-3 xl:pb-2'>
         {pairColumns.map((pair, colIdx) => (
