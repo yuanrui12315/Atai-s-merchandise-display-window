@@ -6,7 +6,7 @@ import { useGlobal } from '@/lib/global'
 import SmartLink from '@/components/SmartLink'
 import { applyWidthCapToImageSrc } from '@/lib/utils/homeImageUrl'
 import { useRouter } from 'next/router'
-import { useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { useImperativeHandle, useRef, useState } from 'react'
 import CONFIG from '../config'
 
 const heroThumbCap = () =>
@@ -200,33 +200,6 @@ function TopGroup(props) {
   const { latestPosts, allNavPages, siteInfo } = props
   const { locale } = useGlobal()
   const todayCardRef = useRef()
-  const topGroupRef = useRef(null)
-
-  /** PC（xl）：竖向滚轮 / 横向触控板增量转为热销条 scrollLeft，与此前使用习惯一致 */
-  useEffect(() => {
-    const el = topGroupRef.current
-    if (!el) return
-
-    const mq = window.matchMedia('(min-width: 1280px)')
-    const onWheel = e => {
-      if (!mq.matches) return
-      if (el.scrollWidth <= el.clientWidth) return
-
-      const max = el.scrollWidth - el.clientWidth
-      const delta =
-        Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
-      if (!delta) return
-
-      if (delta > 0 && el.scrollLeft >= max - 0.5) return
-      if (delta < 0 && el.scrollLeft <= 0.5) return
-
-      e.preventDefault()
-      el.scrollLeft += delta
-    }
-
-    el.addEventListener('wheel', onWheel, { passive: false })
-    return () => el.removeEventListener('wheel', onWheel)
-  }, [])
 
   function handleMouseLeave() {
     todayCardRef.current?.coverUp?.()
@@ -248,22 +221,20 @@ function TopGroup(props) {
       id='hero-right-wrapper'
       onMouseLeave={handleMouseLeave}
       className='relative flex min-w-0 w-full flex-1'>
-      {/* PC：热销款标题 + 滑动提示（与手机一致，整块横滑查看更多） */}
-      <div className='mb-2 hidden items-baseline justify-between gap-2 xl:flex'>
-        <div className='text-lg font-bold dark:text-gray-200'>热销款</div>
-        <span className='max-w-[10rem] shrink-0 text-right text-[10px] leading-tight text-gray-500 dark:text-gray-400'>
-          鼠标滚轮可横向浏览
-        </span>
+      {/* PC：仅标题；列表为竖向滚轮滚动区域（与手机横滑分离） */}
+      <div className='mb-2 hidden shrink-0 self-stretch xl:flex xl:flex-col xl:justify-start xl:pr-3'>
+        <div className='text-lg font-bold [writing-mode:vertical-rl] dark:text-gray-200 xl:mt-1'>
+          热销款
+        </div>
       </div>
-      {/* 手机 + PC 均为横滑；xl 使用大卡尺寸，避免以前静态网格占满右侧 */}
+      {/* 手机：横滑；xl：多列换行 + 固定高度内竖向滚轮浏览 */}
       <div
-        ref={topGroupRef}
         id='top-group'
-        className='flex w-full min-w-0 flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] xl:gap-3 xl:pb-2'>
+        className='flex min-w-0 w-full flex-nowrap gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1 snap-x snap-mandatory [-webkit-overflow-scrolling:touch] xl:w-0 xl:flex-1 xl:flex-wrap xl:content-start xl:gap-3 xl:overflow-x-hidden xl:overflow-y-auto xl:pb-2 xl:max-h-[min(380px,46vh)] xl:snap-none xl:min-h-0'>
         {pairColumns.map((pair, colIdx) => (
           <div
             key={pair[0]?.id || `col-${colIdx}`}
-            className='flex w-[5.75rem] shrink-0 snap-start flex-col gap-1.5 sm:w-24 xl:w-52 xl:gap-3'>
+            className='flex w-[5.75rem] shrink-0 snap-start flex-col gap-1.5 sm:w-24 xl:w-52 xl:shrink-0 xl:gap-3'>
             {pair.map((p, rowIdx) => {
               if (!p) {
                 return null
