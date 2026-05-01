@@ -12,7 +12,7 @@ const Logo = props => {
     <SmartLink
       href='/'
       title={backHomeTitle}
-      className='flex max-w-full min-w-0 flex-nowrap items-center overflow-x-clip cursor-pointer font-extrabold no-underline text-inherit lg:overflow-visible'>
+      className='flex h-full w-full min-w-0 max-w-full cursor-pointer flex-nowrap items-center overflow-hidden font-extrabold no-underline text-inherit lg:w-auto lg:overflow-visible'>
         <LazyImage
           src={siteInfo?.icon}
           width={24}

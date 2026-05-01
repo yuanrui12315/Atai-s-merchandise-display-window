@@ -145,44 +145,51 @@ const Header = props => {
             ${fixedNav ? 'fixed' : 'relative bg-transparent'} 
             ${textWhite ? 'text-white ' : 'text-black dark:text-white'}  
             ${navBgWhite ? 'bg-white dark:bg-[#18171d] shadow' : 'bg-transparent'}`}>
-        {/* 手机：两列 grid 明确分出标题区与图标区，避免 flex+overflow-hidden 把整列 Logo 裁没；PC：横向 flex */}
-        <div className='mx-auto grid h-full w-full max-w-[86rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 px-4 lg:flex lg:items-center lg:justify-between lg:gap-4 lg:px-6'>
-          {/* 手机：overflow-x-clip 防止 Logo 行 intrinsic 宽度超出第一列、画到搜索按钮上 */}
-          <div className='min-w-0 max-w-full overflow-x-clip pr-1 lg:overflow-visible lg:pr-0'>
+        {/* 手机：单独一行 flex（flex-1 min-w-0 overflow-hidden），避免 grid/clip 在部分机型上不生效导致压住图标 */}
+        <div className='mx-auto flex h-full w-full max-w-[86rem] items-center justify-between gap-2 px-4 lg:hidden'>
+          <div className='min-h-0 min-w-0 flex-1 basis-0 overflow-hidden'>
             <Logo {...props} />
           </div>
-
-          {/* 中间：大搜索框 + 菜单（PC端，vapingcountry 风格） */}
-          <div className='hidden min-w-0 flex-1 items-center gap-6 lg:flex'>
-            <div className='flex-1 min-w-0 max-w-2xl'>
-              <div className='w-full flex items-center bg-white dark:bg-gray-600 rounded-lg shadow-sm border border-gray-200 dark:border-gray-500 pl-4 pr-2 py-1.5'>
-                <SearchInput {...props} className='border-0 shadow-none' />
-              </div>
-            </div>
-            <div className='flex-shrink-0'>
-              <MenuListTop {...props} />
-            </div>
-          </div>
-
-          <div className='flex w-max shrink-0 items-center justify-end justify-self-end gap-1 lg:w-48 lg:justify-self-auto lg:gap-2'>
+          <div className='flex shrink-0 items-center gap-0.5'>
             <RandomPostButton {...props} />
-            {/* 移动端显示搜索图标，PC端已用大搜索框替代 */}
-            <div className='lg:hidden'>
-              <SearchButton {...props} />
-            </div>
             {!JSON.parse(siteConfig('THEME_SWITCH')) && (
-              <div className='hidden md:block'>
+              <div className='hidden shrink-0 md:block'>
                 <DarkModeButton {...props} />
               </div>
             )}
+            <div className='flex shrink-0 items-center'>
+              <SearchButton {...props} />
+            </div>
             <ReadingProgress />
-
-            {/* 移动端菜单按钮 */}
             <div
               onClick={toggleMenuOpen}
-              className='flex lg:hidden w-8 justify-center items-center h-8 cursor-pointer'>
+              className='flex h-8 w-8 cursor-pointer items-center justify-center'>
               <i className='fas fa-bars' />
             </div>
+          </div>
+        </div>
+
+        {/* PC：Logo | 搜索+菜单 | 右侧工具 */}
+        <div className='mx-auto hidden h-full w-full max-w-[86rem] items-center justify-between gap-4 px-6 lg:flex'>
+          <div className='shrink-0'>
+            <Logo {...props} />
+          </div>
+          <div className='flex min-w-0 flex-1 items-center gap-6'>
+            <div className='max-w-2xl min-w-0 flex-1'>
+              <div className='flex w-full items-center rounded-lg border border-gray-200 bg-white py-1.5 pl-4 pr-2 shadow-sm dark:border-gray-500 dark:bg-gray-600'>
+                <SearchInput {...props} className='border-0 shadow-none' />
+              </div>
+            </div>
+            <div className='shrink-0'>
+              <MenuListTop {...props} />
+            </div>
+          </div>
+          <div className='flex w-48 shrink-0 items-center justify-end gap-2'>
+            <RandomPostButton {...props} />
+            {!JSON.parse(siteConfig('THEME_SWITCH')) && (
+              <DarkModeButton {...props} />
+            )}
+            <ReadingProgress />
           </div>
         </div>
         {/* 侧拉抽屉不参与顶栏 flex 排版，避免占位/层叠异常 */}
