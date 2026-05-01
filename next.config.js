@@ -25,13 +25,7 @@ module.exports = {
     extensionAlias: {
       '.js': ['.js']
     },
-    // standalone + API 里用 sharp：`output` 追踪若不包含原生 binding，运行时会退回原图 PNG、无 WebP
-    outputFileTracingIncludes: {
-      '/*': [
-        './node_modules/sharp/**/*',
-        './node_modules/@img/**/*'
-      ]
-    },
+    // 勿用 outputFileTracingIncludes 强行打包 sharp：会复制不完整，Vercel 构建 lstat 缺 install/check.js 报错 ENOENT
     serverComponentsExternalPackages: ['sharp']
   }
 }
