@@ -146,8 +146,9 @@ const Header = props => {
             ${textWhite ? 'text-white ' : 'text-black dark:text-white'}  
             ${navBgWhite ? 'bg-white dark:bg-[#18171d] shadow' : 'bg-transparent'}`}>
         {/* 手机：两列 grid 明确分出标题区与图标区，避免 flex+overflow-hidden 把整列 Logo 裁没；PC：横向 flex */}
-        <div className='mx-auto grid h-full w-full max-w-[86rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-2 px-4 lg:flex lg:items-center lg:justify-between lg:gap-4 lg:px-6'>
-          <div className='min-w-0'>
+        <div className='mx-auto grid h-full w-full max-w-[86rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 px-4 lg:flex lg:items-center lg:justify-between lg:gap-4 lg:px-6'>
+          {/* 手机：overflow-x-clip 防止 Logo 行 intrinsic 宽度超出第一列、画到搜索按钮上 */}
+          <div className='min-w-0 max-w-full overflow-x-clip pr-1 lg:overflow-visible lg:pr-0'>
             <Logo {...props} />
           </div>
 

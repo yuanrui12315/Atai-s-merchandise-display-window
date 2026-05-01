@@ -12,7 +12,7 @@ const Logo = props => {
     <SmartLink
       href='/'
       title={backHomeTitle}
-      className='flex min-w-0 max-w-full flex-nowrap items-center cursor-pointer font-extrabold no-underline text-inherit relative'>
+      className='flex max-w-full min-w-0 flex-nowrap items-center overflow-x-clip cursor-pointer font-extrabold no-underline text-inherit lg:overflow-visible'>
         <LazyImage
           src={siteInfo?.icon}
           width={24}
@@ -20,15 +20,17 @@ const Logo = props => {
           alt={siteConfig('AUTHOR')}
           className='mr-1.5 h-6 w-6 shrink-0 rounded object-cover lg:mr-4'
         />
-        <div id='logo-text' className='group relative z-10 min-w-0 max-w-[9rem] flex-none rounded-2xl lg:max-w-none'>
-          <div className='logo group-hover:opacity-0 opacity-100 visible group-hover:invisible text-base lg:text-lg my-auto truncate rounded dark:border-white duration-200'>
+        <div
+          id='logo-text'
+          className='group relative z-0 min-w-0 max-w-[7rem] flex-1 sm:max-w-[9rem] rounded-2xl lg:z-10 lg:max-w-none lg:flex-none'>
+          <div className='logo group-hover:opacity-0 opacity-100 visible group-hover:invisible text-sm sm:text-base lg:text-lg my-auto truncate rounded dark:border-white duration-200'>
             {siteConfig('TITLE')}
           </div>
           <div className='flex justify-center rounded-2xl group-hover:bg-indigo-600 w-full group-hover:opacity-100 opacity-0 invisible group-hover:visible absolute top-0 py-1 duration-200'>
             <Home className={'w-6 h-6 stroke-white stroke-2 '} />
           </div>
         </div>
-        <span className='ml-2 lg:ml-3 px-2 lg:px-3 py-1 text-xs lg:text-sm font-medium rounded-lg border border-current border-opacity-40 hover:border-opacity-80 hover:bg-indigo-500 hover:bg-opacity-10 dark:hover:bg-yellow-500 dark:hover:bg-opacity-10 transition-all duration-200 flex-shrink-0'>
+        <span className='ml-1 hidden shrink-0 rounded-lg border border-current border-opacity-40 px-1.5 py-0.5 text-[10px] font-medium hover:border-opacity-80 hover:bg-indigo-500 hover:bg-opacity-10 dark:hover:bg-yellow-500 dark:hover:bg-opacity-10 min-[380px]:inline-flex sm:ml-2 sm:px-2 sm:text-xs lg:ml-3 lg:px-3 lg:text-sm transition-all duration-200'>
           首页
         </span>
     </SmartLink>
