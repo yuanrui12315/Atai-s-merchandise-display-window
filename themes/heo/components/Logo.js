@@ -9,7 +9,10 @@ const Logo = props => {
   const { locale } = useGlobal()
   const backHomeTitle = locale.NAV.BACK_HOME || '回到首页'
   return (
-    <SmartLink href='/' title={backHomeTitle} className='flex flex-nowrap items-center cursor-pointer font-extrabold no-underline text-inherit relative z-10'>
+    <SmartLink
+      href='/'
+      title={backHomeTitle}
+      className='flex min-w-0 max-w-full flex-nowrap items-center cursor-pointer font-extrabold no-underline text-inherit relative'>
         <LazyImage
           src={siteInfo?.icon}
           width={24}
@@ -17,8 +20,8 @@ const Logo = props => {
           alt={siteConfig('AUTHOR')}
           className='mr-2 lg:mr-4 hidden md:block'
         />
-        <div id='logo-text' className='group rounded-2xl flex-none relative'>
-          <div className='logo group-hover:opacity-0 opacity-100 visible group-hover:invisible text-base lg:text-lg my-auto rounded dark:border-white duration-200 truncate max-w-[120px] lg:max-w-none'>
+        <div id='logo-text' className='group relative z-10 min-w-0 max-w-[120px] flex-none rounded-2xl lg:max-w-none'>
+          <div className='logo group-hover:opacity-0 opacity-100 visible group-hover:invisible text-base lg:text-lg my-auto truncate rounded dark:border-white duration-200'>
             {siteConfig('TITLE')}
           </div>
           <div className='flex justify-center rounded-2xl group-hover:bg-indigo-600 w-full group-hover:opacity-100 opacity-0 invisible group-hover:visible absolute top-0 py-1 duration-200'>

@@ -146,8 +146,8 @@ const Header = props => {
             ${textWhite ? 'text-white ' : 'text-black dark:text-white'}  
             ${navBgWhite ? 'bg-white dark:bg-[#18171d] shadow' : 'bg-transparent'}`}>
         <div className='flex h-full mx-auto justify-between items-center max-w-[86rem] px-4 lg:px-6 gap-2 lg:gap-4'>
-          {/* 左侧logo - 移动端缩小避免与右侧重叠 */}
-          <div className='min-w-0 flex-1 lg:flex-initial'>
+          {/* 左侧 logo：min-w-0 + overflow-hidden 防止标题溢出到右侧图标上 */}
+          <div className='min-w-0 flex-1 overflow-hidden lg:flex-initial lg:overflow-visible'>
             <Logo {...props} />
           </div>
 
@@ -163,8 +163,8 @@ const Header = props => {
             </div>
           </div>
 
-          {/* 右侧固定 - 移动端加 gap 避免重叠 */}
-          <div className='flex flex-shrink-0 justify-end items-center gap-1 lg:gap-2 w-auto lg:w-48'>
+          {/* 右侧固定 - 不参与压缩，避免与左侧抢宽导致重叠 */}
+          <div className='relative z-20 flex flex-shrink-0 justify-end items-center gap-1 lg:gap-2 w-auto lg:w-48'>
             <RandomPostButton {...props} />
             {/* 移动端显示搜索图标，PC端已用大搜索框替代 */}
             <div className='lg:hidden'>
@@ -184,10 +184,9 @@ const Header = props => {
               <i className='fas fa-bars' />
             </div>
           </div>
-
-          {/* 右边侧拉抽屉 */}
-          <SlideOver cRef={slideOverRef} {...props} />
         </div>
+        {/* 侧拉抽屉不参与顶栏 flex 排版，避免占位/层叠异常 */}
+        <SlideOver cRef={slideOverRef} {...props} />
       </nav>
     </>
   )
