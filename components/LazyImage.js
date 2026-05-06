@@ -122,66 +122,82 @@ export default function LazyImage({
 
   useEffect(() => {
     setResolved(null)
+    const hasLoadedRef = { current: false }
 
     const { d: adjustedImageSrc, m: mobileCand } = resolveDeskAndMob()
 
-    if (priority) {
+    const startLoad = () => {
+      if (hasLoadedRef.current) return
+      hasLoadedRef.current = true
       const loadUrl = pickLoadUrl(adjustedImageSrc, mobileCand)
       const img = new Image()
-      img.src = loadUrl
+      if ('decoding' in img) {
+        img.decoding = 'async'
+      }
       img.onload = () => {
         setResolved({ d: adjustedImageSrc, m: mobileCand })
         handleImageLoaded()
       }
       img.onerror = handleImageError
+      img.src = loadUrl
+    }
+
+    if (priority) {
+      startLoad()
       return
     }
 
     if (!window.IntersectionObserver) {
-      const loadUrl = pickLoadUrl(adjustedImageSrc, mobileCand)
-      const img = new Image()
-      img.src = loadUrl
-      img.onload = () => {
-        setResolved({ d: adjustedImageSrc, m: mobileCand })
-        handleImageLoaded()
-      }
-      img.onerror = handleImageError
+      startLoad()
       return
     }
+
+    /** 部分自带浏览器（如小米）IntersectionObserver 不触发或 threshold 过严 → 永远停在占位动画 */
+    const marginRaw = siteConfig('LAZY_LOAD_THRESHOLD', '200px')
+    const margin = typeof marginRaw === 'string' ? marginRaw : '200px'
 
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const loadUrl = pickLoadUrl(adjustedImageSrc, mobileCand)
-            const img = new Image()
-            if ('decoding' in img) {
-              img.decoding = 'async'
-            }
-            img.src = loadUrl
-            img.onload = () => {
-              setResolved({ d: adjustedImageSrc, m: mobileCand })
-              handleImageLoaded()
-            }
-            img.onerror = handleImageError
+            startLoad()
             observer.unobserve(entry.target)
           }
         })
       },
       {
-        rootMargin: siteConfig('LAZY_LOAD_THRESHOLD', '200px'),
-        threshold: 0.1
+        rootMargin: margin,
+        threshold: 0
       }
     )
 
-    if (observerTargetRef.current) {
-      observer.observe(observerTargetRef.current)
+    let fallbackTimer
+    const el = observerTargetRef.current
+    if (el) {
+      observer.observe(el)
+      fallbackTimer = window.setTimeout(() => {
+        if (!hasLoadedRef.current) {
+          startLoad()
+          try {
+            observer.unobserve(el)
+          } catch (_) {
+            /* ignore */
+          }
+        }
+      }, 2800)
     }
 
     return () => {
+      if (fallbackTimer != null) {
+        window.clearTimeout(fallbackTimer)
+      }
       const t = observerTargetRef.current
       if (t) {
-        observer.unobserve(t)
+        try {
+          observer.unobserve(t)
+        } catch (_) {
+          /* ignore */
+        }
       }
     }
   }, [
