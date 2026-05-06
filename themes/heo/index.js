@@ -152,18 +152,20 @@ const LayoutBase = props => {
  */
 const LayoutIndex = props => {
   const globalListW = siteConfig('HOME_LIST_COVER_MAX_WIDTH', 480, CONFIG)
-  const rawIndexW = siteConfig('HOME_INDEX_LIST_COVER_MAX_WIDTH', null, CONFIG)
+  /** 首页专用宽度须以主题文件 CONFIG 为准：若走 siteConfig，Notion 配置表可能覆盖或缺键，导致始终回退全局宽度、与分页无差异 */
+  const rawIndexW = CONFIG.HOME_INDEX_LIST_COVER_MAX_WIDTH
   const homeListCoverMax =
-    rawIndexW != null && Number(rawIndexW) > 0
+    rawIndexW != null &&
+    String(rawIndexW).trim() !== '' &&
+    Number.isFinite(Number(rawIndexW)) &&
+    Number(rawIndexW) > 0
       ? Number(rawIndexW)
       : globalListW
-  const rawIndexQ = siteConfig(
-    'HOME_INDEX_LIST_MOBILE_PROXY_QUALITY',
-    null,
-    CONFIG
-  )
+  const rawIndexQ = CONFIG.HOME_INDEX_LIST_MOBILE_PROXY_QUALITY
   const listMobileProxyQualityOverride =
-    rawIndexQ == null ? undefined : Number(rawIndexQ)
+    rawIndexQ != null && String(rawIndexQ).trim() !== ''
+      ? Number(rawIndexQ)
+      : undefined
   return (
     <div id='post-outer-wrapper' className='px-5 md:px-0'>
       {/* 文章分类条 */}

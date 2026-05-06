@@ -7,6 +7,12 @@
 module.exports = {
   NOTION_HOST: process.env.NEXT_PUBLIC_NOTION_HOST || 'https://www.notion.so', // Notion域名，您可以选择用自己的域名进行反向代理，如果不懂得什么是反向代理，请勿修改此项
   IMAGE_COMPRESS_WIDTH: process.env.NEXT_PUBLIC_IMAGE_COMPRESS_WIDTH || 900, // 图片压缩宽度，越小加载越快
+  /** 列表卡片封面（pageCoverThumbnail）构建时额外上限，与主题 HOME_LIST_COVER_MAX_WIDTH 宜保持一致；避免站内仍带 900 宽地址导致首页 400/480 视觉上难区分 */
+  POST_LIST_COVER_MAX_WIDTH:
+    process.env.NEXT_PUBLIC_POST_LIST_COVER_MAX_WIDTH != null &&
+    String(process.env.NEXT_PUBLIC_POST_LIST_COVER_MAX_WIDTH).trim() !== ''
+      ? Number(process.env.NEXT_PUBLIC_POST_LIST_COVER_MAX_WIDTH)
+      : 480,
   IMAGE_ZOOM_IN_WIDTH: process.env.NEXT_PUBLIC_IMAGE_ZOOM_IN_WIDTH || 1920, // 文章图片点击放大后的画质宽度，不代表在网页中的实际展示宽度
   IMAGE_COMPRESS_QUALITY: process.env.NEXT_PUBLIC_IMAGE_COMPRESS_QUALITY || 80, // 图片压缩质量，80 平衡速度与清晰度
   RANDOM_IMAGE_URL: process.env.NEXT_PUBLIC_RANDOM_IMAGE_URL || '', // 随机图片API,如果未配置下面的关键字，主页封面，头像，文章封面图都会被替换为随机图片
