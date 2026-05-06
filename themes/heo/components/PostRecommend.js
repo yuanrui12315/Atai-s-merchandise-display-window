@@ -31,7 +31,7 @@ export default function PostRecommend({ recommendPosts, siteInfo }) {
       </div>
 
       <div className='grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-4'>
-        {recommendPosts.map(post => {
+        {recommendPosts.map((post, index) => {
           const headerImage = post?.pageCoverThumbnail
             ? post?.pageCoverThumbnail
             : siteInfo?.pageCover
@@ -42,20 +42,32 @@ export default function PostRecommend({ recommendPosts, siteInfo }) {
               title={post?.title}
               href={post?.href}
               passHref
-              className='flex h-28 cursor-pointer overflow-hidden rounded-xl md:h-40 md:rounded-2xl'>
-              <div className='relative h-full w-full group'>
-                <div className='flex h-full w-full items-center justify-center duration-300'>
-                  <div className='shadow-text z-10 line-clamp-3 px-2 text-center text-[11px] font-bold text-white select-none sm:text-xs md:line-clamp-none md:px-4 md:text-lg'>
+              className='block h-28 cursor-pointer overflow-hidden rounded-xl md:h-40 md:rounded-2xl'>
+              <div className='group relative h-full w-full overflow-hidden'>
+                {/* 必须包一层 inset-0：LazyImage 观察的 div 要有宽高；img 勿再 absolute，否则外层塌成 0，IntersectionObserver 永远不触发，永远占位图 */}
+                <div className='absolute inset-0 z-0'>
+                  <LazyImage
+                    priority={index < 3}
+                    src={headerImage}
+                    alt={post.title || ''}
+                    className='h-full w-full object-cover object-center duration-200 group-hover:scale-110 group-hover:brightness-50'
+                    compressMaxWidth={siteConfig(
+                      'HOME_LIST_COVER_MAX_WIDTH',
+                      480,
+                      CONFIG
+                    )}
+                    compressMobileProxyQuality={Number(
+                      siteConfig('HOME_LIST_MOBILE_PROXY_QUALITY', 0, CONFIG)
+                    )}
+                  />
+                </div>
+                <div className='pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-3/4'>
+                  <div className='h-full w-full bg-gradient-to-b from-transparent to-black opacity-80 transition-all duration-1000 group-hover:opacity-100' />
+                </div>
+                <div className='relative z-[2] flex h-full items-center justify-center px-2 duration-300 md:px-4'>
+                  <div className='shadow-text line-clamp-3 text-center text-[11px] font-bold text-white select-none sm:text-xs md:line-clamp-none md:text-lg'>
                     {post.title}
                   </div>
-                </div>
-                <LazyImage
-                  src={headerImage}
-                  className='absolute top-0 h-full w-full transform object-cover object-center duration-200 group-hover:scale-110 group-hover:brightness-50'
-                />
-                {/* 卡片的阴影遮罩，为了凸显图片上的文字 */}
-                <div className='h-3/4 w-full absolute left-0 bottom-0'>
-                  <div className='h-full w-full absolute opacity-80 group-hover:opacity-100 transition-all duration-1000 bg-gradient-to-b from-transparent to-black'></div>
                 </div>
               </div>
             </SmartLink>
