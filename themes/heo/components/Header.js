@@ -7,7 +7,6 @@ import DarkModeButton from './DarkModeButton'
 import Logo from './Logo'
 import { MenuListTop } from './MenuListTop'
 import RandomPostButton from './RandomPostButton'
-import ReadingProgress from './ReadingProgress'
 import SearchButton from './SearchButton'
 import SearchInput from './SearchInput'
 import SlideOver from './SlideOver'
@@ -162,9 +161,6 @@ const Header = props => {
             <div className='flex shrink-0 items-center'>
               <SearchButton {...props} />
             </div>
-            <div className='shrink-0'>
-              <ReadingProgress />
-            </div>
             <div
               onClick={toggleMenuOpen}
               className='flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center'>
@@ -193,7 +189,6 @@ const Header = props => {
             {!JSON.parse(siteConfig('THEME_SWITCH')) && (
               <DarkModeButton {...props} />
             )}
-            <ReadingProgress />
           </div>
         </div>
         {/* 侧拉抽屉不参与顶栏 flex 排版，避免占位/层叠异常 */}
