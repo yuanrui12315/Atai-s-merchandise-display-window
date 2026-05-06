@@ -63,6 +63,7 @@ alwaysApply: true
 ### 搜索页布局（`/search` 有搜索词时）
 - 顺序：**「搜索结果」** + 商品列表 → **「按标签筛选」** → 底部分类/标签；PC 与手机一致（`themes/heo/index.js` LayoutSearch）
 - **`filterPostsByKeyword`**（`lib/search/filterPostsByKeyword.js`）：**仅元数据**子串匹配，**已不做正文检索**。重要词请写在 **标题或商品描述** 等可在列表里拿到的字段。另：全站 `post` 会 **`delete post.content`**，详情页正文渲染须从 **blockMap 根块** 回退子块 id（与搜索无关）。
+- **搜索无结果文案**：`lib/lang/zh-CN.js` 等 **`COMMON.SEARCH_LIST_EMPTY`** / **`SEARCH_NO_RESULTS_HINT`**；`BlogPostListEmpty` 仅在传入 **`currentSearch`** 时走搜索分支。`**POST_LIST_STYLE` 为 `page`** 时搜索列表用 **`BlogPostListPage`**，`LayoutSearch` 必须传入 **`currentSearch`**，否则空列表会误判为普通列表、只显示「没有更多了」。
 
 ### 「所有商品」列表排序
 - `blog.config.js` 在合并 `post.config` 后 **强制 `POSTS_SORT_BY: 'date'`**（post.config 默认是 `notion`，会不按时间排）
