@@ -18,7 +18,8 @@ const BlogPostListPage = ({
   posts = [],
   postCount,
   siteInfo,
-  listCoverMaxWidth
+  listCoverMaxWidth,
+  listMobileProxyQualityOverride
 }) => {
   const { NOTION_CONFIG } = useGlobal()
   const POSTS_PER_PAGE = siteConfig('POSTS_PER_PAGE', 12, NOTION_CONFIG)
@@ -44,6 +45,7 @@ const BlogPostListPage = ({
               post={post}
               siteInfo={siteInfo}
               listCoverMaxWidth={listCoverMaxWidth}
+              listMobileProxyQualityOverride={listMobileProxyQualityOverride}
             />
           ))}
         </div>

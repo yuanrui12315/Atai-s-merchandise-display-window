@@ -11,7 +11,9 @@ const BlogPostCard = ({
   showSummary,
   siteInfo,
   /** 仅首页/主列表分页：缩小封面请求以加速；分类/标签/搜索不传 */
-  listCoverMaxWidth
+  listCoverMaxWidth,
+  /** 仅首页可传：覆盖 HOME_LIST_MOBILE_PROXY_QUALITY；未传则读全局配置 */
+  listMobileProxyQualityOverride
 }) => {
   const showPreview =
     siteConfig('HEO_POST_LIST_PREVIEW', null, CONFIG) && post.blockMap
@@ -35,11 +37,10 @@ const BlogPostCard = ({
     true,
     CONFIG
   )
-  const listMobileProxyQ = siteConfig(
-    'HOME_LIST_MOBILE_PROXY_QUALITY',
-    0,
-    CONFIG
-  )
+  const listMobileProxyQ =
+    listMobileProxyQualityOverride !== undefined
+      ? Number(listMobileProxyQualityOverride)
+      : siteConfig('HOME_LIST_MOBILE_PROXY_QUALITY', 0, CONFIG)
 
   return (
     <article

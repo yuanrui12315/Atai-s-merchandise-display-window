@@ -151,11 +151,19 @@ const LayoutBase = props => {
  * @returns
  */
 const LayoutIndex = props => {
-  const homeListCoverMax = siteConfig(
-    'HOME_LIST_COVER_MAX_WIDTH',
-    480,
+  const globalListW = siteConfig('HOME_LIST_COVER_MAX_WIDTH', 480, CONFIG)
+  const rawIndexW = siteConfig('HOME_INDEX_LIST_COVER_MAX_WIDTH', null, CONFIG)
+  const homeListCoverMax =
+    rawIndexW != null && Number(rawIndexW) > 0
+      ? Number(rawIndexW)
+      : globalListW
+  const rawIndexQ = siteConfig(
+    'HOME_INDEX_LIST_MOBILE_PROXY_QUALITY',
+    null,
     CONFIG
   )
+  const listMobileProxyQualityOverride =
+    rawIndexQ == null ? undefined : Number(rawIndexQ)
   return (
     <div id='post-outer-wrapper' className='px-5 md:px-0'>
       {/* 文章分类条 */}
@@ -170,11 +178,13 @@ const LayoutIndex = props => {
         <BlogPostListPage
           {...props}
           listCoverMaxWidth={homeListCoverMax}
+          listMobileProxyQualityOverride={listMobileProxyQualityOverride}
         />
       ) : (
         <BlogPostListScroll
           {...props}
           listCoverMaxWidth={homeListCoverMax}
+          listMobileProxyQualityOverride={listMobileProxyQualityOverride}
         />
       )}
     </div>

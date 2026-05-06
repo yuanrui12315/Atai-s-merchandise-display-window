@@ -18,7 +18,8 @@ const BlogPostListScroll = ({
   currentSearch,
   showSummary = siteConfig('HEO_POST_LIST_SUMMARY', null, CONFIG),
   siteInfo,
-  listCoverMaxWidth
+  listCoverMaxWidth,
+  listMobileProxyQualityOverride
 }) => {
   const { locale, NOTION_CONFIG } = useGlobal()
   const [page, updatePage] = useState(1)
@@ -82,6 +83,7 @@ const BlogPostListScroll = ({
               showSummary={showSummary}
               siteInfo={siteInfo}
               listCoverMaxWidth={listCoverMaxWidth}
+              listMobileProxyQualityOverride={listMobileProxyQualityOverride}
             />
           ))}
         </div>
