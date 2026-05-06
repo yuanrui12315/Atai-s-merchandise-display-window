@@ -80,7 +80,7 @@ const CONFIG = {
   // 仅手机端列表封面：经 /api/proxy-image 二次压 WebP（当前 5，更省流量）；0 关闭。PC 不走该参数
   HOME_LIST_MOBILE_PROXY_QUALITY: 5,
   // 仅首页「所有商品」列表：填数字则覆盖上方两项；null/不填则与 HOME_LIST_* 完全一致（分页、相关推荐仍只用全局）
-  HOME_INDEX_LIST_COVER_MAX_WIDTH: null,
+  HOME_INDEX_LIST_COVER_MAX_WIDTH: 400,
   HOME_INDEX_LIST_MOBILE_PROXY_QUALITY: null,
   // 热销款小卡封面请求宽度（两排小图，200 以减轻加载，可再调）
   HOME_HERO_THUMB_MAX_WIDTH: 200,
