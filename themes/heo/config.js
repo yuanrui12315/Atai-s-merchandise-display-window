@@ -78,7 +78,7 @@ const CONFIG = {
   // 480：五列卡片约 200px 宽×2 倍屏足够；较原 680 单张体积明显更小，弱网/国产浏览器更易加载
   HOME_LIST_COVER_MAX_WIDTH: 480,
   // 仅手机端列表封面：经 /api/proxy-image 二次压 WebP（约 18，很糊、体积最小）；0 关闭。PC 不走该参数
-  HOME_LIST_MOBILE_PROXY_QUALITY: 18,
+  HOME_LIST_MOBILE_PROXY_QUALITY: 5,
   // 热销款小卡封面请求宽度（两排小图，200 以减轻加载，可再调）
   HOME_HERO_THUMB_MAX_WIDTH: 200,
   HOME_HERO_ICON_MAX_WIDTH: 300,
